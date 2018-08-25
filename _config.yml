@@ -1,18 +1,22 @@
 # Dependencies
 
+# Plugins
+plugins:
+    - jekyll-paginate
+
 # Permalinks
 permalink:        pretty
 
 # Setup
-title:            Hyde
-tagline:          'A Jekyll theme'
-description:      'A brazen two-column <a href="http://jekyllrb.com" target="_blank">Jekyll</a> theme that pairs a prominent sidebar with uncomplicated content. Made by <a href="https://twitter.com/mdo" target="_blank">@mdo</a>.'
-url:              http://hyde.getpoole.com
+title:            Sherlock Holmes & the NSA
+tagline:          Prenez ma main et descendons ensemble dans le terrier du lapin blanc a la decouverte de l'OSINT, l'OpenSource Intelligence.
+description:      Prenez ma main et descendons ensemble dans le terrier du lapin blanc a la decouverte de l'OSINT, l'OpenSource Intelligence.
+url:              http://bornlex.github.io
 baseurl:          /
 
 author:
-  name:           'Mark Otto'
-  url:            https://twitter.com/mdo
+  name:           'Julien Seveno-Piltant'
+  url:            https://bornlex.github.io
 
 paginate:         5
 
@@ -20,4 +24,4 @@ paginate:         5
 version:          2.1.0
 
 github:
-  repo:           https://github.com/poole/hyde
+  repo:           https://github.com/Bornlex/bornlex.github.io
