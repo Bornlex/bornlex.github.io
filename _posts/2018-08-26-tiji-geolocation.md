@@ -94,6 +94,6 @@ roule le tank. On ne la trouve pas sur Google.
 ## Conclusion
 
 Comme vous avez pu le constater, localiser une vidéo avec précision n'est pas si compliqué si l'on a un bon point de départ, de la persévérance et quelques
-talents d'observation.
+talents d'observation. Et nous n'avons fait qu'utiliser des informations disponibles sur Internet.
 
 N'hésitez pas à me contacter si quelque chose vous a echappé ou si vous souhaitez partager une localisation de vidéo que vous avez realisé.
