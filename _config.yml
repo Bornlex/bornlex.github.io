@@ -9,8 +9,8 @@ permalink:        pretty
 
 # Setup
 title:            Sherlock Holmes & the NSA
-tagline:          Prenez ma main et descendons ensemble dans le terrier du lapin blanc a la decouverte de l'OSINT, l'OpenSource Intelligence.
-description:      Prenez ma main et descendons ensemble dans le terrier du lapin blanc a la decouverte de l'OSINT, l'OpenSource Intelligence.
+tagline:          Descendons ensemble dans le terrier du lapin blanc grace à l'OSINT, l'OpenSource Intelligence.
+description:      Descendons ensemble dans le terrier du lapin blanc grace à l'OSINT, l'OpenSource Intelligence.
 url:              https://bornlex.github.io
 baseurl:          /
 
@@ -21,7 +21,7 @@ author:
 paginate:         5
 
 # Custom vars
-version:          2.1.0
+version:          1.0.0
 
 github:
   repo:           https://github.com/Bornlex/bornlex.github.io
