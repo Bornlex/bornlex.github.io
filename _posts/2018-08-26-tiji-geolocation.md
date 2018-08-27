@@ -51,8 +51,8 @@ la ville en arabe, et je ne parle pas arabe... Google devrait suffire.
 
 Voilà où se trouve Tiji en Libye:
 <a href="https://www.google.com/maps/place/%D9%85%D8%B3%D8%AC%D8%AF+%D8%A7%D9%84%D8%B4%D9%87%D8%AF%D8%A7%D8%A1%D8%8C+Tiji,+Libye%E2%80%AD/@32.0147903,11.340545,6426m/data=!3m1!1e3!4m5!3m4!1s0x13ac57ef3db12033:0x97308c34c0333ee1!8m2!3d32.0101433!4d11.3564028
-"><https://www.google.com/maps/place/%D9%85%D8%B3%D8%AC%D8%AF+%D8%A7%D9%84%D8%B4%D9%87%D8%AF%D8%A7%D8%A1%D8%8C+Tiji,+Libye%E2%80%AD/@32.0147903,11.340545,6426m/data=!3m1!1e3!4m5!3m4!1s0x13ac57ef3db12033:0x97308c34c0333ee1!8m2!3d32.0101433!4d11.3564028
-/a>
+">https://www.google.com/maps/place/%D9%85%D8%B3%D8%AC%D8%AF+%D8%A7%D9%84%D8%B4%D9%87%D8%AF%D8%A7%D8%A1%D8%8C+Tiji,+Libye%E2%80%AD/@32.0147903,11.340545,6426m/data=!3m1!1e3!4m5!3m4!1s0x13ac57ef3db12033:0x97308c34c0333ee1!8m2!3d32.0101433!4d11.3564028
+</a>
 
 Le lien est conséquent parce qu'il contient beaucoup d'informations de localisation.
 
