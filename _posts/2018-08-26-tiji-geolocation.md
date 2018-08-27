@@ -76,7 +76,7 @@ On se rapproche, continuons...
 
 Il ne nous reste qu'à parcourir la route à l'aide de Google Maps jusqu'à ce qu'elle nous mene à un bâtiment similaire.
 
-Pour nous aider, on peut remarquer une coupole au dessus de la mosquée et un minaret légement à l'extérieur du bâtiment,
+Pour nous aider, on peut remarquer une coupole au dessus de la mosquée et un minaret légèrement à l'extérieur du bâtiment,
 du côté de la route.
 
 ![placeholder](/public/media/tiji/mosquee-route.png)
@@ -97,3 +97,6 @@ Comme vous avez pu le constater, localiser une vidéo avec précision n'est pas 
 talents d'observation. Et nous n'avons fait qu'utiliser des informations disponibles sur Internet.
 
 N'hésitez pas à me contacter si quelque chose vous a echappé ou si vous souhaitez partager une localisation de vidéo que vous avez realisé.
+
+
+PS : Pour votre information, d'après mon frère, le char que l'on observe sur la vidéo pourrait être un char russe de type T7X ou T8X.
