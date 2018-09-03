@@ -110,10 +110,10 @@ les caméras dans les rues, et parfois meme les controller.
 Comme vous l'avez constaté, Google est un outil très puissant, et il peut servir à bien plus qu'à
 renvoyer une page Wikipedia ou le site d'Apple (je n'ai aucun problème ni avec Wikipedia ni avec Apple bien entendu).
 
-Expérimentez, changez les extensions de fichier, les format d'adresse email ou le site sur lequel des
+Expérimentez, changez les extensions de fichier, les formats d'adresse email ou le site sur lequel des
 combinaisons d'identifiant-mot de passe pourraient avoir été rendues publiques et faites-moi part de vos trouvailles !
 
-**PS :** si vous cherchez à savoir si votre adresse mail a été corrompue ou non lors d'un hack, utilisez
-plutot le site [HaveIBeenPwned](https://haveibeenpwned.com/).
+**PS :** si vous cherchez à savoir si votre adresse mail a été corrompue lors d'un hack, utilisez
+plutôt le site [HaveIBeenPwned](https://haveibeenpwned.com/).
 
 **PS2 :** pour trouver les webcams et caméras, je vous conseille [Shodan](https://www.shodan.io/search?query=webcam).
