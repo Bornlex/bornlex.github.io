@@ -3,6 +3,7 @@
 # Plugins
 plugins:
     - jekyll-paginate
+    - jekyll-seo-tag
 
 # Permalinks
 permalink:        pretty
