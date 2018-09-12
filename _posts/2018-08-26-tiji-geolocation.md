@@ -4,7 +4,7 @@ title: "Géolocalisation 1 : Tiji"
 ---
 
 <div class="message">
-     Ceci est la première vidéo de la série à propos de la Géolocalisation de vidéo.
+     Ceci est la première partie de la série à propos de la Géolocalisation de vidéo.
 </div>
 
 ## Contexte
@@ -18,7 +18,7 @@ La vidéo Youtube : <a href="https://www.youtube.com/watch?v=fxfmPTRNmlA">https:
 
 La vidéo dure un peu moins de 5 minutes et une grande partie se déroule dans le désert, sans aucun indice
 notable permettant de vérifier sa véracité, ni à quel endroit précis elle a été tournée.
-Cela dit, les dernières secondes nous montrent un char d'assaut avancant sur une route de la ville et un bâtiment
+Cela dit, les dernières secondes nous montrent un char d'assaut avançant sur une route de la ville et un bâtiment
 dont on pourrait se servir.
 
 Nous pouvons faire quelques observations intéressantes à partir de ces quelques instants.
@@ -32,24 +32,24 @@ Nous pouvons tirer 2 choses importantes de ces dernières secondes de vidéo.
 ![placeholder](/public/media/tiji/tank.png)
 
 Le tank en lui-même n'offre aucune information, si ce n'est que les rebelles ont des tanks...
-Il pourrait servir à une agence de renseignement à savoir d'où proviennent les tanks, ont-ils été
+Il pourrait servir à une agence de renseignement à savoir d'où proviennent les tanks, s'ils ont été
 offerts par une armée etrangère, quel genre d'armement peuvent-ils embarquer etc.
 
-Pour savoir où se trouve la vidéo, il ne nous sert pas à grand chose.
+Pour savoir où se déroule la vidéo, il ne nous sert pas à grand chose.
 
-On peut par contre utiliser la route sur laquelle se trouve roule. On observe que la route est divisée
+On peut par contre utiliser la route sur laquelle se trouve le char. On observe que la route est divisée
 en deux parties par une ligne centrale. La route est large et chaque côté de la route peut accueillir
 deux vehicules (peut-etre pas des tanks...) côte à côte.
 
-C'est un bon point de depart.
+C'est un bon point de départ.
 
-Servons-nous de ca pour commencer les recherches, et préciser un peu la localisation de notre caméraman.
+Servons-nous de ça pour commencer les recherches, et préciser un peu la localisation de notre caméraman.
 
 Notre meilleur ami est <a href="maps.google.com">Google Maps</a>. <a href="http://wikimapia.org">Wikimapia</a> est parfois meilleur parce qu'il utilise plusieurs
 sources de données lorsque l'une est de mauvaise qualité. Mais il nous faudra rentrer le nom de
 la ville en arabe, et je ne parle pas arabe... Google devrait suffire.
 
-Voilà où se trouve Tiji en Libye:
+Voilà où se trouve Tiji en Libye :
 <a href="https://www.google.com/maps/place/%D9%85%D8%B3%D8%AC%D8%AF+%D8%A7%D9%84%D8%B4%D9%87%D8%AF%D8%A7%D8%A1%D8%8C+Tiji,+Libye%E2%80%AD/@32.0147903,11.340545,6426m/data=!3m1!1e3!4m5!3m4!1s0x13ac57ef3db12033:0x97308c34c0333ee1!8m2!3d32.0101433!4d11.3564028
 ">https://www.google.com/maps/place/%D9%85%D8%B3%D8%AC%D8%AF+%D8%A7%D9%84%D8%B4%D9%87%D8%AF%D8%A7%D8%A1%D8%8C+Tiji,+Libye%E2%80%AD/@32.0147903,11.340545,6426m/data=!3m1!1e3!4m5!3m4!1s0x13ac57ef3db12033:0x97308c34c0333ee1!8m2!3d32.0101433!4d11.3564028
 </a>
@@ -57,7 +57,7 @@ Voilà où se trouve Tiji en Libye:
 Le lien est conséquent parce qu'il contient beaucoup d'informations de localisation.
 
 Comme nous l'avons dit, la route de la vidéo est une grande route, suffisamment large pour que plusieurs vehicules puissent
-y rouler en même temps. Par chance, Tiji n'est pas une tres grande ville, on ne devrait pas chercher trop longtemps.
+y rouler en même temps. Par chance, Tiji n'est pas une très grande ville, on ne devrait pas chercher trop longtemps.
 
 Une grande route sépare la ville en deux. Jetons-y un oeil.
 
@@ -74,7 +74,7 @@ On se rapproche, continuons...
 
 À la fin de la vidéo, le caméraman montre cette mosquée. Elle semble se trouver le long de la route que nous avons identifiée à l'instant.
 
-Il ne nous reste qu'à parcourir la route à l'aide de Google Maps jusqu'à ce qu'elle nous mene à un bâtiment similaire.
+Il ne nous reste qu'à parcourir la route à l'aide de Google Maps jusqu'à ce qu'elle nous mène à un bâtiment similaire.
 
 Pour nous aider, on peut remarquer une coupole au dessus de la mosquée et un minaret légèrement à l'extérieur du bâtiment,
 du côté de la route.
