@@ -3,12 +3,17 @@ layout: page
 title: A propos
 ---
 
-## Bienvenue
+## Education & vie professionnelle
 
-Bienvenue sur mon blog ! J'expose article par article des outils, des techniques que j'ai découvertes ou développées
-au fur et à mesure de mes recherches dans ce domaine particulier de l'OpenSource Intelligence.
+- Forex structuring - SGCIB (Societe Generale Corporate and Investment Banking), Londres (6 mois)
+- Front Office developer - SGCIB (Societe Generale Corporate and Investment Banking), Londres (1 an)
+- EPITA (Ecole pour l'Informatique et les Techniques Avancées) - Spé SCIA (Sciences Cognitives et Intelligence Artificielle), Paris
+- Classes préparatoires MathSup/Spé, Livet, Nantes
 
-## FIXME
+## Réalisations
 
-La NSA a annoncé que l'OSINT représentait plus de 40% de l'information finale qu'elle utilisait alors que le budget
-qu'elle lui alloue n'est que de quelques pourcents...
+- Un interpéteur pour le langage <a href="https://fr.wikipedia.org/wiki/Whitespace">Whitespace</a> : <a href="https://github.com/Bornlex/Whitespace-interpreter">https://github.com/Bornlex/Whitespace-interpreter</a>
+
+## Conférences
+
+- 4 octobre 2018 - Infeeny, 5 rue d'Uzès, Paris
