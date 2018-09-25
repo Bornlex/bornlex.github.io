@@ -161,4 +161,4 @@ Bien entendu, pour des recherches encore plus poussées, nous pouvons combiner l
 
 Deux applications sont detaillées dans d'autres posts :
 - une application positive, vérifier les CV des candidats aux entretients d'embauche : [Background checking](/2018/09/02/background-checking/)
-- une application moins positive, chercher les fichiers qui ne devraient pas etre indexés par Google et qui peuvent contenir des informations confidentielles (normalement) : [Google Dorking](/2018/09/03/google-dorking/)
+- une application moins positive, chercher les fichiers qui ne devraient pas etre indexés par Google et qui peuvent contenir des informations confidentielles : [Google Dorking](/2018/09/03/google-dorking/)
