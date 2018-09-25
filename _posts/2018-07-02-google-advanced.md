@@ -45,7 +45,7 @@ retournera les pages contenant le mot 'steve' **et** le mot 'jobs' obligatoireme
 
 ### OR
 
-x OR y ('ou') renverra les pages qui contiennent x **ou** y, **ou les deux**. Il est aussi possible d'utiliser le 'pipe' ('|') à la place du mot OR.
+x OR y ('ou') renverra les pages qui contiennent x **ou** y, **ou les deux**. Il est aussi possible d'utiliser le 'pipe' ('\|') à la place du mot OR.
 
 > apple OR microsoft
 
