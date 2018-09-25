@@ -15,7 +15,7 @@ title: A propos
 Les contributions, même les plus légères, sont toujours les bienvenues !
 
 - Un interpéteur pour le langage <a href="https://fr.wikipedia.org/wiki/Whitespace">Whitespace</a> : <a href="https://github.com/Bornlex/Whitespace-interpreter">https://github.com/Bornlex/Whitespace-interpreter</a>
-- Un outil de background checking : <a href="https://github.com/Bornlex/BackgroundChecker">https://github.com/Bornlex/BackgroundChecker</a>
+- Un outil d'OSINT pour le background checking : <a href="https://github.com/Bornlex/BackgroundChecker">https://github.com/Bornlex/BackgroundChecker</a>
 
 ## Conférences
 
