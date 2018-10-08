@@ -21,3 +21,8 @@ Les contributions, même les plus légères, sont toujours les bienvenues !
 
 - 16 octobre 2018 - ADELI, Café de la Mairie, 51 rue de Bretagne, Paris
 - 4 octobre 2018 - Infeeny, 65 rue Ordener, Paris
+
+## Contact
+
+Pour toute remarque à propos du site, ou pour me poser une question, voici mon adresse mail : **julienseveno@tutanota.com**.
+N'hésitez pas à me contacter, je répondrai avec plaisir !
