@@ -42,4 +42,9 @@ Les étudiants en école de commerce sont difficiles à trouver pour plusieurs r
 Cela dit, quelques petites techniques peuvent vous aider.
 
 Etant souvent privées, les écoles fonctionnent recourent parfois aux dons. Et la plupart du temps, les listes de donnateurs (classés par taille de don) sont publiques.
-Elles ne représentent évidemment pas tous les étudiants (loin de là évidemment), et des non-étudiants peuvent donner à une école s'ils le souhaitent, mais les petits dons sont majoritairement réalisés par d'anciens élèves de l'école. Trouver le nom du candidat dans la liste des dons de l'école qu'il affiche sur son CV est un signe qu'il dit probablement la vérité.
+Elles ne représentent évidemment pas tous les étudiants (loin de là évidemment), et des non-étudiants peuvent donner à une école s'ils le souhaitent, mais les petits dons sont majoritairement réalisés par d'anciens élèves de l'école. Trouver le nom du candidat dans la liste des dons de l'école qu'il affiche sur son CV est un signe qu'il a probablement passé quelques années dans l'école.
+
+Une bonne manière de rechercher les donateurs est de simplement effectuer une recherche Google avec le nom de l'étudiant et le nom de l'école.
+
+Cela dit, quelques écoles publient sur des sites Internet dédiés. En voici quelques uns (je vais mettre la liste à jour au fur et à mesure que j'en trouverai) :
+- **ESSEC** : fondation.essec.edu (site:fondation.essec.edu nom_élève)
