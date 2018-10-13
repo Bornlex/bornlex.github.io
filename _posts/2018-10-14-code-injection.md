@@ -212,7 +212,7 @@ Maintenant que nous avons établi le contexte, passons à l'exploitation. Pour u
 > call open("injection.o", 2)
 
 Puis :
-> call mmap(0, 1088, 1|2|4, 1, 3, 0)
+> call mmap(0, 1088, 1\|2\|4, 1, 3, 0)
 
 A présent, notre fichier injection.o est contenu dans la mémoire du processus :
 ```
@@ -302,7 +302,7 @@ Où :
 
 Nous n'avons plus qu'à continuer l'exécution du programme avec l'instruction **continue** de GDB...
 
-La date s'affiche !
+La date s'affiche ! C'est bien le comportement attendu de notre executable.
 
 ## Appendice
 
