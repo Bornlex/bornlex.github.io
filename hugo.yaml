@@ -10,10 +10,6 @@ buildFuture: false
 buildExpired: false
 
 params:
-  env: production
-  description: 
-
-params:
   env: production # to enable google analytics, opengraph, twitter-cards and schema.
   title: Julien's blog
   description: "Julien Seveno's blog about anything."
