@@ -2,7 +2,7 @@ baseURL: https://bornlex.github.io/
 languageCode: en-us
 title: Julien's blog
 theme: "PaperMod"
-publishDir: "docs"
+
 
 enableRobotsTXT: true
 buildDrafts: false
@@ -15,7 +15,6 @@ params:
   description: "Julien Seveno's blog about anything."
   keywords: [Blog, Portfolio, "Machine learning", AI]
   author: Julien Seveno
-  # author: ["Julien Seveno"]
   images: ["<link or path of image for opengraph, twitter-cards>"]
   DateFormat: "January 2, 2006"
   defaultTheme: light # dark, light
