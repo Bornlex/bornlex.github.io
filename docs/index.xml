@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Julien&#39;s blog</title>
+    <link>https://bornlex.github.io/</link>
+    <description>Recent content on Julien&#39;s blog</description>
+    <image>
+      <title>Julien&#39;s blog</title>
+      <url>https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 24 Jan 2024 14:03:13 +0100</lastBuildDate>
+    <atom:link href="https://bornlex.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Code injection</title>
+      <link>https://bornlex.github.io/posts/2018-10-14-code-injection/</link>
+      <pubDate>Wed, 24 Jan 2024 14:03:13 +0100</pubDate>
+      <guid>https://bornlex.github.io/posts/2018-10-14-code-injection/</guid>
+      <description>Introduction J&amp;rsquo;ai découvert l&amp;rsquo;OpenSource Intelligence en m&amp;rsquo;intéressant de près à la sécurité informatique.
+Lorsque des pirates préparent une attaque sur un système d&amp;rsquo;information (SI), ils ont besoin d&amp;rsquo;avoir autant d&amp;rsquo;informations que possible afin de mener à bien les opérations. En effet, les systèmes d&amp;rsquo;exploitation (OS), les serveurs utilisés, les versions de ces serveurs et de ces OS conditionnent énormément la manière dont va se dérouler l&amp;rsquo;attaque.
+Il est donc primordial de disposer d&amp;rsquo;un arsenal de techniques qui vont nous permettre de préciser un peu le contexte de l&amp;rsquo;attaque.</description>
+    </item>
+  </channel>
+</rss>
