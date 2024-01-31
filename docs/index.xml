@@ -11,8 +11,18 @@
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 24 Jan 2024 14:03:13 +0100</lastBuildDate>
+    <lastBuildDate>Wed, 31 Jan 2024 15:21:00 +0100</lastBuildDate>
     <atom:link href="https://bornlex.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ternary Computing</title>
+      <link>https://bornlex.github.io/posts/ternary-computing/</link>
+      <pubDate>Wed, 31 Jan 2024 15:21:00 +0100</pubDate>
+      <guid>https://bornlex.github.io/posts/ternary-computing/</guid>
+      <description>Introduction First, let us define “computers” as any machine that can compute.
+At first, analog machines were used. For example, electronic amplifiers can be used to perform integration, differentiation, root extraction, compute logarithm.
+Analog computers played a significant role in history, but they have the disadvantage that noise can perturb the computation and lead to errors.
+Digital computers later replaced analog ones and became mainstream. Any voltage within a range can be interpreted as a specific value.</description>
+    </item>
     <item>
       <title>Code injection</title>
       <link>https://bornlex.github.io/posts/2018-10-14-code-injection/</link>

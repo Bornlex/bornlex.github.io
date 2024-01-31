@@ -1,7 +1,7 @@
 +++
 title = 'Ternary Computing'
 date = 2024-01-31T15:21:00+01:00
-draft = true
+draft = false
 +++
 
 # Introduction
