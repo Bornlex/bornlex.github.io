@@ -4,6 +4,8 @@ date = 2024-01-31T15:21:00+01:00
 draft = false
 +++
 
+![Ternary](/ternary/ternary.jpeg)
+
 # Introduction
 
 First, let us define “computers” as any machine that can compute.
