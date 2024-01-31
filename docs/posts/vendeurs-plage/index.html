@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Le problème des vendeurs de plage | Julien&#39;s blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="Pourquoi est-ce que ni l’extrême droite, ni l’extrême gauche ne gagne jamais l’élection présidentielle ?
+On pourrait penser que la courbe du nombre de votants en fonction du spectre politique ressemble à une courbe gaussienne centrée sur le milieu de l’échiquier politique, avec quelques variations. Il y a plus de gens modérés que d’extrêmes.
+Mais si l’on regarde les intentions de vote pour chaque candidat ou les résultats du premier tour de l’élection présidentielle, on réalise rapidement que cette réponse n’est pas satisfaisante.">
+<meta name="author" content="Julien Seveno">
+<link rel="canonical" href="https://bornlex.github.io/posts/vendeurs-plage/">
+<meta name="google-site-verification" content="XYZabc">
+<meta name="yandex-verification" content="XYZabc">
+<meta name="msvalidate.01" content="XYZabc">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b609c58d5c11bb90b1a54e04005d74ad1ddf22165eb79f5533967e57df9c3b50.css" integrity="sha256-tgnFjVwRu5CxpU4EAF10rR3fIhZet59VM5Z&#43;V9&#43;cO1A=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="icon" type="image/png" sizes="16x16" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="icon" type="image/png" sizes="32x32" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="apple-touch-icon" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="mask-icon" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous" />
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false}
+        ]
+    });
+});
+</script>
+<meta property="og:title" content="Le problème des vendeurs de plage" />
+<meta property="og:description" content="Pourquoi est-ce que ni l’extrême droite, ni l’extrême gauche ne gagne jamais l’élection présidentielle ?
+On pourrait penser que la courbe du nombre de votants en fonction du spectre politique ressemble à une courbe gaussienne centrée sur le milieu de l’échiquier politique, avec quelques variations. Il y a plus de gens modérés que d’extrêmes.
+Mais si l’on regarde les intentions de vote pour chaque candidat ou les résultats du premier tour de l’élection présidentielle, on réalise rapidement que cette réponse n’est pas satisfaisante." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bornlex.github.io/posts/vendeurs-plage/" /><meta property="og:image" content="https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-01-31T17:04:23+01:00" />
+<meta property="article:modified_time" content="2024-01-31T17:04:23+01:00" /><meta property="og:site_name" content="Julien&#39;s blog" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/>
+
+<meta name="twitter:title" content="Le problème des vendeurs de plage"/>
+<meta name="twitter:description" content="Pourquoi est-ce que ni l’extrême droite, ni l’extrême gauche ne gagne jamais l’élection présidentielle ?
+On pourrait penser que la courbe du nombre de votants en fonction du spectre politique ressemble à une courbe gaussienne centrée sur le milieu de l’échiquier politique, avec quelques variations. Il y a plus de gens modérés que d’extrêmes.
+Mais si l’on regarde les intentions de vote pour chaque candidat ou les résultats du premier tour de l’élection présidentielle, on réalise rapidement que cette réponse n’est pas satisfaisante."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://bornlex.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Le problème des vendeurs de plage",
+      "item": "https://bornlex.github.io/posts/vendeurs-plage/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Le problème des vendeurs de plage",
+  "name": "Le problème des vendeurs de plage",
+  "description": "Pourquoi est-ce que ni l’extrême droite, ni l’extrême gauche ne gagne jamais l’élection présidentielle ?\nOn pourrait penser que la courbe du nombre de votants en fonction du spectre politique ressemble à une courbe gaussienne centrée sur le milieu de l’échiquier politique, avec quelques variations. Il y a plus de gens modérés que d’extrêmes.\nMais si l’on regarde les intentions de vote pour chaque candidat ou les résultats du premier tour de l’élection présidentielle, on réalise rapidement que cette réponse n’est pas satisfaisante.",
+  "keywords": [
+    
+  ],
+  "articleBody": "Pourquoi est-ce que ni l’extrême droite, ni l’extrême gauche ne gagne jamais l’élection présidentielle ?\nOn pourrait penser que la courbe du nombre de votants en fonction du spectre politique ressemble à une courbe gaussienne centrée sur le milieu de l’échiquier politique, avec quelques variations. Il y a plus de gens modérés que d’extrêmes.\nMais si l’on regarde les intentions de vote pour chaque candidat ou les résultats du premier tour de l’élection présidentielle, on réalise rapidement que cette réponse n’est pas satisfaisante.\nLe graphique des résultats donne plutôt l’impression d’une distribution uniforme pour 4 grands candidats (qui se partagent 85% des votants), et quelques résidus pour les autres.\nComment expliquer alors que la victoire n’ait jamais été donnée à Jean-Luc Mélenchon ou Marine Le Pen, qui sont des candidats de longue date, et dont les scores sont élevés depuis plusieurs années déjà ?\nJe suggère une piste qui mérite d’être explorée pour tenter d’expliquer cet apparent paradoxe.\nPetite précision d’abord Avant d’introduire ma réflexion, je souhaite cependant prendre les devants d’une erreur qui pourrait être faite en voyant le graphique :\nObtenir 15% des voix n’est pas équivalent à avoir 15% de chance de gagner l’élection.\nSi l’on s’intéresse au 2ème tour de l’élection, les résultats serrés ne sont pas rares. En observant un score de 60%-40%, on serait tentés de penser que l’élection s’est jouée au coude à coude. Mais si l’on réfléchit bien à la signification de ces chiffres, il en est tout autre. Si un candidat obtient 600 voix sur 1000 et l’autre 400, le premier candidat a en fait 50% de voix de plus que son concurrent.\nAutrement dit, il aurait fallu que le 2ème déploie 50% de ressources en plus pour rattraper le premier. Les chances de victoires étaient donc loin de 60% et 40%. En réalité, le 2ème avait très peu de chance de gagner, certainement moins d’une chance sur 10, ou 20.\nOn pourrait imaginer une courbe des probabilités de victoire (si tant est qu’on puisse la construire) qui soit légèrement différente des résultats, et qui accentue les différences entre les candidats. Comme une sorte de softmax.\nRéflexion J’aimerais présenter maintenant la réflexion.\nIl existe en statistiques économiques un problème qui s’appelle le problème des vendeurs de plage. Le problème met en scène deux vendeurs de glace qui se partagent une plage. Ils doivent choisir un emplacement pour leur stand afin, bien entendu, d’avoir le plus de clients possibles.\nLorsqu’un touriste souhaite acheter une glace, il se dirige naturellement vers le vendeur le plus proche de sa position. De la même manière, un électeur vote pour le candidat qui se rapproche le plus de son identité politique.\nOn cherche donc à connaître la configuration des vendeurs sur la plage, où doivent-ils positionner leur stand, de sorte d’obtenir le maximum de clients.\nFormalisation Afin de réfléchir rigoureusement, nous allons maintenant formaliser la situation.\nOn note :\n$A$ : le vendeur le plus à gauche $B$ : le vendeur le plus à droite $x_A$ : la position en abscisse du vendeur A $x_B$ : la position en abscisse du vendeur B $m$ : la position de la ligne médiane (une ligne imaginaire qui se trouve à égale distance des deux vendeurs) $L$ : la taille de la plage Voici ces notations représentées sur un schéma :\nIci A est à gauche, et B à droite. Si jamais A “dépassait” B en se décalant à droite, alors on renommerait A en B et B en A de sorte que la situation soit exactement identique (par symétrie).\nOn suppose donc : $x_A \\leq x_B$.\nLa ligne médiane se trouve à équidistance de A et de B. On peut donc donner la formule de m :\n$$ m = \\frac{x_B - x_A}{2} + x_A $$\nOn veut maintenant connaître les valeurs de xA et de xB de sorte que A et B maximisent respectivement leur nombre de clients.\nPour cela, nous devons mesurer le nombre de touristes qui vont se rendre au stand de chacun des vendeurs. On note :\n$c_A$ : le nombre de clients de A\n$c_B$ : le nombre de clients de B\nPuisque l’on sait que les touristes iront au stand le plus proche, on sait que :\ntous les touristes qui se trouvent à gauche de A iront vers A\ntous les touristes qui se trouvent à droite de B iront vers B\nles touristes situés entre $x_A$ et m iront vers A\nles touristes situés entre m et $x_B$ iront vers B\nVoici la polarisation des touristes :\nOn observe que A obtient en fait tous les touristes de la limite gauche de la plage jusqu’à la ligne médiane, et que B obtient les autres, ceux entre la ligne médiane et la limite droite de la plage.\nEn équation, cela donne très simplement :\n$$ \\left\\{\\begin{matrix} c_A = m \u0026 \\\\ c_B = L - m = L - c_A \u0026 \\\\ \\end{matrix}\\right. $$\nOn observe bien l’antagonisme à la deuxième ligne : $c_B = L - c_A$. On constate que L est le nombre de clients maximal, et que B récupère ceux que ne prend pas A.\nRésolution Il nous faut maintenant nous poser la question de la stratégie des deux vendeurs.\nElle est en réalité très simple.\nVoyons la situation du point de vue de B :\nÉtape 1 : B constate que A est plus à gauche que le centre de la plage Étape 2 : B se rapproche de A, et se met très légèrement plus à droite de lui Étape 3 : B récupère donc tous les clients à sa droite, ce qui correspond à plus de la moitié des clients Étape 4 : A a donc intérêt à effectuer la même opération que B, et se place légèrement plus à droite que B, c’est maintenant lui qui obtient la plus grosse part de clients Étape 5 : B recommence le raisonnement initial Les deux vendeurs vont donc se déplacer petit à petit jusqu’à atteindre le centre de la plage, où se positionner légèrement à droite de son concurrent n’aura plus d’intérêt.\nLa situation est symétrique, si B est trop à droite, A viendra se mettre juste à sa gauche, etc.\nFinalement, les deux vendeurs se trouveront au milieu, l’un à côté de l’autre et bénéficieront chacun d’un côté de la plage :\n$x_A = x_B$ $x_B = L - x_A$ $x_B + x_A = L$ $2 x_B = L$ $x_B = x_A = \\frac{L}{2}$ Métaphore Ce problème et sa résolution, sont en réalité une métaphore du véritable sujet qui nous occupe, la politique.\nUne fois que le premier tour des élections présidentielles est terminé, il ne reste plus que deux candidats. Et à ce moment-là, la situation se rapproche de celle que nous venons d’évoquer.\nLors des dernières élections par exemple, en 2017, le duel du deuxième tour s’est joué entre Emmanuel Macron (LREM) et Marine Le Pen (FN).\nMarine Le Pen étant considérée plus à droite qu’Emmanuel Macron, les électeurs de la France Insoumise ou du Parti Socialiste se reportent plutôt vers Emmanuel Macron, plus proche (ou plutôt moins loin) de leurs convictions. C’est le côté gauche de la plage. Les électeurs plus à droite de Marine Le Pen iront voter pour elle, et ceux entre Marine Le Pen et Emmanuel Macron, le parti Les Républicains grossièrement, se scinderont en deux groupes. Un groupe ira voter pour Emmanuel Macron, et l’autre pour Marine Le Pen, suivant leurs sensibilités. C’est la partie qui se trouvait entre les deux vendeurs, dans la situation initiale.\nVoici à quoi ressemble notre plage politique au 2ème tour :\nEmmanuel Macron gagne parce qu’il est considéré plus au centre. Le centre étant l’optimum de la stratégie des vendeurs de plage.\nVote stratégique Ce constat est le fondement de ce qui s’appelle le vote stratégique, dont on entend parfois parler dans les médias.\nL’idée est, pour n’importe quel candidat du centre, ou proche du centre, d’augmenter autant que faire se peut le score du Rassemblement National (la stratégie pourrait fonctionner aussi la France Insoumise), de sorte de se retrouver face à lui au second tour. De cette manière, étant plus au centre, le candidat gagne l’élection.\nLimites théoriques J’aimerais terminer en abordant les limites théoriques et les différences entre l’exemple des vendeurs et le sujet politique.\nDéplacement sur la plage Autant un vendeur peut facilement se déplacer sur la plage, autant un politicien est affilié à un groupe, et ne voyage pas dans le paysage politique tout à fait librement, ce qui constitue une différence importante avec notre exemple.\nDéplacement de la plage Dans la vie politique, c’est plutôt la plage, autrement dit le contexte politique, qui se déplace.\nUn homme politique peut être déplacé par le contexte. Le centre du spectre de 2021 est différent du centre du spectre de 1910. Un même discours peut être considéré rétrospectivement comme plus à droite ou plus à gauche qu’il ne l’était à son époque, certaines choses inacceptables deviennent acceptables et inversement.\nPlusieurs plages Nous pouvons même aller plus loin dans la métaphore. En politique, il est impossible de représenter tous les candidats le long d’une droite, un espace à une seule dimension. Certains candidats sont plus libéraux, donc plus à droite économiquement, mais peuvent être moins conservateurs socialement, donc plus à gauche.\nOn pourrait donc imaginer une droite par thème politique :\nune droite pour l’économie une droite pour l’immigration une droite pour l’aspect social une droite pour la question européenne … Chacun d’entre nous est sensible différemment aux sujets qui occupent la vie politique. Pour un individu donné, toutes les plages ne se valent pas.\nCambridge Analytica Le déplacement du contexte est en fait le point important. C’est ce qui fonde les tactiques politiciennes.\nLors de la campagne de Donald Trump contre Hillary Clinton, l’entreprise Cambridge Analytica a utilisé les informations des profils Facebook de 50 millions d’américains de sorte de leur présenter des informations qui les touchaient le plus.\nIls avaient bien compris que les électeurs qu’il fallait cibler étaient les indécis (il est beaucoup trop difficile de convaincre un électeur de Benoît Hamon de voter pour François Fillon, par exemple). En revanche, les électeurs qui se trouvaient entre Clinton et Trump étaient susceptibles de changer d’avis.\nIls ont donc montré des publicités et des faits d’actualité aux indécis de sorte de présenter le candidat Trump comme la réponse la plus adaptée au contexte politique. Le discours de Donald Trump n’a pas changé, mais le contexte oui. C’est la plage qui s’est déplacée.\nTemps de marche On peut supposer sans prendre de risque que certains clients allongés aux extrémités de la plage pourraient renoncer à leur glace s’il leur fallait marcher top longtemps. Similairement, un électeur peut ne pas voter, ou voter blanc, si les candidats lui semblent trop lointain de sa conception de la politique.\nLimites Évidemment, comme n’importe quelle métaphore, l’exemple des vendeurs de plage a ses limites. Les candidats sont choisis selon de nombreux critères, notamment de personnalité, de cohérence…\nDe plus, dans le cas des vendeurs, le vote dit “barrage” n’existe pas. Personne ne se rend chez Quick pour désavantager McDonald.\nMais elle permet d’approcher de manière intéressante un point de société.\nOrigine des vendeurs de plage Le problème des vendeurs de glace est un problème de théorie des jeux, qui modélise de manière simplifiée la Loi de Hotelling, en économie.\nCette loi stipule que, dans certains marchés économiques, la concurrence entraîne une diminution de la différenciation des produits. Dans ces cas, une concertation des acteurs entre eux pourrait permettre de résoudre le problème, ce qui contredit le principe de la main invisible.\nEdit A la fin de l’écriture de l’article, je suis tombé par hasard sur un théorème qui s’appelle le théorème de l’électeur médian, et qui stipule qu’en politique, l’option centriste bat la gauche à l’aide de la droite, et bat la droite à l’aide de la gauche.\nAutrement dit, l’option la plus au centre, si elle se retrouve au second tour contre une seule autre option, gagne l’élection.\nC’est tout à fait le sens de ma réflexion. Je cite donc ce théorème par honnêteté intellectuelle.\n",
+  "wordCount" : "2022",
+  "inLanguage": "en",
+  "datePublished": "2024-01-31T17:04:23+01:00",
+  "dateModified": "2024-01-31T17:04:23+01:00",
+  "author":{
+    "@type": "Person",
+    "name": "Julien Seveno"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://bornlex.github.io/posts/vendeurs-plage/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Julien's blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://bornlex.github.io/%3Clink%20/%20abs%20url%3E"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://bornlex.github.io/" accesskey="h" title="Home (Alt + H)">
+                <img src="https://bornlex.github.io/apple-touch-icon.png" alt="" aria-label="logo"
+                    height="35">Home</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://bornlex.github.io/" title="Posts">
+                    <span>Posts</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://bornlex.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://bornlex.github.io/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      Le problème des vendeurs de plage
+    </h1>
+    <div class="post-meta"><span title='2024-01-31 17:04:23 +0100 CET'>January 31, 2024</span>&nbsp;·&nbsp;10 min&nbsp;·&nbsp;2022 words&nbsp;·&nbsp;Julien Seveno&nbsp;|&nbsp;<a href="https://github.com/%3cpath_to_repo%3e/content/posts/vendeurs-plage.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+  </header> 
+  <div class="post-content"><p>Pourquoi est-ce que ni l’extrême droite, ni l’extrême gauche ne gagne jamais l’élection présidentielle ?</p>
+<p>On pourrait penser que la courbe du nombre de votants en fonction du spectre politique ressemble à une courbe gaussienne centrée sur le milieu de l’échiquier politique, avec quelques variations. Il y a plus de gens modérés que d’extrêmes.</p>
+<p><img loading="lazy" src="/plage/gaussian.webp" alt="Loi normale"  />
+</p>
+<p>Mais si l’on regarde les intentions de vote pour chaque candidat ou les résultats du premier tour de l’élection présidentielle, on réalise rapidement que cette réponse n’est pas satisfaisante.</p>
+<p><img loading="lazy" src="/plage/scores.webp" alt="Intentions de vote"  />
+</p>
+<p>Le graphique des résultats donne plutôt l’impression d’une distribution uniforme pour 4 grands candidats (qui se partagent 85% des votants), et quelques résidus pour les autres.</p>
+<p>Comment expliquer alors que la victoire n’ait jamais été donnée à Jean-Luc Mélenchon ou Marine Le Pen, qui sont des candidats de longue date, et dont les scores sont élevés depuis plusieurs années déjà ?</p>
+<p>Je suggère une piste qui mérite d’être explorée pour tenter d’expliquer cet apparent paradoxe.</p>
+<h2 id="petite-précision-dabord">Petite précision d&rsquo;abord<a hidden class="anchor" aria-hidden="true" href="#petite-précision-dabord">#</a></h2>
+<p>Avant d’introduire ma réflexion, je souhaite cependant prendre les devants d’une erreur qui pourrait être faite en voyant le graphique :</p>
+<p>Obtenir 15% des voix n’est pas équivalent à avoir 15% de chance de gagner l’élection.</p>
+<p>Si l’on s’intéresse au 2ème tour de l’élection, les résultats serrés ne sont pas rares. En observant un score de 60%-40%, on serait tentés de penser que l’élection s’est jouée au coude à coude.
+Mais si l’on réfléchit bien à la signification de ces chiffres, il en est tout autre. Si un candidat obtient 600 voix sur 1000 et l’autre 400, le premier candidat a en fait 50% de voix de plus que son concurrent.</p>
+<p>Autrement dit, il aurait fallu que le 2ème déploie 50% de ressources en plus pour rattraper le premier. Les chances de victoires étaient donc loin de 60% et 40%. En réalité, le 2ème avait très peu de chance de gagner, certainement moins d’une chance sur 10, ou 20.</p>
+<p>On pourrait imaginer une courbe des probabilités de victoire (si tant est qu’on puisse la construire) qui soit légèrement différente des résultats, et qui accentue les différences entre les candidats. Comme une sorte de softmax.</p>
+<h1 id="réflexion">Réflexion<a hidden class="anchor" aria-hidden="true" href="#réflexion">#</a></h1>
+<p>J’aimerais présenter maintenant la réflexion.</p>
+<p>Il existe en statistiques économiques un problème qui s’appelle le problème des vendeurs de plage. Le problème met en scène deux vendeurs de glace qui se partagent une plage. Ils doivent choisir un emplacement pour leur stand afin, bien entendu, d’avoir le plus de clients possibles.</p>
+<p>Lorsqu’un touriste souhaite acheter une glace, il se dirige naturellement vers le vendeur le plus proche de sa position.
+De la même manière, un électeur vote pour le candidat qui se rapproche le plus de son identité politique.</p>
+<p>On cherche donc à connaître la configuration des vendeurs sur la plage, où doivent-ils positionner leur stand, de sorte d’obtenir le maximum de clients.</p>
+<h2 id="formalisation">Formalisation<a hidden class="anchor" aria-hidden="true" href="#formalisation">#</a></h2>
+<p>Afin de réfléchir rigoureusement, nous allons maintenant formaliser la situation.</p>
+<p>On note :</p>
+<ul>
+<li>$A$ : le vendeur le plus à gauche</li>
+<li>$B$ : le vendeur le plus à droite</li>
+<li>$x_A$ : la position en abscisse du vendeur A</li>
+<li>$x_B$ : la position en abscisse du vendeur B</li>
+<li>$m$ : la position de la ligne médiane (une ligne imaginaire qui se trouve à égale distance des deux vendeurs)</li>
+<li>$L$ : la taille de la plage</li>
+</ul>
+<p>Voici ces notations représentées sur un schéma :</p>
+<p><img loading="lazy" src="/plage/beach.webp" alt="Plage"  />
+</p>
+<p>Ici A est à gauche, et B à droite. Si jamais A “dépassait” B en se décalant à droite, alors on renommerait A en B et B en A de sorte que la situation soit exactement identique (par symétrie).</p>
+<p>On suppose donc : $x_A \leq x_B$.</p>
+<p>La ligne médiane se trouve à équidistance de A et de B. On peut donc donner la formule de m :</p>
+<p>$$
+m = \frac{x_B - x_A}{2} + x_A
+$$</p>
+<p>On veut maintenant connaître les valeurs de xA et de xB de sorte que A et B maximisent respectivement leur nombre de clients.</p>
+<p>Pour cela, nous devons mesurer le nombre de touristes qui vont se rendre au stand de chacun des vendeurs. On note :</p>
+<ul>
+<li>
+<p>$c_A$ : le nombre de clients de A</p>
+</li>
+<li>
+<p>$c_B$ : le nombre de clients de B</p>
+</li>
+<li>
+<p>Puisque l’on sait que les touristes iront au stand le plus proche, on sait que :</p>
+</li>
+<li>
+<p>tous les touristes qui se trouvent à gauche de A iront vers A</p>
+</li>
+<li>
+<p>tous les touristes qui se trouvent à droite de B iront vers B</p>
+</li>
+<li>
+<p>les touristes situés entre $x_A$ et m iront vers A</p>
+</li>
+<li>
+<p>les touristes situés entre m et $x_B$ iront vers B</p>
+</li>
+</ul>
+<p>Voici la polarisation des touristes :</p>
+<p><img loading="lazy" src="/plage/beach2.webp" alt="Polarisation des touristes"  />
+</p>
+<p>On observe que A obtient en fait tous les touristes de la limite gauche de la plage jusqu’à la ligne médiane, et que B obtient les autres, ceux entre la ligne médiane et la limite droite de la plage.</p>
+<p>En équation, cela donne très simplement :</p>
+<p>$$
+\left\{\begin{matrix}
+c_A = m &amp;  \\
+c_B = L - m = L - c_A &amp;  \\
+\end{matrix}\right.
+$$</p>
+<p>On observe bien l’antagonisme à la deuxième ligne : $c_B = L - c_A$. On constate que L est le nombre de clients maximal, et que B récupère ceux que ne prend pas A.</p>
+<h2 id="résolution">Résolution<a hidden class="anchor" aria-hidden="true" href="#résolution">#</a></h2>
+<p>Il nous faut maintenant nous poser la question de la stratégie des deux vendeurs.</p>
+<p>Elle est en réalité très simple.</p>
+<p>Voyons la situation du point de vue de B :</p>
+<p><img loading="lazy" src="/plage/beach3.webp" alt=""  />
+</p>
+<ul>
+<li>Étape 1 : B constate que A est plus à gauche que le centre de la plage</li>
+<li>Étape 2 : B se rapproche de A, et se met très légèrement plus à droite de lui</li>
+<li>Étape 3 : B récupère donc tous les clients à sa droite, ce qui correspond à plus de la moitié des clients</li>
+<li>Étape 4 : A a donc intérêt à effectuer la même opération que B, et se place légèrement plus à droite que B, c’est maintenant lui qui obtient la plus grosse part de clients</li>
+<li>Étape 5 : B recommence le raisonnement initial</li>
+</ul>
+<p>Les deux vendeurs vont donc se déplacer petit à petit jusqu’à atteindre le centre de la plage, où se positionner légèrement à droite de son concurrent n’aura plus d’intérêt.</p>
+<p>La situation est symétrique, si B est trop à droite, A viendra se mettre juste à sa gauche, etc.</p>
+<p>Finalement, les deux vendeurs se trouveront au milieu, l’un à côté de l’autre et bénéficieront chacun d’un côté de la plage :</p>
+<ul>
+<li>$x_A = x_B$</li>
+<li>$x_B = L - x_A$</li>
+<li>$x_B + x_A = L$</li>
+<li>$2 x_B = L$</li>
+<li>$x_B = x_A = \frac{L}{2}$</li>
+</ul>
+<h1 id="métaphore">Métaphore<a hidden class="anchor" aria-hidden="true" href="#métaphore">#</a></h1>
+<p>Ce problème et sa résolution, sont en réalité une métaphore du véritable sujet qui nous occupe, la politique.</p>
+<p>Une fois que le premier tour des élections présidentielles est terminé, il ne reste plus que deux candidats. Et à ce moment-là, la situation se rapproche de celle que nous venons d’évoquer.</p>
+<p>Lors des dernières élections par exemple, en 2017, le duel du deuxième tour s’est joué entre Emmanuel Macron (LREM) et Marine Le Pen (FN).</p>
+<p>Marine Le Pen étant considérée plus à droite qu’Emmanuel Macron, les électeurs de la France Insoumise ou du Parti Socialiste se reportent plutôt vers Emmanuel Macron, plus proche (ou plutôt moins loin) de leurs convictions. C’est le côté gauche de la plage.
+Les électeurs plus à droite de Marine Le Pen iront voter pour elle, et ceux entre Marine Le Pen et Emmanuel Macron, le parti Les Républicains grossièrement, se scinderont en deux groupes. Un groupe ira voter pour Emmanuel Macron, et l’autre pour Marine Le Pen, suivant leurs sensibilités. C’est la partie qui se trouvait entre les deux vendeurs, dans la situation initiale.</p>
+<p>Voici à quoi ressemble notre plage politique au 2ème tour :</p>
+<p><img loading="lazy" src="/plage/beach4.webp" alt="Elections"  />
+</p>
+<p>Emmanuel Macron gagne parce qu’il est considéré plus au centre. Le centre étant l’optimum de la stratégie des vendeurs de plage.</p>
+<h2 id="vote-stratégique">Vote stratégique<a hidden class="anchor" aria-hidden="true" href="#vote-stratégique">#</a></h2>
+<p>Ce constat est le fondement de ce qui s’appelle le vote stratégique, dont on entend parfois parler dans les médias.</p>
+<p>L’idée est, pour n’importe quel candidat du centre, ou proche du centre, d’augmenter autant que faire se peut le score du Rassemblement National (la stratégie pourrait fonctionner aussi la France Insoumise), de sorte de se retrouver face à lui au second tour. De cette manière, étant plus au centre, le candidat gagne l’élection.</p>
+<h1 id="limites-théoriques">Limites théoriques<a hidden class="anchor" aria-hidden="true" href="#limites-théoriques">#</a></h1>
+<p>J’aimerais terminer en abordant les limites théoriques et les différences entre l’exemple des vendeurs et le sujet politique.</p>
+<h2 id="déplacement-sur-la-plage">Déplacement sur la plage<a hidden class="anchor" aria-hidden="true" href="#déplacement-sur-la-plage">#</a></h2>
+<p>Autant un vendeur peut facilement se déplacer sur la plage, autant un politicien est affilié à un groupe, et ne voyage pas dans le paysage politique tout à fait librement, ce qui constitue une différence importante avec notre exemple.</p>
+<h2 id="déplacement-de-la-plage">Déplacement de la plage<a hidden class="anchor" aria-hidden="true" href="#déplacement-de-la-plage">#</a></h2>
+<p>Dans la vie politique, c’est plutôt la plage, autrement dit le contexte politique, qui se déplace.</p>
+<p>Un homme politique peut être déplacé par le contexte. Le centre du spectre de 2021 est différent du centre du spectre de 1910. Un même discours peut être considéré rétrospectivement comme plus à droite ou plus à gauche qu’il ne l’était à son époque, certaines choses inacceptables deviennent acceptables et inversement.</p>
+<h2 id="plusieurs-plages">Plusieurs plages<a hidden class="anchor" aria-hidden="true" href="#plusieurs-plages">#</a></h2>
+<p>Nous pouvons même aller plus loin dans la métaphore. En politique, il est impossible de représenter tous les candidats le long d’une droite, un espace à une seule dimension. Certains candidats sont plus libéraux, donc plus à droite économiquement, mais peuvent être moins conservateurs socialement, donc plus à gauche.</p>
+<p>On pourrait donc imaginer une droite par thème politique :</p>
+<ul>
+<li>une droite pour l’économie</li>
+<li>une droite pour l’immigration</li>
+<li>une droite pour l’aspect social</li>
+<li>une droite pour la question européenne</li>
+<li>&hellip;</li>
+</ul>
+<p>Chacun d’entre nous est sensible différemment aux sujets qui occupent la vie politique. <strong>Pour un individu donné, toutes les plages ne se valent pas</strong>.</p>
+<h2 id="cambridge-analytica">Cambridge Analytica<a hidden class="anchor" aria-hidden="true" href="#cambridge-analytica">#</a></h2>
+<p>Le déplacement du contexte est en fait le point important. C’est ce qui fonde les tactiques politiciennes.</p>
+<p>Lors de la campagne de Donald Trump contre Hillary Clinton, l’entreprise Cambridge Analytica a utilisé les informations des profils Facebook de 50 millions d’américains de sorte de leur présenter des informations qui les touchaient le plus.</p>
+<p>Ils avaient bien compris que les électeurs qu’il fallait cibler étaient les indécis (il est beaucoup trop difficile de convaincre un électeur de Benoît Hamon de voter pour François Fillon, par exemple).
+En revanche, les électeurs qui se trouvaient entre Clinton et Trump étaient susceptibles de changer d’avis.</p>
+<p>Ils ont donc montré des publicités et des faits d’actualité aux indécis de sorte de présenter le candidat Trump comme la réponse la plus adaptée au contexte politique. Le discours de Donald Trump n’a pas changé, mais le contexte oui. C’est la plage qui s’est déplacée.</p>
+<h2 id="temps-de-marche">Temps de marche<a hidden class="anchor" aria-hidden="true" href="#temps-de-marche">#</a></h2>
+<p>On peut supposer sans prendre de risque que certains clients allongés aux extrémités de la plage pourraient renoncer à leur glace s’il leur fallait marcher top longtemps.
+Similairement, un électeur peut ne pas voter, ou voter blanc, si les candidats lui semblent trop lointain de sa conception de la politique.</p>
+<h2 id="limites">Limites<a hidden class="anchor" aria-hidden="true" href="#limites">#</a></h2>
+<p>Évidemment, comme n’importe quelle métaphore, l’exemple des vendeurs de plage a ses limites. Les candidats sont choisis selon de nombreux critères, notamment de personnalité, de cohérence…</p>
+<p>De plus, dans le cas des vendeurs, le vote dit “barrage” n’existe pas. Personne ne se rend chez Quick pour désavantager McDonald.</p>
+<p>Mais elle permet d’approcher de manière intéressante un point de société.</p>
+<h1 id="origine-des-vendeurs-de-plage">Origine des vendeurs de plage<a hidden class="anchor" aria-hidden="true" href="#origine-des-vendeurs-de-plage">#</a></h1>
+<p>Le problème des vendeurs de glace est un problème de théorie des jeux, qui modélise de manière simplifiée la Loi de Hotelling, en économie.</p>
+<p>Cette loi stipule que, dans certains marchés économiques, la concurrence entraîne une diminution de la différenciation des produits. Dans ces cas, une concertation des acteurs entre eux pourrait permettre de résoudre le problème, ce qui contredit le principe de la main invisible.</p>
+<h1 id="edit">Edit<a hidden class="anchor" aria-hidden="true" href="#edit">#</a></h1>
+<p>A la fin de l’écriture de l’article, je suis tombé par hasard sur un théorème qui s’appelle le théorème de l’électeur médian, et qui stipule qu’en politique, l’option centriste bat la gauche à l’aide de la droite, et bat la droite à l’aide de la gauche.</p>
+<p>Autrement dit, l’option la plus au centre, si elle se retrouve au second tour contre une seule autre option, gagne l’élection.</p>
+<p>C’est tout à fait le sens de ma réflexion. Je cite donc ce théorème par honnêteté intellectuelle.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://bornlex.github.io/posts/ternary-computing/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Ternary Computing</span>
+  </a>
+</nav>
+
+
+<ul class="share-buttons">
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Le problème des vendeurs de plage on x"
+            href="https://x.com/intent/tweet/?text=Le%20probl%c3%a8me%20des%20vendeurs%20de%20plage&amp;url=https%3a%2f%2fbornlex.github.io%2fposts%2fvendeurs-plage%2f&amp;hashtags=">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Le problème des vendeurs de plage on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fbornlex.github.io%2fposts%2fvendeurs-plage%2f&amp;title=Le%20probl%c3%a8me%20des%20vendeurs%20de%20plage&amp;summary=Le%20probl%c3%a8me%20des%20vendeurs%20de%20plage&amp;source=https%3a%2f%2fbornlex.github.io%2fposts%2fvendeurs-plage%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Le problème des vendeurs de plage on reddit"
+            href="https://reddit.com/submit?url=https%3a%2f%2fbornlex.github.io%2fposts%2fvendeurs-plage%2f&title=Le%20probl%c3%a8me%20des%20vendeurs%20de%20plage">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Le problème des vendeurs de plage on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fbornlex.github.io%2fposts%2fvendeurs-plage%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Le problème des vendeurs de plage on whatsapp"
+            href="https://api.whatsapp.com/send?text=Le%20probl%c3%a8me%20des%20vendeurs%20de%20plage%20-%20https%3a%2f%2fbornlex.github.io%2fposts%2fvendeurs-plage%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Le problème des vendeurs de plage on telegram"
+            href="https://telegram.me/share/url?text=Le%20probl%c3%a8me%20des%20vendeurs%20de%20plage&amp;url=https%3a%2f%2fbornlex.github.io%2fposts%2fvendeurs-plage%2f">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Le problème des vendeurs de plage on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t=Le%20probl%c3%a8me%20des%20vendeurs%20de%20plage&u=https%3a%2f%2fbornlex.github.io%2fposts%2fvendeurs-plage%2f">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+                <path
+                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+</ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://bornlex.github.io/">Julien&#39;s blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

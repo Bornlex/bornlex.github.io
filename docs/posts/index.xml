@@ -11,8 +11,17 @@
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 31 Jan 2024 15:21:00 +0100</lastBuildDate>
+    <lastBuildDate>Wed, 31 Jan 2024 17:04:23 +0100</lastBuildDate>
     <atom:link href="https://bornlex.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Le problème des vendeurs de plage</title>
+      <link>https://bornlex.github.io/posts/vendeurs-plage/</link>
+      <pubDate>Wed, 31 Jan 2024 17:04:23 +0100</pubDate>
+      <guid>https://bornlex.github.io/posts/vendeurs-plage/</guid>
+      <description>Pourquoi est-ce que ni l’extrême droite, ni l’extrême gauche ne gagne jamais l’élection présidentielle ?
+On pourrait penser que la courbe du nombre de votants en fonction du spectre politique ressemble à une courbe gaussienne centrée sur le milieu de l’échiquier politique, avec quelques variations. Il y a plus de gens modérés que d’extrêmes.
+Mais si l’on regarde les intentions de vote pour chaque candidat ou les résultats du premier tour de l’élection présidentielle, on réalise rapidement que cette réponse n’est pas satisfaisante.</description>
+    </item>
     <item>
       <title>Ternary Computing</title>
       <link>https://bornlex.github.io/posts/ternary-computing/</link>
