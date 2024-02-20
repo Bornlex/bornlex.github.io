@@ -11,8 +11,24 @@
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 31 Jan 2024 17:04:23 +0100</lastBuildDate>
+    <lastBuildDate>Tue, 20 Feb 2024 23:04:40 +0100</lastBuildDate>
     <atom:link href="https://bornlex.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AI Revolution, the Nuclear Fusion Effect</title>
+      <link>https://bornlex.github.io/posts/ai-revolution/</link>
+      <pubDate>Tue, 20 Feb 2024 23:04:40 +0100</pubDate>
+      <guid>https://bornlex.github.io/posts/ai-revolution/</guid>
+      <description>Introduction The spectacular advancements in terms of understanding and generating language have created a massive enthusiasm for artificial intelligence. Every company is looking for ways to integrate some of these technologies into their products, processes, and services. Governments are competing with announcements. The investments are considerable, at least as much as the number of posts on LinkedIn.
+These recent developments are partly due to a technology initially developed and made public by a Google team, the Transformers.</description>
+    </item>
+    <item>
+      <title>Intelligence Artificielle, l&#39;effet fusion nucléaire</title>
+      <link>https://bornlex.github.io/posts/ia-revolution/</link>
+      <pubDate>Tue, 20 Feb 2024 20:48:59 +0100</pubDate>
+      <guid>https://bornlex.github.io/posts/ia-revolution/</guid>
+      <description>Introduction Les progrès spectaculaires en termes de compréhension et de génération du langage ont créé un engouement massif pour l&amp;rsquo;intelligence artificielle. Toutes les entreprises cherchent comment intégrer certaines de ces technologies dans leurs produits, leurs processus, leurs services. Les gouvernements rivalisent d&amp;rsquo;annonces. Les investissements sont considérables, au moins autant que le nombre de publications sur Linkedin.
+Ces récents développements sont en partie dus à une technologie initialement développée et rendue publique par une équipe de Google, les Transformers.</description>
+    </item>
     <item>
       <title>Le problème des vendeurs de plage</title>
       <link>https://bornlex.github.io/posts/vendeurs-plage/</link>
