@@ -115,6 +115,10 @@ menu:
       name: Posts
       url: /
       weight: 1
+    - identifier: whitespace
+      name: Whitespace Interpreter
+      url: https://github.com/Bornlex/Whitespace-interpreter
+      weight: 2
 # Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
 pygmentsUseClasses: true
 markup:
