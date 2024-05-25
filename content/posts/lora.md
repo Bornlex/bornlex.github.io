@@ -201,6 +201,9 @@ We can observe the sum of the weights with the low-rank matrix for the linear la
 
 Note that there is also an alpha hyperparameter that we can tune to scale the values of the low-rank matrix.
 
+During fine-tuning, we would initialize the weights of the values, keys and queries to the weights of the pre-trained model.
+Those layers would then be frozen and we would only update the weights of the low-rank matrices.
+
 # Resources
 
 The link to the original paper can be found [here](https://arxiv.org/abs/2106.09685).
