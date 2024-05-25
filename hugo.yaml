@@ -2,7 +2,7 @@ baseURL: "https://bornlex.github.io/"
 title: Julien's blog
 theme: PaperMod
 publishDir: "docs"
-paginate: 5
+paginate: 20
 
 
 enableRobotsTXT: true
