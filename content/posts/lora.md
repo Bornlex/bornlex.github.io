@@ -200,3 +200,7 @@ class LoRAAttention(nn.Module):
 We can observe the sum of the weights with the low-rank matrix for the linear layers we talked about earlier.
 
 Note that there is also an alpha hyperparameter that we can tune to scale the values of the low-rank matrix.
+
+# Resources
+
+The link to the original paper can be found [here](https://arxiv.org/abs/2106.09685).
