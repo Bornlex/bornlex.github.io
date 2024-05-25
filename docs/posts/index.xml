@@ -2,55 +2,55 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Julien&#39;s blog</title>
-    <link>http://localhost:1313/posts/</link>
+    <link>https://bornlex.github.io/posts/</link>
     <description>Recent content in Posts on Julien&#39;s blog</description>
     <image>
       <title>Julien&#39;s blog</title>
-      <url>http://localhost:1313/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>http://localhost:1313/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+      <url>https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Fri, 24 May 2024 14:53:18 +0200</lastBuildDate>
-    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://bornlex.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Lora</title>
-      <link>http://localhost:1313/posts/lora/</link>
+      <title>LoRA: Low Rank Adaptation</title>
+      <link>https://bornlex.github.io/posts/lora/</link>
       <pubDate>Fri, 24 May 2024 14:53:18 +0200</pubDate>
-      <guid>http://localhost:1313/posts/lora/</guid>
+      <guid>https://bornlex.github.io/posts/lora/</guid>
       <description>Introduction Whenever we need to use a deep learning model for image or text generation, classification or any other task, we have two possibilities:
 Train the model from scratch Use a pre-trained model and fine tune it for the task we need. Training a model from scratch can be challenging and requires computational resources, time, and sometimes large quantity of data. On the other hand, using a pre-trained model is easier but might require some adaptation to the new task.</description>
     </item>
     <item>
       <title>AI Revolution, the Nuclear Fusion Effect</title>
-      <link>http://localhost:1313/posts/ai-revolution/</link>
+      <link>https://bornlex.github.io/posts/ai-revolution/</link>
       <pubDate>Tue, 20 Feb 2024 23:04:40 +0100</pubDate>
-      <guid>http://localhost:1313/posts/ai-revolution/</guid>
+      <guid>https://bornlex.github.io/posts/ai-revolution/</guid>
       <description>Introduction The spectacular advancements in terms of understanding and generating language have created a massive enthusiasm for artificial intelligence. Every company is looking for ways to integrate some of these technologies into their products, processes, and services. Governments are competing with announcements. The investments are considerable, at least as much as the number of posts on LinkedIn.
 These recent developments are partly due to a technology initially developed and made public by a Google team, the Transformers.</description>
     </item>
     <item>
       <title>Intelligence Artificielle, l&#39;effet fusion nucléaire</title>
-      <link>http://localhost:1313/posts/ia-revolution/</link>
+      <link>https://bornlex.github.io/posts/ia-revolution/</link>
       <pubDate>Tue, 20 Feb 2024 20:48:59 +0100</pubDate>
-      <guid>http://localhost:1313/posts/ia-revolution/</guid>
+      <guid>https://bornlex.github.io/posts/ia-revolution/</guid>
       <description>Introduction Les progrès spectaculaires en termes de compréhension et de génération du langage ont créé un engouement massif pour l&amp;rsquo;intelligence artificielle. Toutes les entreprises cherchent comment intégrer certaines de ces technologies dans leurs produits, leurs processus, leurs services. Les gouvernements rivalisent d&amp;rsquo;annonces. Les investissements sont considérables, au moins autant que le nombre de publications sur Linkedin.
 Ces récents développements sont en partie dus à une technologie initialement développée et rendue publique par une équipe de Google, les Transformers.</description>
     </item>
     <item>
       <title>Le problème des vendeurs de plage</title>
-      <link>http://localhost:1313/posts/vendeurs-plage/</link>
+      <link>https://bornlex.github.io/posts/vendeurs-plage/</link>
       <pubDate>Wed, 31 Jan 2024 17:04:23 +0100</pubDate>
-      <guid>http://localhost:1313/posts/vendeurs-plage/</guid>
+      <guid>https://bornlex.github.io/posts/vendeurs-plage/</guid>
       <description>Pourquoi est-ce que ni l’extrême droite, ni l’extrême gauche ne gagne jamais l’élection présidentielle ?
 On pourrait penser que la courbe du nombre de votants en fonction du spectre politique ressemble à une courbe gaussienne centrée sur le milieu de l’échiquier politique, avec quelques variations. Il y a plus de gens modérés que d’extrêmes.
 Mais si l’on regarde les intentions de vote pour chaque candidat ou les résultats du premier tour de l’élection présidentielle, on réalise rapidement que cette réponse n’est pas satisfaisante.</description>
     </item>
     <item>
       <title>Ternary Computing</title>
-      <link>http://localhost:1313/posts/ternary-computing/</link>
+      <link>https://bornlex.github.io/posts/ternary-computing/</link>
       <pubDate>Wed, 31 Jan 2024 15:21:00 +0100</pubDate>
-      <guid>http://localhost:1313/posts/ternary-computing/</guid>
+      <guid>https://bornlex.github.io/posts/ternary-computing/</guid>
       <description>Introduction First, let us define “computers” as any machine that can compute.
 At first, analog machines were used. For example, electronic amplifiers can be used to perform integration, differentiation, root extraction, compute logarithm.
 Analog computers played a significant role in history, but they have the disadvantage that noise can perturb the computation and lead to errors.
@@ -58,9 +58,9 @@ Digital computers later replaced analog ones and became mainstream. Any voltage 
     </item>
     <item>
       <title>Code injection</title>
-      <link>http://localhost:1313/posts/2018-10-14-code-injection/</link>
+      <link>https://bornlex.github.io/posts/2018-10-14-code-injection/</link>
       <pubDate>Wed, 24 Jan 2024 14:03:13 +0100</pubDate>
-      <guid>http://localhost:1313/posts/2018-10-14-code-injection/</guid>
+      <guid>https://bornlex.github.io/posts/2018-10-14-code-injection/</guid>
       <description>Introduction J&amp;rsquo;ai découvert l&amp;rsquo;OpenSource Intelligence en m&amp;rsquo;intéressant de près à la sécurité informatique.
 Lorsque des pirates préparent une attaque sur un système d&amp;rsquo;information (SI), ils ont besoin d&amp;rsquo;avoir autant d&amp;rsquo;informations que possible afin de mener à bien les opérations. En effet, les systèmes d&amp;rsquo;exploitation (OS), les serveurs utilisés, les versions de ces serveurs et de ces OS conditionnent énormément la manière dont va se dérouler l&amp;rsquo;attaque.
 Il est donc primordial de disposer d&amp;rsquo;un arsenal de techniques qui vont nous permettre de préciser un peu le contexte de l&amp;rsquo;attaque.</description>
