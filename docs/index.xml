@@ -11,15 +11,24 @@
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 16 Jun 2024 12:10:27 +0200</lastBuildDate>
+    <lastBuildDate>Mon, 04 Nov 2024 15:10:54 +0100</lastBuildDate>
     <atom:link href="https://bornlex.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Physics Informed Neural Networks</title>
+      <link>https://bornlex.github.io/posts/physics-informed-neural-networks/</link>
+      <pubDate>Mon, 04 Nov 2024 15:10:54 +0100</pubDate>
+      <guid>https://bornlex.github.io/posts/physics-informed-neural-networks/</guid>
+      <description>Introduction Neural networks require large amounts of data to converge. Those data need to represent the task the neural network is trying to learn.
+Data collection is a tedious process, especially when collecting data can be difficult or expensive. In science, physics for instance, many phenomenon are described using theories that we know are working very well.
+Using those data as regularization can help neural networks generalize better with less data.</description>
+    </item>
     <item>
       <title>Croyances ostentatoires</title>
       <link>https://bornlex.github.io/posts/croyances/</link>
       <pubDate>Sun, 16 Jun 2024 12:10:27 +0200</pubDate>
       <guid>https://bornlex.github.io/posts/croyances/</guid>
       <description>Introduction Au vu de la carte des résultats des élections européennes, on constate immédiatement à quel point le Rassemblement National (RN) est arrivé en tête dans tous les départements, à l&amp;rsquo;exception notable de Paris, et ceci même dans les régions traditionnellement plutôt à gauche, comme la Bretagne.
-Mais ce qui m&amp;rsquo;a frappé, et qui s&amp;rsquo;explique bien à l&amp;rsquo;aide des analyses notamment réalisées par l&amp;rsquo;Ifop que je cite plus bas, c&amp;rsquo;est à quel point ce que je lisais sur LinkedIn était en décalage avec cette carte.</description>
+Mais ce qui m&amp;rsquo;a frappé, et qui s&amp;rsquo;explique, je pense, à l&amp;rsquo;aide des analyses réalisées par l&amp;rsquo;Ifop que je cite plus bas, c&amp;rsquo;est à quel point ce que je lisais sur LinkedIn était en décalage avec cette carte.</description>
     </item>
     <item>
       <title>LoRA: Low Rank Adaptation</title>
