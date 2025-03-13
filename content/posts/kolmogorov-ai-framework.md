@@ -334,7 +334,7 @@ Taking the logarithm:
 
 {{< latex >}}
 $$
-\log \prod_j^{d} p_{\theta}(u_i|u_{i - 1}, ..., u_{i - k})_j^{q(u_i)_j} = \sum_j^{d} \log p_{\theta}(u_i|u_{i - 1}, ..., u_{i - k})_j&{q(u_i)_j}
+\log \prod_j^{d} p_{\theta}(u_i|u_{i - 1}, ..., u_{i - k})_j^{q(u_i)_j} = \sum_j^{d} \log p_{\theta}(u_i|u_{i - 1}, ..., u_{i - k})_j^{q(u_i)_j}
 $$
 {{< /latex >}}
 
