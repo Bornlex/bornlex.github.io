@@ -4,8 +4,6 @@ date = 2025-03-13
 draft = false
 +++
 
-# Kolmogorov & LLM Function Calling | Part 1
-
 # Shannon Entropy
 
 ## Concept
