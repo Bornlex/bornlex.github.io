@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Julien&#39;s blog</title>
-    <link>http://localhost:1313/</link>
+    <link>https://bornlex.github.io/</link>
     <description>Recent content on Julien&#39;s blog</description>
     <image>
       <title>Julien&#39;s blog</title>
-      <url>http://localhost:1313/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>http://localhost:1313/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+      <url>https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Thu, 13 Mar 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://bornlex.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Kolmogorov AI Framework | Part 1</title>
-      <link>http://localhost:1313/posts/kolmogorov-ai-framework/</link>
+      <link>https://bornlex.github.io/posts/kolmogorov-ai-framework/</link>
       <pubDate>Thu, 13 Mar 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/kolmogorov-ai-framework/</guid>
+      <guid>https://bornlex.github.io/posts/kolmogorov-ai-framework/</guid>
       <description>&lt;h1 id=&#34;kolmogorov--llm-function-calling--part-1&#34;&gt;Kolmogorov &amp;amp; LLM Function Calling | Part 1&lt;/h1&gt;
 &lt;h1 id=&#34;shannon-entropy&#34;&gt;Shannon Entropy&lt;/h1&gt;
 &lt;h2 id=&#34;concept&#34;&gt;Concept&lt;/h2&gt;
@@ -30,9 +30,9 @@ $$&lt;/p&gt;
     </item>
     <item>
       <title>Physics Informed Neural Networks</title>
-      <link>http://localhost:1313/posts/physics-informed-neural-networks/</link>
+      <link>https://bornlex.github.io/posts/physics-informed-neural-networks/</link>
       <pubDate>Mon, 04 Nov 2024 15:10:54 +0100</pubDate>
-      <guid>http://localhost:1313/posts/physics-informed-neural-networks/</guid>
+      <guid>https://bornlex.github.io/posts/physics-informed-neural-networks/</guid>
       <description>&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;Neural networks require large amounts of data to converge. Those data need to represent the task the neural network is trying to learn.&lt;/p&gt;
 &lt;p&gt;Data collection is a tedious process, especially when collecting data can be difficult or expensive. In science, physics for instance, many phenomenon are described using theories that we know are working very well.&lt;/p&gt;
@@ -40,10 +40,10 @@ $$&lt;/p&gt;
     </item>
     <item>
       <title>Croyances ostentatoires</title>
-      <link>http://localhost:1313/posts/croyances/</link>
+      <link>https://bornlex.github.io/posts/croyances/</link>
       <pubDate>Sun, 16 Jun 2024 12:10:27 +0200</pubDate>
-      <guid>http://localhost:1313/posts/croyances/</guid>
-      <description>&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;http://localhost:1313/croyances/map.jpg&#34; alt=&#34;Carte des résultats aux élections européennes&#34;  /&gt;
+      <guid>https://bornlex.github.io/posts/croyances/</guid>
+      <description>&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://bornlex.github.io/croyances/map.jpg&#34; alt=&#34;Carte des résultats aux élections européennes&#34;  /&gt;
 &lt;/p&gt;
 &lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;Au vu de la carte des résultats des élections européennes, on constate immédiatement à quel point le Rassemblement National (RN) est arrivé en tête dans tous les départements, à l&amp;rsquo;exception notable de Paris, et ceci même dans les régions traditionnellement plutôt à gauche, comme la Bretagne.&lt;/p&gt;
@@ -51,10 +51,10 @@ $$&lt;/p&gt;
     </item>
     <item>
       <title>LoRA: Low Rank Adaptation</title>
-      <link>http://localhost:1313/posts/lora/</link>
+      <link>https://bornlex.github.io/posts/lora/</link>
       <pubDate>Fri, 24 May 2024 14:53:18 +0200</pubDate>
-      <guid>http://localhost:1313/posts/lora/</guid>
-      <description>&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;http://localhost:1313/lora/roses.jpg&#34; alt=&#34;LoRA: Low Rank Adaptation&#34;  /&gt;
+      <guid>https://bornlex.github.io/posts/lora/</guid>
+      <description>&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://bornlex.github.io/lora/roses.jpg&#34; alt=&#34;LoRA: Low Rank Adaptation&#34;  /&gt;
 &lt;/p&gt;
 &lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;Whenever we need to use a deep learning model for image or text generation, classification
@@ -68,18 +68,18 @@ of data. On the other hand, using a pre-trained model is easier but might requir
     </item>
     <item>
       <title>AI Revolution, the Nuclear Fusion Effect</title>
-      <link>http://localhost:1313/posts/ai-revolution/</link>
+      <link>https://bornlex.github.io/posts/ai-revolution/</link>
       <pubDate>Tue, 20 Feb 2024 23:04:40 +0100</pubDate>
-      <guid>http://localhost:1313/posts/ai-revolution/</guid>
+      <guid>https://bornlex.github.io/posts/ai-revolution/</guid>
       <description>&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;The spectacular advancements in terms of understanding and generating language have created a massive enthusiasm for artificial intelligence. Every company is looking for ways to integrate some of these technologies into their products, processes, and services. Governments are competing with announcements. The investments are considerable, at least as much as the number of posts on LinkedIn.&lt;/p&gt;
 &lt;p&gt;These recent developments are partly due to a technology initially developed and made public by a Google team, the Transformers. OpenAI was the first company to understand and exploit the potential of this neural network architecture and applied it to text generation through its successive GPT models.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Intelligence Artificielle, l&#39;effet fusion nucléaire</title>
-      <link>http://localhost:1313/posts/ia-revolution/</link>
+      <link>https://bornlex.github.io/posts/ia-revolution/</link>
       <pubDate>Tue, 20 Feb 2024 20:48:59 +0100</pubDate>
-      <guid>http://localhost:1313/posts/ia-revolution/</guid>
+      <guid>https://bornlex.github.io/posts/ia-revolution/</guid>
       <description>&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;Les progrès spectaculaires en termes de compréhension et de génération du langage ont créé un engouement massif pour
 l&amp;rsquo;intelligence artificielle. Toutes les entreprises cherchent comment intégrer certaines de ces technologies dans leurs
@@ -91,21 +91,21 @@ architecture de réseau de neurones et l&amp;rsquo;a appliquée à la générati
     </item>
     <item>
       <title>Le problème des vendeurs de plage</title>
-      <link>http://localhost:1313/posts/vendeurs-plage/</link>
+      <link>https://bornlex.github.io/posts/vendeurs-plage/</link>
       <pubDate>Wed, 31 Jan 2024 17:04:23 +0100</pubDate>
-      <guid>http://localhost:1313/posts/vendeurs-plage/</guid>
+      <guid>https://bornlex.github.io/posts/vendeurs-plage/</guid>
       <description>&lt;p&gt;Pourquoi est-ce que ni l’extrême droite, ni l’extrême gauche ne gagne jamais l’élection présidentielle ?&lt;/p&gt;
 &lt;p&gt;On pourrait penser que la courbe du nombre de votants en fonction du spectre politique ressemble à une courbe gaussienne centrée sur le milieu de l’échiquier politique, avec quelques variations. Il y a plus de gens modérés que d’extrêmes.&lt;/p&gt;
-&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;http://localhost:1313/plage/gaussian.webp&#34; alt=&#34;Loi normale&#34;  /&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://bornlex.github.io/plage/gaussian.webp&#34; alt=&#34;Loi normale&#34;  /&gt;
 &lt;/p&gt;
 &lt;p&gt;Mais si l’on regarde les intentions de vote pour chaque candidat ou les résultats du premier tour de l’élection présidentielle, on réalise rapidement que cette réponse n’est pas satisfaisante.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Ternary Computing</title>
-      <link>http://localhost:1313/posts/ternary-computing/</link>
+      <link>https://bornlex.github.io/posts/ternary-computing/</link>
       <pubDate>Wed, 31 Jan 2024 15:21:00 +0100</pubDate>
-      <guid>http://localhost:1313/posts/ternary-computing/</guid>
-      <description>&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;http://localhost:1313/ternary/ternary.jpeg&#34; alt=&#34;Ternary&#34;  /&gt;
+      <guid>https://bornlex.github.io/posts/ternary-computing/</guid>
+      <description>&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://bornlex.github.io/ternary/ternary.jpeg&#34; alt=&#34;Ternary&#34;  /&gt;
 &lt;/p&gt;
 &lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;First, let us define “computers” as any machine that can compute.&lt;/p&gt;
@@ -115,9 +115,9 @@ architecture de réseau de neurones et l&amp;rsquo;a appliquée à la générati
     </item>
     <item>
       <title>Code injection</title>
-      <link>http://localhost:1313/posts/2018-10-14-code-injection/</link>
+      <link>https://bornlex.github.io/posts/2018-10-14-code-injection/</link>
       <pubDate>Wed, 24 Jan 2024 14:03:13 +0100</pubDate>
-      <guid>http://localhost:1313/posts/2018-10-14-code-injection/</guid>
+      <guid>https://bornlex.github.io/posts/2018-10-14-code-injection/</guid>
       <description>&lt;!-- raw HTML omitted --&gt;
 &lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;J&amp;rsquo;ai découvert l&amp;rsquo;OpenSource Intelligence en m&amp;rsquo;intéressant de près à la sécurité informatique.&lt;/p&gt;
