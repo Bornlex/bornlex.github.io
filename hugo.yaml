@@ -2,7 +2,6 @@ baseURL: "https://bornlex.github.io/"
 title: Julien's blog
 theme: PaperMod
 publishDir: "docs"
-paginate: 20
 
 
 enableRobotsTXT: true
@@ -20,6 +19,8 @@ params:
   DateFormat: "January 2, 2006"
   defaultTheme: light # dark, light
   disableThemeToggle: false
+
+  social: true
 
   math: true
 
