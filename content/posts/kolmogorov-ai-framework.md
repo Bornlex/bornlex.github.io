@@ -548,6 +548,27 @@ I propose a training approach as illustrated in the diagram:
 
 ![Framework](/kolmogorov/chart.png)
 
+### Reward
+
+Considering we want to have an algorithm that is able to perform tasks as efficiently as possible, it gets the reward only if it achieves the task successfully.
+
+Let us recall the Bellman equation for a Markov decision process:
+
+$$
+Q_{\pi}(s) = R(s, \pi(s)) + \gamma \sum_{s'} p(s' | s, \pi(s)) Q_{\pi}(s')
+$$
+
+Considering sequences of maximum size $N$ (so the algorithm does not run indefinitely), we either get the reward for achieving the goal or we get cut if the program is not over after $N$ time steps:
+
+$$
+R(s_N) =  \begin{cases}
+R -N \text{ if goal is reached}  \\
+-N \text{ otherwise}
+\end{cases}
+$$
+
+The term $-N$ comes from substracting 1 at every instruction run to force the model to perform its tasks as quick as possible.
+
 ## Practicum
 
 ### **Scenario**
@@ -699,6 +720,3 @@ I will develop an example using this framework, which I will post in the second 
 - Improving Language Understanding by Generative Pre-Training, OpenAI: https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf
 - A Mathematical Theory of Communication, Claude Shannon: https://people.math.harvard.edu/~ctm/home/text/others/shannon/entropy/entropy.pdf
 - Andrei Kolmogorov's Wikipedia page: [https://fr.wikipedia.org/wiki/Andreï_Kolmogorov](https://fr.wikipedia.org/wiki/Andre%C3%AF_Kolmogorov)
-- The Brainfuck language: https://esolangs.org/wiki/Brainfuck
-- The Whitespace language: [https://esolangs.org/wiki/Whitespace](https://esolangs.org/wiki/Whitespace#Truth-machine)
-- My Whitespace interpreter: https://github.com/Bornlex/Whitespace-interpreter
