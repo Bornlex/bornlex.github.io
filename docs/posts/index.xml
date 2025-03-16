@@ -11,8 +11,19 @@
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 13 Mar 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 16 Mar 2025 15:12:50 +0100</lastBuildDate>
     <atom:link href="https://bornlex.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MLX DQN</title>
+      <link>https://bornlex.github.io/posts/mlx-dqn/</link>
+      <pubDate>Sun, 16 Mar 2025 15:12:50 +0100</pubDate>
+      <guid>https://bornlex.github.io/posts/mlx-dqn/</guid>
+      <description>&lt;h1 id=&#34;reinforcement-learning-with-apple-mlx-framework&#34;&gt;Reinforcement Learning with Apple MLX Framework&lt;/h1&gt;
+&lt;p&gt;Today, a very short article about Apple MLX framework.&lt;/p&gt;
+&lt;p&gt;I recently learned that Apple has its own machine learning framework, and as a heavy Mac user I thought I’d give it a try.&lt;/p&gt;
+&lt;p&gt;It is very easy to use and intuitive, the syntax is nice and looks like Numpy and PyTorch, which is convenient as a PyTorch user.&lt;/p&gt;
+&lt;p&gt;As an example, let me present a Deep Q Learning implementation that I wrote. It comes from a nice &lt;a href=&#34;https://storage.googleapis.com/deepmind-data/assets/papers/DeepMindNature14236Paper.pdf&#34;&gt;DeepMind paper&lt;/a&gt;.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Kolmogorov AI Framework | Part 1</title>
       <link>https://bornlex.github.io/posts/kolmogorov-ai-framework/</link>
