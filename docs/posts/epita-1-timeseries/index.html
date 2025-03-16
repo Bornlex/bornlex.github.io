@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>EPITA Courses - Timeseries | Julien&#39;s blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="Time Series
+Time series &amp; stochastic processes
+A time series is a set of observations $x_t$ generated sequentially over time $t$.
+There are two main types of time series:
+
+continuous time series
+discrete time series
+
+We can also differentiate time series whose values can be determined by mathematical functions, deterministic time series, from the time series that have some random component, non-deterministic time series.
+To forecast non-deterministic time series, we assume that there is a probability model that generates the observations of the time series.">
+<meta name="author" content="Julien Seveno">
+<link rel="canonical" href="https://bornlex.github.io/posts/epita-1-timeseries/">
+<meta name="google-site-verification" content="XYZabc">
+<meta name="yandex-verification" content="XYZabc">
+<meta name="msvalidate.01" content="XYZabc">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b609c58d5c11bb90b1a54e04005d74ad1ddf22165eb79f5533967e57df9c3b50.css" integrity="sha256-tgnFjVwRu5CxpU4EAF10rR3fIhZet59VM5Z&#43;V9&#43;cO1A=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="icon" type="image/png" sizes="16x16" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="icon" type="image/png" sizes="32x32" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="apple-touch-icon" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="mask-icon" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://bornlex.github.io/posts/epita-1-timeseries/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous" />
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false}
+        ]
+    });
+});
+</script>
+<meta property="og:title" content="EPITA Courses - Timeseries" />
+<meta property="og:description" content="Time Series
+Time series &amp; stochastic processes
+A time series is a set of observations $x_t$ generated sequentially over time $t$.
+There are two main types of time series:
+
+continuous time series
+discrete time series
+
+We can also differentiate time series whose values can be determined by mathematical functions, deterministic time series, from the time series that have some random component, non-deterministic time series.
+To forecast non-deterministic time series, we assume that there is a probability model that generates the observations of the time series." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bornlex.github.io/posts/epita-1-timeseries/" /><meta property="og:image" content="https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2025-03-16T15:36:50+01:00" />
+<meta property="article:modified_time" content="2025-03-16T15:36:50+01:00" /><meta property="og:site_name" content="Julien&#39;s blog" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/>
+
+<meta name="twitter:title" content="EPITA Courses - Timeseries"/>
+<meta name="twitter:description" content="Time Series
+Time series &amp; stochastic processes
+A time series is a set of observations $x_t$ generated sequentially over time $t$.
+There are two main types of time series:
+
+continuous time series
+discrete time series
+
+We can also differentiate time series whose values can be determined by mathematical functions, deterministic time series, from the time series that have some random component, non-deterministic time series.
+To forecast non-deterministic time series, we assume that there is a probability model that generates the observations of the time series."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://bornlex.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "EPITA Courses - Timeseries",
+      "item": "https://bornlex.github.io/posts/epita-1-timeseries/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "EPITA Courses - Timeseries",
+  "name": "EPITA Courses - Timeseries",
+  "description": "Time Series Time series \u0026amp; stochastic processes A time series is a set of observations $x_t$ generated sequentially over time $t$.\nThere are two main types of time series:\ncontinuous time series discrete time series We can also differentiate time series whose values can be determined by mathematical functions, deterministic time series, from the time series that have some random component, non-deterministic time series.\nTo forecast non-deterministic time series, we assume that there is a probability model that generates the observations of the time series.\n",
+  "keywords": [
+    
+  ],
+  "articleBody": "Time Series Time series \u0026 stochastic processes A time series is a set of observations $x_t$ generated sequentially over time $t$.\nThere are two main types of time series:\ncontinuous time series discrete time series We can also differentiate time series whose values can be determined by mathematical functions, deterministic time series, from the time series that have some random component, non-deterministic time series.\nTo forecast non-deterministic time series, we assume that there is a probability model that generates the observations of the time series.\nDefinition: A discrete time stochastic process is a sequence of random variables $\\left{ X_t \\right}$ defined over time $t$.\nWe can then think about a time series as a particular realization of a stochastic process: $(X_0, X_1, …, X_n)$.\nTime series analysis is about uncovering the stochastic process that has generated the time series.\nStationarity When forecasting, we assume that some properties of the time series are maintained over time. For example, if a time series tend to increase or if the observations are always around the same value, we expect this characteristics to be present on future observations.\nLet’s define these properties and the time series whose properties are constant over time.\nLet $\\left{ X_t \\right}$ be a time series. The mean function of $\\left{ X_t \\right}$ is defined as\n$$ \\mu(t) = E(X_t) $$\nwhere $E(X_t)$ is the expected value of the random variable $X_t$.\nNow, let’s define the covariance function between two random variables of our time series.\nLet $\\left{ X_t \\right}$ be a time series. The covariance function of $\\left{ X_t \\right}$ is\n$$ \\gamma(t, t+h) = \\text{Cov}(X_t, X_{t+h}) = E[(X_t - \\mu(t)). (X_{t+h} - \\mu(t + h))] $$\nWhere $t = 1, 2, …, n$ and $h = 1, 2, …, n - t$.\nLet $\\left{ X_t \\right}$ be a time series. $\\left{ X_t \\right}$ is strictly stationary if $(X_1, …, X_n)$ and $(X_{1 + h}, …, X_{n + h})$ have the same joint distribution for all $h$.\nIt means that the time series is stationary if the distribution is unchanged after any arbitrary shift.\nLet $\\left{ X_t \\right}$ be a time series. $\\left{ X_t \\right}$ is weakly stationary if\n$E(X_t^2) \u003c \\infty$ for all $t$ $\\mu(r) = \\mu(s)$ for all $r, s$ $\\gamma(r, r + h) = \\gamma(s, s + h)$ for all $r, s, h$ In other words, a time series is weakly stationary if its second moment is always finite, its mean is constant and its covariance depends only on the distance between observations, also called lag.\nFrom now on, when talking about stationarity, we will mean weakly stationarity.\nCorrelation Since the covariance only depends on lag $h$ on weakly stationary time series, we can define the covariance function of these time series with only variable. This function is known as autocovariance function.\nLet $\\left{ X_t \\right}$ be a weakly stationary time series. The autocovariance function of $\\left{ X_t \\right}$ at lag $h$ is\n$$ \\gamma(h) = \\text{Cov}(X_t, X_{t + h}) = E[(X_t - \\mu) . (X_{t + h} - \\mu)] $$\nOne can notice that $\\gamma(0) = E[(X_t - \\mu)^2] = \\sigma^2$ is the variance of the time series.\nFrom this definition, we can define the autocorrelation function.\nLet $\\left{ X_t \\right}$ be a weakly stationary time series. The autocorrelation function of $\\left{ X_t \\right}$ at lag $h$ is\n$$ \\rho(h) = \\frac{\\gamma(h)}{\\gamma(0)} $$\nWe easily see that $\\rho(0) = 1$. Also, we can notice that $|\\rho(h)| \\leq 1$ because of the Cauchy-Schwarz inequality:\n$$ |\\gamma(h)|^2 = (E[(X_t - \\mu) . (X_{t + h} - \\mu)])^2 \\leq E[(X_t - \\mu)^2] . E[(X_{t + h} - \\mu)^2] = \\gamma(0)^2 $$\nProof Analyse of the $\\lambda \\mapsto E[(\\lambda X - Y)^2]$ polynom.\nExamples Now that we gave some definitions, let’s show some examples of time series and their characteristics.\nWhite noise White noise consists of a sequence of uncorrelated random variables $\\left{ X_t \\right}$ with mean $\\mu$ and variance $\\sigma^2$. If the random variables follow a normal distribution, the series is called gaussian white noise. Gaussian white noise is made of independent and identically distributed variables.\nHere is a plot of the gaussian white noise of variance\n$\\sigma^2 = 1$ and $\\mu = 0$.\nSince the random variables are independent, they are not correlated, so its autocovariance function is $\\sigma^2$ at lag $0$ and $0$ at lag $h \u003e 0$. Its autocorrelation is $1$ at lag $0$ and $0$ at lag $h \u003e 0$.\nRandom walk Definition: Let $\\left{ X_t \\right}$ be a time series and $\\left{ W_t \\right}$ an IID noise time series. $\\left{ X_t \\right}$ is a random walk if\n$X_1 = W_1$ $X_t = X_{t-1} + W_t$ if $t \u003e 1$ Note that a random walk can also be written as\n$$ X_t = \\sum^t_{i=1} W_i $$\nThe mean of this time series is the mean of $\\left{ W_t \\right}$ and its covariance is given by\n$$ \\text{Cov}(X_t, X_{t + h}) = \\text{Cov}(\\sum^t_{i=1} W_i, \\sum^{t+h}{i=1} W_i) = \\sum^t{i=1} \\text{Cov}(W_i, W_i) = t \\sigma^2 $$\nExercise: prove the previous result $$ \\text{Cov}(X_t, X_{t + h}) = \\text{Cov}(\\sum^t_{i=1} W_i, \\sum^{t+h}_{i=1} W_i) $$\n$$ \\text{Cov}(X_t, X_{t + h}) = \\text{Cov}(\\sum^t_{i=1} W_i, \\sum^{t}{i=1} W_i + \\sum^{t + h}{i=t + 1} W_i) $$\n$$ \\text{Cov}(X_t, X_{t + h}) = \\text{Cov}(\\sum^t_{i=1} W_i, \\sum^{t}{i=1} W_i) + \\text{Cov}(\\sum^t{i=1} W_i, \\sum^{t + h}_{i=t + 1} W_i) $$\n$$ \\text{Cov}(X_t, X_{t + h}) = \\text{Var}(X_t) + 0 $$\n$$ \\text{Cov}(X_t, X_{t + h}) = \\sum_i^t\\text{Var}(W_i) $$\nBecause $W_i$ are IID.\n$$ \\text{Cov}(X_t, X_{t + h}) = t \\sigma^2 $$\nBecause the covariance function depends on $t$, the process is not stationary.\nQuarterly earnings Finally, let’s give an example of real data. The time series of quarterly earnings in US dollars per Johnson \u0026 Johnson share.\nWe clearly see that the series follows an increasing trend and a seasonal component.\nStationary Processes Stationary processes are series which some of their properties do not vary with time.\nLinear processes All stationary processes can be represented a follow\n$$ X_t = \\mu + \\sum^{\\infty}{i = -\\infty} \\psi_i W{t - i} $$\nfor all $t$.\n$\\mu \\in \\mathbb{R}$, $\\left{ \\psi_i \\right}$ is an absolutely summable sequence of constants and $\\left{ W_i \\right}$ is a white noise series with mean $0$ and variance $\\sigma^2$.\nAbsolutely summable sequence For a sequence to be absolutely summable, the following condition needs to be met:\n$$ \\sum^{\\infty}_{n = -\\infty} |a_n| \\lt \\infty $$\nWe define the backward shift operator, $B$, as\n$$ BX_t = X_{t - 1} $$\nand\n$$ B^iX_t = X_{t - i} $$\nLinear processes can also be represented as\n$$ X_t = \\mu + \\psi(B) W_t $$\nwhere\n$$ \\psi(B) = \\sum^{\\infty}_{i = -\\infty} \\psi_i B^i $$\nThe mean of the linear process is $\\mu$ and its covariance function is given by:\n$$ \\gamma(h) = \\text{Cov}(X_t, X_{t+h}) = \\text{Cov}(\\mu + \\sum^{\\infty}{i = -\\infty} \\psi_i W{t - i}, \\mu + \\sum^{\\infty}{i = -\\infty} \\psi_i W{t + h - i}) $$\n$$ \\gamma(h) = \\sum^{\\infty}{i = -\\infty} \\psi_i \\psi{i + h} \\text{Cov}(W_{t - i}, W_{t - i}) = \\sigma^2 \\sum^{\\infty}{i = -\\infty} \\psi_i \\psi{i + h} $$\nsince $\\text{Cov}(W_{t - i}, W_{t + h - i}) = 0$ if $t - i \\neq t + h - i$.\nA linear process is said to be causal or a causal function of $\\left{ Z_t \\right}$ if there exists constants $\\left{ \\psi_i \\right}$ such that $\\sum^{\\infty}_{i = 0} |\\psi_i| \\lt \\infty$ and:\n$$ X_t = \\sum^{\\infty}{i = 0} \\psi_i W{t - i} $$\nfor all $t$.\nA linear process is invertible if there exists constants $\\left{ \\pi_i \\right}$ such that $\\sum^{\\infty}_{i = 0} |\\pi_i| \\lt \\infty$ and:\n$$ W_t = \\sum^{\\infty}{i = 0} \\pi_i X{t - i} $$\nfor all $t$.\nAR process Autoregressive models are based on the idea that the current value can be expressed as a combination of previous values of the series plus a random component.\nLet $\\left{ X_t \\right}$ be a time series and $\\left{ W_t \\right}$ a white noise series. An autoregressive model of order p is defined as:\n$$ X_t = c + \\sum_{i = 1}^{p} \\phi_i X_{t - i} + W_t $$\nWhere $\\phi_i$ are constants and $\\phi_p \\neq 0$.\nUsing the backward shift operator, we can rewrite the previous expression as:\n$$ X_t = c + \\phi_1 B X_{t - 1}+ \\phi_2 B^2 X_{t-2} + … + \\phi_p B^p X_{t - p} + W_t $$\nSometime the following concise notation is used:\n$$ \\phi(B)X_t = W_t $$\nwhere $\\phi(B) = 1 - \\phi_1 B - \\phi_2 B^2 - … - \\phi_p B^p$.\nThe $\\text{AR}(1)$ process is then given by:\n$$ X_t = c + \\phi X_{t - 1} + W_t $$\nStationarity of the $\\text{AR}(1)$ process Let’s first compute the mean of $\\text{AR}(1)$:\n$$ \\mu(X_t) = \\mu(c + \\phi X_{t - 1} + W_t) $$\n$$ \\mu(X_t) = \\mu(c) + \\mu(\\phi X_{t - 1}) + \\mu(W_t) $$\n$$ \\mu(X_t) = c + \\phi \\mu(X_{t - 1}) $$\nFor the process to be stationary, its mean needs to be unchanged over time, which means $\\mu(X_t) = \\mu(X_{t-1})$:\n$$ \\mu(X_t) = c + \\phi \\mu(X_t) $$\n$$ \\mu(X_t)(1 + \\phi) = c $$\n$$ \\mu(X_t) = \\frac{c}{1 - \\phi} $$\nWhich means that $\\mu(X_t) \u003c \\infty$ as long as $\\phi \\neq 1$.\nAlso, it gives us a condition for the process to be stationary, linking both $\\phi, c$.\nLet’s look at its variance:\n$$ \\text{Var}(X_t) = \\text{Var}(c + \\phi X_{t - 1} + W_t) $$\n$$ \\text{Var}(X_t) = \\phi^2 \\text{Var}(X_{t - 1}) + \\text{Var}(W_t) + 2\\text{Cov}(\\phi X_{t - 1}, W_t) $$\n$X_{t - 1}, W_t$ are independent so:\n$$ \\text{Var}(X_t) = \\phi^2 \\text{Var}(X_{t - 1}) + \\sigma^2 $$\nFor the process to be stationary, its variance needs to stay the same over time:\n$$ \\text{Var}(X_t) = \\phi^2 \\text{Var}(X_{t}) + \\sigma^2 $$\nWe get the following condition for the variance:\n$$ \\text{Var}(X_t) = \\frac{\\sigma^2}{1 - \\phi^2} $$\nRemember that we also know that: $c = (1 - \\phi)\\mu(X_t)$, we can then center the process:\n$$ X_t - \\mu(X_t) = \\phi(X_{t - 1} - \\mu(X_t)) + W_t $$\nWe will use this result to compute the autocovariance function.\n$$ \\gamma(h) = \\text{Cov}(X_t, X_{t - h}) $$\nNote that we used $t - h$ instead of $t + h$ which makes no difference because we can just use $t \\leftarrow t + h$ and swap $X_t$ with $X_{t + h}$.\n$$ \\gamma(h) = E[(X_t - \\mu)(X_{t - h} - \\mu)] $$\n$$ \\gamma(h) = E[(\\phi(X_{t - 1} - \\mu) + W_t)(X_{t - h} - \\mu)] $$\n$$ \\gamma(h) = E[(\\phi (X_{t - 1} - \\mu))(X_{t - h} - \\mu)] + \\text{Cov}(W_t, X_{t - h}) $$\n$$ \\gamma(h) = \\phi \\text{Cov}(X_{t - 1}, X_{t - h}) $$\n$$ \\gamma(h) = \\phi \\gamma(h - 1) $$\nBy iterating:\n$$ \\gamma(h) = \\phi^h \\gamma(0) = \\phi^h \\text{Var}(X_t) $$\nWe already computed the value of the variance:\n$$ \\gamma(h) = \\phi^h \\frac{\\sigma^2}{1 - \\phi^2} $$\nBased on the values of the mean, the variance and the autocorrelation, we can say that the process is weakly stationary if:\n$$ |\\phi| \u003c 1 $$\nMA process The idea behind moving average processes is that current values can be expressed as a linear combination of the current white noise and the $q$ most recent past white noise terms.\nLet $\\left{ X_t \\right}$ be a time series and $\\left{ W_t \\right}$ be a white noise series. A moving average model of order q is defined as:\n$$ X_t = W_t - \\theta_1 W_{t - 1} - … - \\theta_q W_{t - q} $$\nUsing the backshift operator:\n$$ X_t = \\theta(B)W_t $$\nWhere $\\theta(B) = 1 - \\theta_1 B - … - \\theta_q B^q$.\nThe $\\text{MA}(1)$ process is then given by:\n$$ X_t = W_t - \\theta W_{t - 1} $$\nThe condition for stationarity is always fulfilled:\n$\\mu(X_t) = 0$ $\\gamma(0) = \\text{Var}(X_t) = \\sigma^2(1 - \\theta^2)$ $\\gamma(1) = \\text{Cov}(X_t, X_{t - 1}) = -\\theta \\sigma^2$ $\\gamma(h) = \\text{Cov}(X_t, X_{t - h}) = E[(W_t - \\theta W_{t - 1})(W_{t - h} - \\theta W_{t - h - 1})] = 0$ if $h \u003e 1$ ARMA process Autoregressive models and moving average models take into account different kinds of dependencies between observations over time.\nWe can mix those two types of models into one.\nLet $\\left{ X_t \\right}$ be a time series and $\\left{ W_t \\right}$ a white noise series. An autoregressive moving average process of order (p, q) is defined as:\n$$ X_t = \\phi_1 X_{t - 1} + … + \\phi_p X_{t - p} + W_t - \\theta_1 W_{t - 1} - … - \\theta_q W_{t - q} $$\nIt can be written as:\n$$ (1 - \\sum_{i=1}^{p} \\phi_i B^i) X_t = (1 - \\sum_{i=1}^{q} \\theta_i B^i)W_t $$\nUsing the backward shift operator, the process can be expressed as:\n$$ \\phi(B)X_t = \\theta(B)W_t $$\nWhere: $\\phi(B) = 1 - \\phi_1 B -…- \\phi_p B^p$ and $\\theta(B) = 1 - \\theta_1 B - … - \\theta_p B^p$.\nThe $\\text{ARMA(1, 1)}$ process is given by:\n$$ X_t = \\phi X_{t - 1} + W_t - \\theta W_{t - 1} $$\nIts stationary condition is $\\phi \\neq 1$ Its causal condition is $|\\phi| \u003c 1$ Its invertibility condition is $|\\theta| \u003c 1$ The autocovariance function is:\n$$ \\gamma(0) = \\frac{\\sigma^2(1 + \\theta^2 - 2 \\phi \\theta)}{1 - \\phi^2} $$\n$$ \\gamma(1) = \\frac{\\sigma^2(1 - \\phi \\theta)(\\phi - \\theta)}{1 - \\phi^2} $$\n$$ \\gamma(h) = \\phi \\gamma(h - 1) = \\phi^{h - 1}\\gamma(1) $$\nif $h \u003e 1$.\nNon-stationary Processes Some time series are not stationary because of trends or seasonal effects.\nA time seres that is non stationary because of a trend can be differentiated into a stationary time series. Once differentiated it is possible to fit an ARMA model on it.\nThis kind of processes is called autoregressive integrated moving average (ARIMA) since the differentiated series needs to be summed or integrated to recover the original series.\nARIMA was introduced in 1955.\nThe seasonal component of a time series is the change that is repeated cyclically over time and at the same frequency. The ARIMA model can be extended to take into account the seasonal component. This is done by adding additional parameters. In this case, it is known as seasonal autoregressive integrated moving average models (SARIMA).\nARIMA process A time series that is not stationary in terms of mean can be differentiated as many times as needed until stationary. It is done by substracting the previous observation to the current observation, we are not talking about computing the derivative here.\nWe define the differential operator $\\nabla$:\n$$ \\nabla := (1 - B) $$\nAnd\n$$ \\nabla X_t = (1 - B)X_t = X_t - X_{t - 1} $$\nLet’s take an example: the random walk. This process is defined as :\n$$ X_t = X_{t - 1} + W_t $$\nWe saw that this process is not stationary, but we can differentiate it:\n$$ \\nabla X_t = X_{t - 1} + W_t - X_{t - 1} = W_t $$\nwhich is stationary.\nLet $\\left{ X_t \\right}$ be a time series and $d$ a positive integer. $\\left{ X_t \\right}$ is an autoregressive integrated moving average model of order (p, d, q) if:\n$$ Y_t = (1 - B)^d X_t $$\nis a causal $\\text{ARMA(p, q)}$ process.\nSubstituting $Y_t$, we get:\n$$ \\phi(B)(1 - B)^d X_t = \\theta(B) W_t $$\nIt basically means that an ARIMA(p, d, q) series is a series that after being differentiated d times, is an ARMA(p, q) series.\nThe p is the order of the autoregressive part, the q is the order of the moving average part and the d is the number of times we differentiate the series.\nNote that if $d = 0$, this model represents a stationary ARMA(p, q) process.\nWe say that a series is integrated of order $d$ if it is not stationary but its $d$ difference is stationary. Fitting an ARMA model to an integrated process is known as fitting an ARIMA model.\nLet’s give some examples.\nARIMA(1, 1, 0) The ARIMA(1, 1, 0) is a simple ARIMA model where the process is made of a series that after being differentiated one time is a autoregressive model with no moving average part.\nARIMA(0, 1, 1) The ARIMA(0, 1, 1) is a simple ARIMA model where the process is made of a series that after being differentiated one time is a moving average model with no autoregressive part.\nSARIMA process We give the SARIMA process definition for information purposes only, we won’t discuss it in details.\nLet $\\left{ X_t \\right}$ be a time series and $d, D$ positive integers. $\\left{ X_t \\right}$ is a seasonal autoregressive integrated moving average model of order (p, d, q) with period s if the process $Y_t = (1 - B)^d(1 - B^2)^DX_t$ is a causal $\\text{ARMA}$ process defined by:\n$$ \\phi(B)\\Phi(B^s)Y_t = \\theta(B)\\Theta(B^s)W_t $$\nwith $\\phi(B) = 1 - \\phi_1 B -…- \\phi_p B^p$, $\\Phi(B^s) = 1 - \\Phi B^s -…- \\Phi B^{Ps}$, $\\theta(B) = 1 - \\theta_1 B - …- \\theta_pB^p$, $\\Theta(B^s) = 1 - \\Theta_1 B - …- \\Theta_Q B^{Qs}$.\nModel Selection The main reason of modeling time series is for forecasting purposes. Therefore it is necessary to know which model is best for a specific time series.\nThe procedure of identifying a worthy model for our time series follows these steps:\nIdentify a model Estimate the parameters of the model Check if the model fits well the data If yes, we keep the model, if not we go back to step 1 Model identification Here we are trying to find a model that could potentially fit our data. The first thing to do is fit an ARMA model to make sure that our data is stationary in mean.\nIf the data are not stationary in mean, we differentiate it until it is. If the data is not stationary in variance, then a specific transformation can be applied: the Box and Cox power transformation.\nLet $\\left{ X_t \\right}$ be a time series. We define the Box-Cox transformation $f_{\\lambda}$ as:\n$$ f_{\\lambda}(X_t) = \\begin{cases} \\frac{X_t^{\\lambda} - 1}{\\lambda} \u0026 \\text{ if } \\lambda \u003e 0 \\ \\ln X_t \u0026 \\text{ if } \\lambda = 0 \\end{cases} $$\nWhere $\\lambda$ is a real parameter.\nMost of the time, we use $\\lambda = 0$.\nThe transformation has to be applied before differentiation.\nParameters estimation Once a feasible model has been identified we have to estimate its parameters.\nOne of the most used method for parameters estimation is the well known maximum likelihood estimation method. This method estimates the parameters that maximise the probability of the observed data. The parameters are the ones with the highest probability of generating the data.\nLet $\\left{ X_t \\right}$ be a time series and $\\Gamma_n$ the covariance matrix. Assuming that $\\Gamma_n$ is non singular, the function of likelihood of $X_t$ is:\n$$ L(\\Gamma_n) = (2\\pi)^{-n/2} \\text{det}(\\Gamma_n)^{-1/2} \\exp(-\\frac{1}{2}X_n\\Gamma_n^{-1}X’_n) $$\nNote that the covariance matrix depends on the values of the parameters, so it depends on the chosen model.\nIn case $\\left{ X_t \\right}$ is univariate, the function of likelihood becomes:\n$$ L(X_t) = \\frac{1}{(2\\pi)^{n/2} \\sigma^n}\\exp(- \\frac{1}{2 \\sigma^2} \\sum (X_i - \\mu)^2) $$\nPractically, we will assume the noise $\\left{ W_t \\right}$ follows a normal distribution $N(0, \\sigma^2)$. This is why we can get such a likelihood function.\nOnce we have this likelihood function, we will take its logarithm. Because the logarithm is a monotonic function, it does not change the value of the minimum.\nThen, we compute the derivative of the logarithm of the likelihood with respect to the variance of the white noise. Finally, we search for the values of the parameters that minimise this derivative.\nResolution for AR(1) Let us take $X_t = \\phi X_{t - 1} + W_t$ with $W_t \\sim N(0, \\sigma^2)$.\nOne can write that:\n$$ X_t|X_{t - 1} \\sim N(\\phi X_{t-1}, \\sigma^2) $$\nAnd then give the conditional likelihood:\n$$ L(X|X_{-1}) = \\prod^{T}{i = 2}L(x_i|x{i - 1}) $$\n$$ L(X|X_{-1}) = (\\sigma^2 2 \\pi)^{-\\frac{T - 1}{2}}\\exp(-\\frac{1}{2 \\sigma^2} \\sum^T_{i = 2}(x_i - \\phi x_{i - 1})^2) $$\nThen after applying the log on it:\n$$ \\log L(X|X_{-1}) = -\\frac{T - 1}{2} (\\log 2 \\pi + \\log \\sigma^2) - \\frac{1}{2 \\sigma^2}\\sum^T_{i = 2}(x_i - \\phi x_{i - 1})^2 $$\nOnce we have the log likelihood expression, we need to compute its derivative with respect to $\\sigma$ and find the best values for the parameters $\\sigma, \\phi$.\nHere is an interesting paper about the resolution for ARMA(1, 1):\nModel diagnostic Finally, once we have a model and its corresponding parameters, we need to make sure that the model is adequate.\nIn order to find the model with the highest potential of “good fitting”, we can use the Akaike Information Criterion. This criterion evaluates the quality of the model relatively to other models based on the information that is lost by using the model instead of others.\nLet $\\left{ X_t \\right}$ be a time series and $L$ be the likelihood function of the model. The Akaike information criterion is given by:\n$$ AIC = 2k - 2\\ln(L) $$\nWith k the number of parameters in the model.\nThe model that minimises the loss information is the minimum $AIC$ model.\nConclusion Even though the previous methods are relatively simple, they tend to work very well on time series. Learning them provides us with benchmarks to compare the performance of our deep learning models.\nBecause most of the time deep learning relies on very big sets of parameters, we need to make sure that it offers a advantage over smaller models.\nAs a conclusion, here is a funny blog post about an extremely simple method to forecast financial time series.\nThe probable speculative constant\nAdditional Resources General statistics \u0026 probability theory Statlect, the digital textbook | Probability, statistics, matrix algebra\nProbability Theory and Stochastic Processes\nParameters estimation Miscellaneous PROGNOSTIKON\nPractical Work In order to put into practice what we just learnt, we are going to forecast the monthly number of air passengers.\nSetup the notebook Create a notebook and download the data that is located inside the Google Drive folder that you should have access to.\nhttps://drive.google.com/file/d/154k9rmqAeg2JdOUyeE4kQKyykoAxivwZ/view?usp=sharing\nYou will need several libraries. Some of them come with python, some of them need to be installed manually.\nimport os import numpy import pandas from scipy.stats import boxcox from matplotlib import pyplot as plt from statsmodels.tsa.arima.model import ARIMA Read the data In the same folder, you will also find the data file named data.csv.\nIt contains the monthly number of air passenger from 1949 to 1960.\nThe file itself is very simple, it contains only two columns, one with being the date and the second being the number of passengers.\nPlot the data Using matplotlib, plot the data inside the notebook. This should show a clear trend and seasonality.\nMake the series stationary To make sure the process is stationary, we need both to remove the seasonality and the trend. We will start by removing the seasonality using the Box-Cox transformation.\nThe transformation is available inside the scipy Python package.\nfrom scipy.stats import boxcox scipy.stats.boxcox — SciPy v1.11.3 Manual\nOnce the seasonality is remove, we can differentiate. Feel free to differentiate many times in order to see how this affects the data and at what point it seems stationary in mean.\nYou can differentiate manually using the .diff method of the pandas.DataFrame object (it is also available to the pandas.Series object).\npandas.DataFrame.diff — pandas 2.1.2 documentation\nThe .diff method is also available on numpy.array object.\nnumpy.diff — NumPy v1.26 Manual\nChoose a model \u0026 estimate its parameters Once the data is stationary, we need to choose a model and estimate its parameters.\nThis can be done using the statsmodels library that contains specific functions to work with ARIMA and ARMA models. Here is how you can import them:\nfrom statsmodels.tsa.arima.model import ARIMA You can notice that there is no ARMA specific import. It is so because the ARMA(p, q) model is equivalent to an ARIMA(p, 0, q) model.\nAnd the documentation:\nstatsmodels.tsa.arima.model.ARIMA - statsmodels 0.14.0\nFitting a model using this library will return an object that you can use to display a summary:\nprint(result.summary()) Inside the summary, you will find the value of the AIC criterion.\nYou have to try many values for p and q (if you are sure that d is the right one after differentiation) and choose the best values for both of them based on the value of the AIC criterion.\nAnalyse the results Finally, in order to evaluate the results, you can forecast using the model you just fit. A method get_forecast exists for the result of the fit method of the ARIMA object.\nYou can use it to get the next values of the time series.\nOnce you managed to forecast, you can get to the original data back by retransforming the data to the original non-stationary series.\nThe differentiation depends on the value of the d parameters your fitting gave.\nThe Box-Cox transformation can be reverted using the scipy library again:\nfrom scipy.special import inv_boxcox scipy.special.inv_boxcox — SciPy v1.11.3 Manual\n",
+  "wordCount" : "4164",
+  "inLanguage": "en",
+  "datePublished": "2025-03-16T15:36:50+01:00",
+  "dateModified": "2025-03-16T15:36:50+01:00",
+  "author":{
+    "@type": "Person",
+    "name": "Julien Seveno"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://bornlex.github.io/posts/epita-1-timeseries/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Julien's blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://bornlex.github.io/%3Clink%20/%20abs%20url%3E"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://bornlex.github.io/" accesskey="h" title="Home (Alt + H)">
+                <img src="https://bornlex.github.io/apple-touch-icon.png" alt="" aria-label="logo"
+                    height="35">Home</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://bornlex.github.io/" title="Posts">
+                    <span>Posts</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/Bornlex/Whitespace-interpreter" title="Whitespace Interpreter">
+                    <span>Whitespace Interpreter</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://bornlex.github.io/posts/me/" title="About me">
+                    <span>About me</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://bornlex.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://bornlex.github.io/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      EPITA Courses - Timeseries
+    </h1>
+    <div class="post-meta"><span title='2025-03-16 15:36:50 +0100 CET'>March 16, 2025</span>&nbsp;·&nbsp;20 min&nbsp;·&nbsp;4164 words&nbsp;·&nbsp;Julien Seveno&nbsp;|&nbsp;<a href="https://github.com/%3cpath_to_repo%3e/content/posts/epita-1-timeseries.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+  </header> 
+  <div class="post-content"><h1 id="time-series">Time Series<a hidden class="anchor" aria-hidden="true" href="#time-series">#</a></h1>
+<h2 id="time-series--stochastic-processes">Time series &amp; stochastic processes<a hidden class="anchor" aria-hidden="true" href="#time-series--stochastic-processes">#</a></h2>
+<p>A time series is a set of observations $x_t$ generated sequentially over time $t$.</p>
+<p>There are two main types of time series:</p>
+<ul>
+<li>continuous time series</li>
+<li>discrete time series</li>
+</ul>
+<p>We can also differentiate time series whose values can be determined by mathematical functions, deterministic time series, from the time series that have some random component, non-deterministic time series.</p>
+<p>To forecast non-deterministic time series, we assume that there is a probability model that generates the observations of the time series.</p>
+<p><strong>Definition</strong>: A <em>discrete time stochastic process</em> is a sequence of random variables  $\left{ X_t \right}$ defined over time $t$.</p>
+<p>We can then think about a time series as a particular realization of a stochastic process: $(X_0, X_1, &hellip;, X_n)$.</p>
+<p>Time series analysis is about uncovering the stochastic process that has generated the time series.</p>
+<h2 id="stationarity">Stationarity<a hidden class="anchor" aria-hidden="true" href="#stationarity">#</a></h2>
+<p>When forecasting, we assume that some properties of the time series are maintained over time. For example, if a time series tend to increase or if the observations are always around the same value, we expect this characteristics to be present on future observations.</p>
+<p>Let’s define these properties and the time series whose properties are constant over time.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Let  $\left{ X_t \right}$ be a time series. The <em>mean function</em> of  $\left{ X_t \right}$ is defined as</p>
+<p>$$
+\mu(t) = E(X_t)
+$$</p>
+<p>where $E(X_t)$ is the expected value of the random variable $X_t$.</p>
+<hr>
+<p>Now, let’s define the covariance function between two random variables of our time series.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Let $\left{ X_t \right}$ be a time series. The <em>covariance function</em> of $\left{ X_t \right}$ is</p>
+<p>$$
+\gamma(t, t+h) = \text{Cov}(X_t, X_{t+h}) = E[(X_t - \mu(t)). (X_{t+h} - \mu(t + h))]
+$$</p>
+<p>Where $t = 1, 2, &hellip;, n$ and $h = 1, 2, &hellip;, n - t$.</p>
+<hr>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Let $\left{ X_t \right}$ be a time series. $\left{ X_t \right}$ is <em>strictly stationary</em> if $(X_1, &hellip;, X_n)$ and $(X_{1 + h}, &hellip;, X_{n + h})$ have the same joint distribution for all $h$.</p>
+<hr>
+<p>It means that the time series is stationary if the distribution is unchanged after any arbitrary shift.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Let $\left{ X_t \right}$ be a time series. $\left{ X_t \right}$ is <em>weakly stationary</em> if</p>
+<ol>
+<li>$E(X_t^2) &lt; \infty$ for all $t$</li>
+<li>$\mu(r) = \mu(s)$ for all $r, s$</li>
+<li>$\gamma(r, r + h) = \gamma(s, s + h)$ for all $r, s, h$</li>
+</ol>
+<p>In other words, a time series is weakly stationary if its second moment is always finite, its mean is constant and its covariance depends only on the distance between observations, also called <em>lag</em>.</p>
+<hr>
+<p>From now on, when talking about stationarity, we will mean <em>weakly stationarity</em>.</p>
+<h2 id="correlation">Correlation<a hidden class="anchor" aria-hidden="true" href="#correlation">#</a></h2>
+<p>Since the covariance only depends on lag $h$ on weakly stationary time series, we can define the covariance function of these time series with only variable. This function is known as <em>autocovariance function</em>.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Let $\left{ X_t \right}$ be a weakly stationary time series. The <em>autocovariance function</em> of $\left{ X_t \right}$ at lag $h$ is</p>
+<p>$$
+\gamma(h) = \text{Cov}(X_t, X_{t + h}) = E[(X_t - \mu) . (X_{t + h} - \mu)]
+$$</p>
+<hr>
+<p>One can notice that $\gamma(0) = E[(X_t - \mu)^2] = \sigma^2$ is the variance of the time series.</p>
+<p>From this definition, we can define the <em>autocorrelation function</em>.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Let $\left{ X_t \right}$ be a weakly stationary time series. The <em>autocorrelation function</em> of $\left{ X_t \right}$ at lag $h$ is</p>
+<p>$$
+\rho(h) = \frac{\gamma(h)}{\gamma(0)}
+$$</p>
+<hr>
+<p>We easily see that $\rho(0) = 1$. Also, we can notice that $|\rho(h)| \leq 1$ because of the Cauchy-Schwarz inequality:</p>
+<p>$$
+|\gamma(h)|^2 = (E[(X_t - \mu) . (X_{t + h} - \mu)])^2 \leq E[(X_t - \mu)^2] . E[(X_{t + h} - \mu)^2] = \gamma(0)^2
+$$</p>
+<h3 id="proof">Proof<a hidden class="anchor" aria-hidden="true" href="#proof">#</a></h3>
+<p>Analyse of the $\lambda \mapsto E[(\lambda X - Y)^2]$ polynom.</p>
+<h2 id="examples">Examples<a hidden class="anchor" aria-hidden="true" href="#examples">#</a></h2>
+<p>Now that we gave some definitions, let’s show some examples of time series and their characteristics.</p>
+<h3 id="white-noise">White noise<a hidden class="anchor" aria-hidden="true" href="#white-noise">#</a></h3>
+<p><img loading="lazy" src="/epita/white-noise.png" alt="White Noise"  />
+</p>
+<p>White noise consists of a sequence of uncorrelated random variables $\left{ X_t \right}$ with mean $\mu$ and variance $\sigma^2$. If the random variables follow a normal distribution, the series is called <em>gaussian white noise.</em> Gaussian white noise is made of independent and identically distributed variables.</p>
+<p>Here is a plot of the gaussian white noise of variance<br>
+$\sigma^2 = 1$ and $\mu = 0$.</p>
+<p>Since the random variables are independent, they are not correlated, so its autocovariance function is $\sigma^2$ at lag $0$ and $0$ at lag $h &gt; 0$. Its autocorrelation is $1$ at lag $0$ and $0$ at lag $h &gt; 0$.</p>
+<h3 id="random-walk">Random walk<a hidden class="anchor" aria-hidden="true" href="#random-walk">#</a></h3>
+<p><img loading="lazy" src="/epita/random-walk.png" alt="Random Walk"  />
+</p>
+<p><strong>Definition</strong>: Let $\left{ X_t \right}$ be a time series and $\left{ W_t \right}$ an IID noise time series. $\left{ X_t \right}$ is a <em>random walk</em> if</p>
+<ul>
+<li>$X_1 = W_1$</li>
+<li>$X_t = X_{t-1} + W_t$ if $t &gt; 1$</li>
+</ul>
+<p>Note that a random walk can also be written as</p>
+<p>$$
+X_t = \sum^t_{i=1} W_i
+$$</p>
+<p>The mean of this time series is the mean of $\left{ W_t \right}$ and its covariance is given by</p>
+<p>$$
+\text{Cov}(X_t, X_{t + h}) = \text{Cov}(\sum^t_{i=1} W_i, \sum^{t+h}<em>{i=1} W_i) = \sum^t</em>{i=1} \text{Cov}(W_i, W_i) = t \sigma^2
+$$</p>
+<h3 id="exercise-prove-the-previous-result">Exercise: prove the previous result<a hidden class="anchor" aria-hidden="true" href="#exercise-prove-the-previous-result">#</a></h3>
+<p>$$
+\text{Cov}(X_t, X_{t + h}) = \text{Cov}(\sum^t_{i=1} W_i, \sum^{t+h}_{i=1} W_i)
+$$</p>
+<p>$$
+\text{Cov}(X_t, X_{t + h}) = \text{Cov}(\sum^t_{i=1} W_i, \sum^{t}<em>{i=1} W_i + \sum^{t + h}</em>{i=t + 1} W_i)
+$$</p>
+<p>$$
+\text{Cov}(X_t, X_{t + h}) = \text{Cov}(\sum^t_{i=1} W_i, \sum^{t}<em>{i=1} W_i) + \text{Cov}(\sum^t</em>{i=1} W_i, \sum^{t + h}_{i=t + 1} W_i)
+$$</p>
+<p>$$
+\text{Cov}(X_t, X_{t + h}) = \text{Var}(X_t) + 0
+$$</p>
+<p>$$
+\text{Cov}(X_t, X_{t + h}) = \sum_i^t\text{Var}(W_i)
+$$</p>
+<p>Because $W_i$ are IID.</p>
+<p>$$
+\text{Cov}(X_t, X_{t + h}) = t \sigma^2
+$$</p>
+<p>Because the <em>covariance function</em> depends on $t$, the process is <strong>not stationary</strong>.</p>
+<h3 id="quarterly-earnings">Quarterly earnings<a hidden class="anchor" aria-hidden="true" href="#quarterly-earnings">#</a></h3>
+<p>Finally, let’s give an example of real data. The time series of quarterly earnings in US dollars per Johnson &amp; Johnson share.</p>
+<p><img loading="lazy" src="/epita/earnings.png" alt="Quarterly earnings"  />
+</p>
+<p>We clearly see that the series follows an increasing trend and a seasonal component.</p>
+<h1 id="stationary-processes">Stationary Processes<a hidden class="anchor" aria-hidden="true" href="#stationary-processes">#</a></h1>
+<p>Stationary processes are series which some of their properties do not vary with time.</p>
+<h2 id="linear-processes">Linear processes<a hidden class="anchor" aria-hidden="true" href="#linear-processes">#</a></h2>
+<p>All stationary processes can be represented a follow</p>
+<p>$$
+X_t = \mu + \sum^{\infty}<em>{i = -\infty} \psi_i W</em>{t - i}
+$$</p>
+<p>for all $t$.</p>
+<p>$\mu \in \mathbb{R}$, $\left{ \psi_i \right}$ is an absolutely summable sequence of constants and $\left{ W_i \right}$ is a white noise series with mean $0$ and variance $\sigma^2$.</p>
+<h3 id="absolutely-summable-sequence">Absolutely summable sequence<a hidden class="anchor" aria-hidden="true" href="#absolutely-summable-sequence">#</a></h3>
+<p>For a sequence to be <em>absolutely summable</em>, the following condition needs to be met:</p>
+<p>$$
+\sum^{\infty}_{n = -\infty} |a_n| \lt \infty
+$$</p>
+<p>We define the <em>backward shift operator</em>, $B$, as</p>
+<p>$$
+BX_t = X_{t - 1}
+$$</p>
+<p>and</p>
+<p>$$
+B^iX_t = X_{t - i}
+$$</p>
+<p>Linear processes can also be represented as</p>
+<p>$$
+X_t = \mu + \psi(B) W_t
+$$</p>
+<p>where</p>
+<p>$$
+\psi(B) = \sum^{\infty}_{i = -\infty} \psi_i B^i
+$$</p>
+<p>The mean of the linear process is $\mu$ and its covariance function is given by:</p>
+<p>$$
+\gamma(h) = \text{Cov}(X_t, X_{t+h}) = \text{Cov}(\mu + \sum^{\infty}<em>{i = -\infty} \psi_i W</em>{t - i}, \mu + \sum^{\infty}<em>{i = -\infty} \psi_i W</em>{t + h - i})
+$$</p>
+<p>$$
+\gamma(h) = \sum^{\infty}<em>{i = -\infty} \psi_i \psi</em>{i + h} \text{Cov}(W_{t - i}, W_{t - i}) = \sigma^2 \sum^{\infty}<em>{i = -\infty} \psi_i \psi</em>{i + h}
+$$</p>
+<p>since $\text{Cov}(W_{t - i}, W_{t + h - i}) = 0$ if $t - i \neq t + h - i$.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>A linear process is said to be <em>causal</em> or a <em>causal function of</em> $\left{ Z_t \right}$ if there exists constants $\left{ \psi_i \right}$ such that $\sum^{\infty}_{i = 0} |\psi_i| \lt \infty$ and:</p>
+<p>$$
+X_t = \sum^{\infty}<em>{i = 0} \psi_i W</em>{t - i}
+$$</p>
+<p>for all $t$.</p>
+<hr>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>A linear process is <em>invertible</em> if there exists constants $\left{ \pi_i \right}$ such that $\sum^{\infty}_{i = 0} |\pi_i| \lt \infty$ and:</p>
+<p>$$
+W_t = \sum^{\infty}<em>{i = 0} \pi_i X</em>{t - i}
+$$</p>
+<p>for all $t$.</p>
+<hr>
+<h2 id="ar-process">AR process<a hidden class="anchor" aria-hidden="true" href="#ar-process">#</a></h2>
+<p>Autoregressive models are based on the idea that the current value can be expressed as a combination of previous values of the series plus a random component.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Let $\left{ X_t \right}$ be a time series and $\left{ W_t \right}$ a white noise series. An <em>autoregressive model of order p</em> is defined as:</p>
+<p>$$
+X_t = c + \sum_{i = 1}^{p} \phi_i X_{t - i} + W_t
+$$</p>
+<p>Where $\phi_i$ are constants and $\phi_p \neq 0$.</p>
+<p>Using the backward shift operator, we can rewrite the previous expression as:</p>
+<p>$$
+X_t = c + \phi_1 B X_{t - 1}+ \phi_2 B^2 X_{t-2} + &hellip; + \phi_p B^p X_{t - p} + W_t
+$$</p>
+<p>Sometime the following concise notation is used:</p>
+<p>$$
+\phi(B)X_t = W_t
+$$</p>
+<p>where $\phi(B) = 1 - \phi_1 B - \phi_2 B^2 - &hellip; - \phi_p B^p$.</p>
+<hr>
+<p>The $\text{AR}(1)$ process is then given by:</p>
+<p>$$
+X_t = c + \phi X_{t - 1} + W_t
+$$</p>
+<h3 id="stationarity-of-the-textar1--process">Stationarity of the $\text{AR}(1)$  process<a hidden class="anchor" aria-hidden="true" href="#stationarity-of-the-textar1--process">#</a></h3>
+<p>Let’s first compute the mean of $\text{AR}(1)$:</p>
+<p>$$
+\mu(X_t) = \mu(c + \phi X_{t - 1} + W_t)
+$$</p>
+<p>$$
+\mu(X_t) = \mu(c) + \mu(\phi X_{t - 1}) + \mu(W_t)
+$$</p>
+<p>$$
+\mu(X_t) = c + \phi \mu(X_{t - 1})
+$$</p>
+<p>For the process to be stationary, its mean needs to be unchanged over time, which means $\mu(X_t) = \mu(X_{t-1})$:</p>
+<p>$$
+\mu(X_t) = c + \phi \mu(X_t)
+$$</p>
+<p>$$
+\mu(X_t)(1 + \phi) = c
+$$</p>
+<p>$$
+\mu(X_t) = \frac{c}{1 - \phi}
+$$</p>
+<p>Which means that $\mu(X_t) &lt; \infty$ as long as $\phi \neq 1$.</p>
+<p>Also, it gives us a condition for the process to be stationary, linking both $\phi, c$.</p>
+<p>Let’s look at its variance:</p>
+<p>$$
+\text{Var}(X_t) = \text{Var}(c + \phi X_{t - 1} + W_t)
+$$</p>
+<p>$$
+\text{Var}(X_t) = \phi^2 \text{Var}(X_{t - 1}) + \text{Var}(W_t) + 2\text{Cov}(\phi X_{t - 1}, W_t)
+$$</p>
+<p>$X_{t - 1}, W_t$ are independent so:</p>
+<p>$$
+\text{Var}(X_t) = \phi^2 \text{Var}(X_{t - 1}) + \sigma^2
+$$</p>
+<p>For the process to be stationary, its variance needs to stay the same over time:</p>
+<p>$$
+\text{Var}(X_t) = \phi^2 \text{Var}(X_{t}) + \sigma^2
+$$</p>
+<p>We get the following condition for the variance:</p>
+<p>$$
+\text{Var}(X_t) = \frac{\sigma^2}{1 - \phi^2}
+$$</p>
+<p>Remember that we also know that: $c = (1 - \phi)\mu(X_t)$, we can then center the process:</p>
+<p>$$
+X_t - \mu(X_t) = \phi(X_{t - 1} - \mu(X_t)) + W_t
+$$</p>
+<p>We will use this result to compute the autocovariance function.</p>
+<p>$$
+\gamma(h) = \text{Cov}(X_t, X_{t - h})
+$$</p>
+<p>Note that we used $t - h$ instead of $t + h$ which makes no difference because we can just use $t \leftarrow t + h$ and swap $X_t$ with $X_{t + h}$.</p>
+<p>$$
+\gamma(h) = E[(X_t - \mu)(X_{t - h} - \mu)]
+$$</p>
+<p>$$
+\gamma(h) = E[(\phi(X_{t - 1} - \mu) + W_t)(X_{t - h} - \mu)]
+$$</p>
+<p>$$
+\gamma(h) = E[(\phi (X_{t - 1} - \mu))(X_{t - h} - \mu)] + \text{Cov}(W_t, X_{t - h})
+$$</p>
+<p>$$
+\gamma(h) = \phi \text{Cov}(X_{t - 1}, X_{t - h})
+$$</p>
+<p>$$
+\gamma(h) = \phi \gamma(h - 1)
+$$</p>
+<p>By iterating:</p>
+<p>$$
+\gamma(h) = \phi^h \gamma(0) = \phi^h \text{Var}(X_t)
+$$</p>
+<p>We already computed the value of the variance:</p>
+<p>$$
+\gamma(h) = \phi^h \frac{\sigma^2}{1 - \phi^2}
+$$</p>
+<p>Based on the values of the mean, the variance and the autocorrelation, we can say that the process is weakly stationary if:</p>
+<p>$$
+|\phi| &lt; 1
+$$</p>
+<h2 id="ma-process">MA process<a hidden class="anchor" aria-hidden="true" href="#ma-process">#</a></h2>
+<p>The idea behind moving average processes is that current values can be expressed as a linear combination of the current white noise and the $q$ most recent past white noise terms.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Let $\left{ X_t \right}$ be a time series and $\left{ W_t \right}$ be a white noise series. A <em>moving average model of order q</em> is defined as:</p>
+<p>$$
+X_t = W_t - \theta_1 W_{t - 1} - &hellip; - \theta_q W_{t - q}
+$$</p>
+<hr>
+<p>Using the backshift operator:</p>
+<p>$$
+X_t = \theta(B)W_t
+$$</p>
+<p>Where $\theta(B) = 1 - \theta_1 B - &hellip; - \theta_q B^q$.</p>
+<p>The $\text{MA}(1)$ process is then given by:</p>
+<p>$$
+X_t = W_t - \theta W_{t - 1}
+$$</p>
+<p>The condition for stationarity is always fulfilled:</p>
+<ul>
+<li>$\mu(X_t) = 0$</li>
+<li>$\gamma(0) = \text{Var}(X_t) = \sigma^2(1 - \theta^2)$</li>
+<li>$\gamma(1) = \text{Cov}(X_t, X_{t - 1}) = -\theta \sigma^2$</li>
+<li>$\gamma(h) = \text{Cov}(X_t, X_{t - h}) = E[(W_t - \theta W_{t - 1})(W_{t - h} - \theta W_{t - h - 1})] = 0$ if $h &gt; 1$</li>
+</ul>
+<h2 id="arma-process">ARMA process<a hidden class="anchor" aria-hidden="true" href="#arma-process">#</a></h2>
+<p>Autoregressive models and moving average models take into account different kinds of dependencies between observations over time.</p>
+<p>We can mix those two types of models into one.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Let $\left{ X_t \right}$ be a time series and $\left{ W_t \right}$ a white noise series. An <em>autoregressive moving average process of order (p, q)</em> is defined as:</p>
+<p>$$
+X_t = \phi_1 X_{t - 1} + &hellip; + \phi_p X_{t - p} + W_t - \theta_1 W_{t - 1} - &hellip; - \theta_q W_{t - q}
+$$</p>
+<p>It can be written as:</p>
+<p>$$
+(1 - \sum_{i=1}^{p} \phi_i B^i) X_t = (1 - \sum_{i=1}^{q} \theta_i B^i)W_t
+$$</p>
+<hr>
+<p>Using the backward shift operator, the process can be expressed as:</p>
+<p>$$
+\phi(B)X_t = \theta(B)W_t
+$$</p>
+<p>Where: $\phi(B) = 1 - \phi_1 B -&hellip;- \phi_p B^p$ and $\theta(B) = 1 - \theta_1 B - &hellip; - \theta_p B^p$.</p>
+<p>The $\text{ARMA(1, 1)}$ process is given by:</p>
+<p>$$
+X_t = \phi X_{t - 1} + W_t - \theta W_{t - 1}
+$$</p>
+<ul>
+<li>Its stationary condition is $\phi \neq 1$</li>
+<li>Its causal condition is $|\phi| &lt; 1$</li>
+<li>Its invertibility condition is $|\theta| &lt; 1$</li>
+</ul>
+<p>The autocovariance function is:</p>
+<p>$$
+\gamma(0) = \frac{\sigma^2(1 + \theta^2 - 2 \phi \theta)}{1 - \phi^2}
+$$</p>
+<p>$$
+\gamma(1) = \frac{\sigma^2(1 - \phi \theta)(\phi - \theta)}{1 - \phi^2}
+$$</p>
+<p>$$
+\gamma(h) = \phi \gamma(h - 1) = \phi^{h - 1}\gamma(1)
+$$</p>
+<p>if $h &gt; 1$.</p>
+<h1 id="non-stationary-processes">Non-stationary Processes<a hidden class="anchor" aria-hidden="true" href="#non-stationary-processes">#</a></h1>
+<p>Some time series are not stationary because of trends or seasonal effects.</p>
+<p>A time seres that is non stationary because of a trend can be differentiated into a stationary time series. Once differentiated it is possible to fit an ARMA model on it.</p>
+<p>This kind of processes is called autoregressive integrated moving average (ARIMA) since the differentiated series needs to be summed or integrated to recover the original series.</p>
+<p>ARIMA was introduced in 1955.</p>
+<p>The seasonal component of a time series is the change that is repeated cyclically over time and at the same frequency. The ARIMA model can be extended to take into account the seasonal component. This is done by adding additional parameters. In this case, it is known as seasonal autoregressive integrated moving average models (SARIMA).</p>
+<h2 id="arima-process">ARIMA process<a hidden class="anchor" aria-hidden="true" href="#arima-process">#</a></h2>
+<p>A time series that is not stationary in terms of mean can be differentiated as many times as needed until stationary. It is done by substracting the previous observation to the current observation, we are not talking about computing the derivative here.</p>
+<p>We define the <em>differential operator</em> $\nabla$:</p>
+<p>$$
+\nabla := (1 - B)
+$$</p>
+<p>And</p>
+<p>$$
+\nabla X_t = (1 - B)X_t = X_t - X_{t - 1}
+$$</p>
+<p>Let’s take an example: the random walk. This process is defined as :</p>
+<p>$$
+X_t = X_{t - 1} + W_t
+$$</p>
+<p>We saw that this process is not stationary, but we can differentiate it:</p>
+<p>$$
+\nabla X_t = X_{t - 1} + W_t - X_{t - 1} = W_t
+$$</p>
+<p>which is stationary.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Let $\left{ X_t \right}$ be a time series and $d$ a positive integer. $\left{ X_t \right}$ is an <em>autoregressive integrated moving average model of order (p, d, q)</em> if:</p>
+<p>$$
+Y_t = (1 - B)^d X_t
+$$</p>
+<p>is a causal $\text{ARMA(p, q)}$ process.</p>
+<p>Substituting $Y_t$, we get:</p>
+<p>$$
+\phi(B)(1 - B)^d X_t = \theta(B) W_t
+$$</p>
+<p>It basically means that an ARIMA(p, d, q) series is a series that after being differentiated d times, is an ARMA(p, q) series.</p>
+<hr>
+<p>The p is the order of the autoregressive part, the q is the order of the moving average part and the d is the number of times we differentiate the series.</p>
+<p>Note that if $d = 0$, this model represents a stationary ARMA(p, q) process.</p>
+<p>We say that a series is integrated of order $d$ if it is not stationary but its $d$ difference is stationary. Fitting an ARMA model to an integrated process is known as fitting an ARIMA model.</p>
+<p>Let’s give some examples.</p>
+<h3 id="arima1-1-0">ARIMA(1, 1, 0)<a hidden class="anchor" aria-hidden="true" href="#arima1-1-0">#</a></h3>
+<p>The ARIMA(1, 1, 0) is a simple ARIMA model where the process is made of a series that after being differentiated one time is a autoregressive model with no moving average part.</p>
+<h3 id="arima0-1-1">ARIMA(0, 1, 1)<a hidden class="anchor" aria-hidden="true" href="#arima0-1-1">#</a></h3>
+<p>The ARIMA(0, 1, 1) is a simple ARIMA model where the process is made of a series that after being differentiated one time is a moving average model with no autoregressive part.</p>
+<h2 id="sarima-process">SARIMA process<a hidden class="anchor" aria-hidden="true" href="#sarima-process">#</a></h2>
+<p>We give the SARIMA process definition for information purposes only, we won’t discuss it in details.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Let $\left{ X_t \right}$ be a time series and $d, D$ positive integers. $\left{ X_t \right}$ is a <em>seasonal autoregressive integrated moving average model of order (p, d, q) with period s</em> if the process $Y_t = (1 - B)^d(1 - B^2)^DX_t$ is a causal $\text{ARMA}$ process defined by:</p>
+<p>$$
+\phi(B)\Phi(B^s)Y_t = \theta(B)\Theta(B^s)W_t
+$$</p>
+<p>with $\phi(B) = 1 - \phi_1 B -&hellip;- \phi_p B^p$, $\Phi(B^s) = 1 - \Phi B^s -&hellip;- \Phi B^{Ps}$, $\theta(B) = 1 - \theta_1 B - &hellip;- \theta_pB^p$, $\Theta(B^s) = 1 - \Theta_1 B - &hellip;- \Theta_Q B^{Qs}$.</p>
+<h1 id="model-selection">Model Selection<a hidden class="anchor" aria-hidden="true" href="#model-selection">#</a></h1>
+<p>The main reason of modeling time series is for forecasting purposes. Therefore it is necessary to know which model is best for a specific time series.</p>
+<p>The procedure of identifying a worthy model for our time series follows these steps:</p>
+<ol>
+<li>Identify a model</li>
+<li>Estimate the parameters of the model</li>
+<li>Check if the model fits well the data</li>
+<li>If yes, we keep the model, if not we go back to step 1</li>
+</ol>
+<h2 id="model-identification">Model identification<a hidden class="anchor" aria-hidden="true" href="#model-identification">#</a></h2>
+<p>Here we are trying to find a model that could potentially fit our data. The first thing to do is fit an ARMA model to make sure that our data is stationary in mean.</p>
+<p>If the data are not stationary in mean, we differentiate it until it is. If the data is not stationary in variance, then a specific transformation can be applied: <em>the Box and Cox power transformation</em>.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Let $\left{ X_t \right}$ be a time series. We define the <em>Box-Cox transformation</em> $f_{\lambda}$ as:</p>
+<p>$$
+f_{\lambda}(X_t) =  \begin{cases} \frac{X_t^{\lambda} - 1}{\lambda} &amp; \text{ if } \lambda &gt; 0 \ \ln X_t &amp; \text{ if } \lambda = 0 \end{cases}
+$$</p>
+<p>Where $\lambda$ is a real parameter.</p>
+<hr>
+<p>Most of the time, we use $\lambda = 0$.</p>
+<p>The transformation has to be applied before differentiation.</p>
+<h2 id="parameters-estimation">Parameters estimation<a hidden class="anchor" aria-hidden="true" href="#parameters-estimation">#</a></h2>
+<p>Once a feasible model has been identified we have to estimate its parameters.</p>
+<p>One of the most used method for parameters estimation is the well known <em>maximum likelihood estimation</em> method.
+This method estimates the parameters that maximise the probability of the observed data. The parameters are the ones with the highest probability of generating the data.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Let $\left{ X_t \right}$ be a time series and $\Gamma_n$ the covariance matrix. Assuming that $\Gamma_n$ is non singular, the <em>function of likelihood</em> of $X_t$ is:</p>
+<p>$$
+L(\Gamma_n) = (2\pi)^{-n/2} \text{det}(\Gamma_n)^{-1/2} \exp(-\frac{1}{2}X_n\Gamma_n^{-1}X&rsquo;_n)
+$$</p>
+<p>Note that the covariance matrix depends on the values of the parameters, so it depends on the chosen model.</p>
+<p>In case $\left{ X_t \right}$ is univariate, the function of likelihood becomes:</p>
+<p>$$
+L(X_t) = \frac{1}{(2\pi)^{n/2} \sigma^n}\exp(- \frac{1}{2 \sigma^2} \sum (X_i - \mu)^2)
+$$</p>
+<hr>
+<p>Practically, we will assume the noise $\left{ W_t \right}$ follows a normal distribution $N(0, \sigma^2)$. This is why we can get such a likelihood function.</p>
+<p>Once we have this likelihood function, we will take its logarithm. Because the logarithm is a monotonic function, it does not change the value of the minimum.</p>
+<p>Then, we compute the derivative of the logarithm of the likelihood with respect to the variance of the white noise. Finally, we search for the values of the parameters that minimise this derivative.</p>
+<h3 id="resolution-for-ar1">Resolution for AR(1)<a hidden class="anchor" aria-hidden="true" href="#resolution-for-ar1">#</a></h3>
+<p>Let us take $X_t = \phi X_{t - 1} + W_t$ with $W_t \sim N(0, \sigma^2)$.</p>
+<p>One can write that:</p>
+<p>$$
+X_t|X_{t - 1} \sim N(\phi X_{t-1}, \sigma^2)
+$$</p>
+<p>And then give the conditional likelihood:</p>
+<p>$$
+L(X|X_{-1}) = \prod^{T}<em>{i = 2}L(x_i|x</em>{i - 1})
+$$</p>
+<p>$$
+L(X|X_{-1}) = (\sigma^2 2 \pi)^{-\frac{T - 1}{2}}\exp(-\frac{1}{2 \sigma^2} \sum^T_{i = 2}(x_i - \phi x_{i - 1})^2)
+$$</p>
+<p>Then after applying the log on it:</p>
+<p>$$
+\log L(X|X_{-1}) = -\frac{T - 1}{2} (\log 2 \pi + \log \sigma^2) - \frac{1}{2 \sigma^2}\sum^T_{i = 2}(x_i - \phi x_{i - 1})^2
+$$</p>
+<p>Once we have the log likelihood expression, we need to compute its derivative with respect to $\sigma$ and find the best values for the parameters $\sigma, \phi$.</p>
+<p>Here is an interesting paper about the resolution for ARMA(1, 1):</p>
+<p><a href="https://ijnaa.semnan.ac.ir/article_6032_20674a390396b812b598bb9851b764eb.pdf"></a></p>
+<h2 id="model-diagnostic">Model diagnostic<a hidden class="anchor" aria-hidden="true" href="#model-diagnostic">#</a></h2>
+<p>Finally, once we have a model and its corresponding parameters, we need to make sure that the model is adequate.</p>
+<p>In order to find the model with the highest potential of “good fitting”, we can use the Akaike Information Criterion. This criterion evaluates the quality of the model relatively to other models based on the information that is lost by using the model instead of others.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Let $\left{ X_t \right}$ be a time series and $L$ be the likelihood function of the model. The Akaike information criterion is given by:</p>
+<p>$$
+AIC = 2k - 2\ln(L)
+$$</p>
+<p>With k the number of parameters in the model.</p>
+<hr>
+<p>The model that minimises the loss information is the minimum $AIC$ model.</p>
+<h1 id="conclusion">Conclusion<a hidden class="anchor" aria-hidden="true" href="#conclusion">#</a></h1>
+<p>Even though the previous methods are relatively simple, they tend to work very well on time series. Learning them provides us with benchmarks to compare the performance of our deep learning models.</p>
+<p>Because most of the time deep learning relies on very big sets of parameters, we need to make sure that it offers a advantage over smaller models.</p>
+<p>As a conclusion, here is a funny blog post about an extremely simple method to forecast financial time series.</p>
+<p><a href="https://prognostikon.wordpress.com/2023/07/09/the-probable-speculative-constant/">The probable speculative constant</a></p>
+<h1 id="additional-resources">Additional Resources<a hidden class="anchor" aria-hidden="true" href="#additional-resources">#</a></h1>
+<h2 id="general-statistics--probability-theory">General statistics &amp; probability theory<a hidden class="anchor" aria-hidden="true" href="#general-statistics--probability-theory">#</a></h2>
+<p><a href="https://www.statlect.com/">Statlect, the digital textbook | Probability, statistics, matrix algebra</a></p>
+<p><a href="https://www.amazon.fr/Probability-Theory-Stochastic-Processes-Bremaud/dp/3030401820">Probability Theory and Stochastic Processes</a></p>
+<h2 id="parameters-estimation-1">Parameters estimation<a hidden class="anchor" aria-hidden="true" href="#parameters-estimation-1">#</a></h2>
+<p><a href="https://www.lem.sssup.it/phd/documents/Lesson12.pdf"></a></p>
+<p><a href="https://jeanmariedufour.github.io/ResE/Dufour_2008_C_TS_ARIMA_Estimation.pdf"></a></p>
+<h2 id="miscellaneous">Miscellaneous<a hidden class="anchor" aria-hidden="true" href="#miscellaneous">#</a></h2>
+<p><a href="https://prognostikon.wordpress.com/">PROGNOSTIKON</a></p>
+<h1 id="practical-work">Practical Work<a hidden class="anchor" aria-hidden="true" href="#practical-work">#</a></h1>
+<p>In order to put into practice what we just learnt, we are going to forecast the monthly number of air passengers.</p>
+<h2 id="setup-the-notebook">Setup the notebook<a hidden class="anchor" aria-hidden="true" href="#setup-the-notebook">#</a></h2>
+<p>Create a notebook and download the data that is located inside the Google Drive folder that you should have access to.</p>
+<p><a href="https://drive.google.com/file/d/154k9rmqAeg2JdOUyeE4kQKyykoAxivwZ/view?usp=sharing">https://drive.google.com/file/d/154k9rmqAeg2JdOUyeE4kQKyykoAxivwZ/view?usp=sharing</a></p>
+<p>You will need several libraries. Some of them come with python, some of them need to be installed manually.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">os</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">numpy</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">pandas</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">boxcox</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">statsmodels.tsa.arima.model</span> <span class="kn">import</span> <span class="n">ARIMA</span>
+</span></span></code></pre></div><h2 id="read-the-data">Read the data<a hidden class="anchor" aria-hidden="true" href="#read-the-data">#</a></h2>
+<p>In the same folder, you will also find the data file named data.csv.</p>
+<p>It contains the monthly number of air passenger from 1949 to 1960.</p>
+<p>The file itself is very simple, it contains only two columns, one with being the date and the second being the number of passengers.</p>
+<h2 id="plot-the-data">Plot the data<a hidden class="anchor" aria-hidden="true" href="#plot-the-data">#</a></h2>
+<p>Using matplotlib, plot the data inside the notebook. This should show a clear trend and seasonality.</p>
+<h2 id="make-the-series-stationary">Make the series stationary<a hidden class="anchor" aria-hidden="true" href="#make-the-series-stationary">#</a></h2>
+<p>To make sure the process is stationary, we need both to remove the seasonality and the trend. We will start by removing the seasonality using the Box-Cox transformation.</p>
+<p>The transformation is available inside the <strong>scipy</strong> Python package.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">boxcox</span>
+</span></span></code></pre></div><p><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.boxcox.html">scipy.stats.boxcox — SciPy v1.11.3 Manual</a></p>
+<p>Once the seasonality is remove, we can differentiate. Feel free to differentiate many times in order to see how this affects the data and at what point it seems stationary in mean.</p>
+<p>You can differentiate manually using the <strong>.diff</strong> method of the <strong>pandas.DataFrame</strong> object (it is also available to the <strong>pandas.Series</strong> object).</p>
+<p><a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.diff.html">pandas.DataFrame.diff — pandas 2.1.2 documentation</a></p>
+<p>The <strong>.diff</strong> method is also available on <strong>numpy.array</strong> object.</p>
+<p><a href="https://numpy.org/doc/stable/reference/generated/numpy.diff.html">numpy.diff — NumPy v1.26 Manual</a></p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h2 id="choose-a-model--estimate-its-parameters">Choose a model &amp; estimate its parameters<a hidden class="anchor" aria-hidden="true" href="#choose-a-model--estimate-its-parameters">#</a></h2>
+<p>Once the data is stationary, we need to choose a model and estimate its parameters.</p>
+<p>This can be done using the <strong>statsmodels</strong> library that contains specific functions to work with <strong>ARIMA</strong> and <strong>ARMA</strong> models. Here is how you can import them:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">statsmodels.tsa.arima.model</span> <span class="kn">import</span> <span class="n">ARIMA</span>
+</span></span></code></pre></div><p>You can notice that there is no ARMA specific import. It is so because the ARMA(p, q) model is equivalent to an ARIMA(p, 0, q) model.</p>
+<p>And the documentation:</p>
+<p><a href="https://www.statsmodels.org/stable/generated/statsmodels.tsa.arima.model.ARIMA.html">statsmodels.tsa.arima.model.ARIMA - statsmodels 0.14.0</a></p>
+<p>Fitting a model using this library will return an object that you can use to display a summary:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+</span></span></code></pre></div><p>Inside the summary, you will find the value of the <strong>AIC</strong> criterion.</p>
+<p>You have to try many values for p and q (if you are sure that d is the right one after differentiation) and choose the best values for both of them based on the value of the AIC criterion.</p>
+<h2 id="analyse-the-results">Analyse the results<a hidden class="anchor" aria-hidden="true" href="#analyse-the-results">#</a></h2>
+<p>Finally, in order to evaluate the results, you can forecast using the model you just fit. A method <strong>get_forecast</strong> exists for the result of the fit method of the ARIMA object.</p>
+<p>You can use it to get the next values of the time series.</p>
+<p>Once you managed to forecast, you can get to the original data back by retransforming the data to the original non-stationary series.</p>
+<p>The differentiation depends on the value of the d parameters your fitting gave.</p>
+<p>The Box-Cox transformation can be reverted using the scipy library again:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">inv_boxcox</span>
+</span></span></code></pre></div><p><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.special.inv_boxcox.html">scipy.special.inv_boxcox — SciPy v1.11.3 Manual</a></p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://bornlex.github.io/posts/epita-2-rnn/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>EPITA Courses - Recurrent Neural Networks</span>
+  </a>
+  <a class="next" href="https://bornlex.github.io/posts/me/">
+    <span class="title">Next »</span>
+    <br>
+    <span>About Me</span>
+  </a>
+</nav>
+
+
+<ul class="share-buttons">
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share EPITA Courses - Timeseries on x"
+            href="https://x.com/intent/tweet/?text=EPITA%20Courses%20-%20Timeseries&amp;url=https%3a%2f%2fbornlex.github.io%2fposts%2fepita-1-timeseries%2f&amp;hashtags=">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share EPITA Courses - Timeseries on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fbornlex.github.io%2fposts%2fepita-1-timeseries%2f&amp;title=EPITA%20Courses%20-%20Timeseries&amp;summary=EPITA%20Courses%20-%20Timeseries&amp;source=https%3a%2f%2fbornlex.github.io%2fposts%2fepita-1-timeseries%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share EPITA Courses - Timeseries on reddit"
+            href="https://reddit.com/submit?url=https%3a%2f%2fbornlex.github.io%2fposts%2fepita-1-timeseries%2f&title=EPITA%20Courses%20-%20Timeseries">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share EPITA Courses - Timeseries on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fbornlex.github.io%2fposts%2fepita-1-timeseries%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share EPITA Courses - Timeseries on whatsapp"
+            href="https://api.whatsapp.com/send?text=EPITA%20Courses%20-%20Timeseries%20-%20https%3a%2f%2fbornlex.github.io%2fposts%2fepita-1-timeseries%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share EPITA Courses - Timeseries on telegram"
+            href="https://telegram.me/share/url?text=EPITA%20Courses%20-%20Timeseries&amp;url=https%3a%2f%2fbornlex.github.io%2fposts%2fepita-1-timeseries%2f">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share EPITA Courses - Timeseries on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t=EPITA%20Courses%20-%20Timeseries&u=https%3a%2f%2fbornlex.github.io%2fposts%2fepita-1-timeseries%2f">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+                <path
+                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+</ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2025 <a href="https://bornlex.github.io/">Julien&#39;s blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

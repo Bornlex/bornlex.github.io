@@ -11,8 +11,71 @@
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 16 Mar 2025 15:12:50 +0100</lastBuildDate>
+    <lastBuildDate>Sun, 16 Mar 2025 15:54:04 +0100</lastBuildDate>
     <atom:link href="https://bornlex.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>EPITA Courses - Continuous Physics Informed Neural Networks</title>
+      <link>https://bornlex.github.io/posts/epita-4-pinn/</link>
+      <pubDate>Sun, 16 Mar 2025 15:54:04 +0100</pubDate>
+      <guid>https://bornlex.github.io/posts/epita-4-pinn/</guid>
+      <description>&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;Neural networks require large amounts of data to converge. Those data need to represent the task the neural network is trying to learn.&lt;/p&gt;
+&lt;p&gt;Data collection is a tedious process, especially when collecting data can be difficult or expensive. In science, physics for instance, many phenomenon are described using theories that we know are working very well.&lt;/p&gt;
+&lt;p&gt;Using those data as regularization can help neural networks generalize better with less data.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>EPITA Courses - Transformers</title>
+      <link>https://bornlex.github.io/posts/epita-3-transformers/</link>
+      <pubDate>Sun, 16 Mar 2025 15:49:20 +0100</pubDate>
+      <guid>https://bornlex.github.io/posts/epita-3-transformers/</guid>
+      <description>&lt;h1 id=&#34;context&#34;&gt;Context&lt;/h1&gt;
+&lt;p&gt;Generating data is now a hot topic in machine learning. The idea of using statistical methods to produce synthetic data is rather old. Many methods are proven to be effective in different scenarios.&lt;/p&gt;
+&lt;p&gt;Today, the most well-known ways to generate synthetic data are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;VAE&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;GAN&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Transformers&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;transformers&#34;&gt;Transformers&lt;/h1&gt;
+&lt;h2 id=&#34;a-bit-of-history&#34;&gt;A bit of history&lt;/h2&gt;
+&lt;p&gt;We talked about RNN last week and we saw how they can be used to predict sequences. Unfortunately, RNN suffer some problems, especially with long sequences where they seem to forget what happened.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>EPITA Courses - Recurrent Neural Networks</title>
+      <link>https://bornlex.github.io/posts/epita-2-rnn/</link>
+      <pubDate>Sun, 16 Mar 2025 15:46:44 +0100</pubDate>
+      <guid>https://bornlex.github.io/posts/epita-2-rnn/</guid>
+      <description>&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
+&lt;h2 id=&#34;motivation&#34;&gt;Motivation&lt;/h2&gt;
+&lt;p&gt;Why is it necessary to introduce the concept of recurrence in neural networks?&lt;/p&gt;
+&lt;p&gt;We know certain things in sequence. Let&amp;rsquo;s take the example of the alphabet. We can recite it without even thinking about it in the order from A to Z. However, if we were asked to recite it backwards, or even worse, to recite the alphabet based on the position of the letters (give the 17th letter, then the 5th&amp;hellip;), we would be unable to do so.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>EPITA Courses - Timeseries</title>
+      <link>https://bornlex.github.io/posts/epita-1-timeseries/</link>
+      <pubDate>Sun, 16 Mar 2025 15:36:50 +0100</pubDate>
+      <guid>https://bornlex.github.io/posts/epita-1-timeseries/</guid>
+      <description>&lt;h1 id=&#34;time-series&#34;&gt;Time Series&lt;/h1&gt;
+&lt;h2 id=&#34;time-series--stochastic-processes&#34;&gt;Time series &amp;amp; stochastic processes&lt;/h2&gt;
+&lt;p&gt;A time series is a set of observations $x_t$ generated sequentially over time $t$.&lt;/p&gt;
+&lt;p&gt;There are two main types of time series:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;continuous time series&lt;/li&gt;
+&lt;li&gt;discrete time series&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;We can also differentiate time series whose values can be determined by mathematical functions, deterministic time series, from the time series that have some random component, non-deterministic time series.&lt;/p&gt;
+&lt;p&gt;To forecast non-deterministic time series, we assume that there is a probability model that generates the observations of the time series.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>About Me</title>
+      <link>https://bornlex.github.io/posts/me/</link>
+      <pubDate>Sun, 16 Mar 2025 15:35:02 +0100</pubDate>
+      <guid>https://bornlex.github.io/posts/me/</guid>
+      <description>&lt;p&gt;I am Julien, french engineer in AI since 2017.&lt;/p&gt;
+&lt;p&gt;I have worked in several organizations on different topics, all related to AI or where AI is applied to.&lt;/p&gt;
+&lt;p&gt;I love playing golf (even though I am not very good at it…), going to the gym, reading, learning new things and working (not a joke, I do love it).&lt;/p&gt;
+&lt;p&gt;I sometimes write articles about tech, most of them are AI related:&lt;/p&gt;</description>
+    </item>
     <item>
       <title>MLX DQN</title>
       <link>https://bornlex.github.io/posts/mlx-dqn/</link>

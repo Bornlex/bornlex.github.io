@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>EPITA Courses - Transformers | Julien&#39;s blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="Context
+Generating data is now a hot topic in machine learning. The idea of using statistical methods to produce synthetic data is rather old. Many methods are proven to be effective in different scenarios.
+Today, the most well-known ways to generate synthetic data are:
+
+VAE
+GAN
+Transformers
+
+Transformers
+A bit of history
+We talked about RNN last week and we saw how they can be used to predict sequences. Unfortunately, RNN suffer some problems, especially with long sequences where they seem to forget what happened.">
+<meta name="author" content="Julien Seveno">
+<link rel="canonical" href="https://bornlex.github.io/posts/epita-3-transformers/">
+<meta name="google-site-verification" content="XYZabc">
+<meta name="yandex-verification" content="XYZabc">
+<meta name="msvalidate.01" content="XYZabc">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b609c58d5c11bb90b1a54e04005d74ad1ddf22165eb79f5533967e57df9c3b50.css" integrity="sha256-tgnFjVwRu5CxpU4EAF10rR3fIhZet59VM5Z&#43;V9&#43;cO1A=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="icon" type="image/png" sizes="16x16" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="icon" type="image/png" sizes="32x32" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="apple-touch-icon" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="mask-icon" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://bornlex.github.io/posts/epita-3-transformers/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous" />
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false}
+        ]
+    });
+});
+</script>
+<meta property="og:title" content="EPITA Courses - Transformers" />
+<meta property="og:description" content="Context
+Generating data is now a hot topic in machine learning. The idea of using statistical methods to produce synthetic data is rather old. Many methods are proven to be effective in different scenarios.
+Today, the most well-known ways to generate synthetic data are:
+
+VAE
+GAN
+Transformers
+
+Transformers
+A bit of history
+We talked about RNN last week and we saw how they can be used to predict sequences. Unfortunately, RNN suffer some problems, especially with long sequences where they seem to forget what happened." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bornlex.github.io/posts/epita-3-transformers/" /><meta property="og:image" content="https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2025-03-16T15:49:20+01:00" />
+<meta property="article:modified_time" content="2025-03-16T15:49:20+01:00" /><meta property="og:site_name" content="Julien&#39;s blog" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/>
+
+<meta name="twitter:title" content="EPITA Courses - Transformers"/>
+<meta name="twitter:description" content="Context
+Generating data is now a hot topic in machine learning. The idea of using statistical methods to produce synthetic data is rather old. Many methods are proven to be effective in different scenarios.
+Today, the most well-known ways to generate synthetic data are:
+
+VAE
+GAN
+Transformers
+
+Transformers
+A bit of history
+We talked about RNN last week and we saw how they can be used to predict sequences. Unfortunately, RNN suffer some problems, especially with long sequences where they seem to forget what happened."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://bornlex.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "EPITA Courses - Transformers",
+      "item": "https://bornlex.github.io/posts/epita-3-transformers/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "EPITA Courses - Transformers",
+  "name": "EPITA Courses - Transformers",
+  "description": "Context Generating data is now a hot topic in machine learning. The idea of using statistical methods to produce synthetic data is rather old. Many methods are proven to be effective in different scenarios.\nToday, the most well-known ways to generate synthetic data are:\nVAE GAN Transformers Transformers A bit of history We talked about RNN last week and we saw how they can be used to predict sequences. Unfortunately, RNN suffer some problems, especially with long sequences where they seem to forget what happened.\n",
+  "keywords": [
+    
+  ],
+  "articleBody": "Context Generating data is now a hot topic in machine learning. The idea of using statistical methods to produce synthetic data is rather old. Many methods are proven to be effective in different scenarios.\nToday, the most well-known ways to generate synthetic data are:\nVAE GAN Transformers Transformers A bit of history We talked about RNN last week and we saw how they can be used to predict sequences. Unfortunately, RNN suffer some problems, especially with long sequences where they seem to forget what happened.\nAlso, training large models is complex. The higher the number of parameters the longer the inference time, and also the larger the required dataset. So a longer computation time for one prediction and more data to train big numbers of parameters. This is why we sometimes hear that deep learning was made possible by Nvidia and the CUDA library allowing researchers to train model on GPU, drastically reducing the time for one inference. Because the RNN is connected from the last prediction to the first, it is more difficult to parallelize training.\nWhen predicting a sequence from a different sequence, the recurrent encoder-decoder appeared.\nLater on some researchers introduced the concept of Attention in a paper that was later used by Google when creating the Transformer in the famous “Attention is all you need”.\nThis attention mechanism is at the very core of transformers, so let us talk about it. Attention uses a recurrent encoder-decoder framework and builds upon it a mechanism that allows the model to focus on specific parts of the input sequence.\nRecurrent Encoder-Decoder In the encoder-decoder framework, an recurrent encoder reads the input sequence, a sequence of vectors $x = (x_1, …, x_{d})$ into a vector $c$, called a hidden vector. From this hidden vector, a recurrent decoder decodes it into a different sequence.\nThe most common approach for the recurrent encoder is the one we discussed last week:\n$$ h_t = f(x_t, h_{t - 1}) $$\nAnd\n$$ c = q(h_1, …, h_d) $$\nThen the recurrent decoder is trained to predict the next vector based on the context vector and the previous tokens:\n$$ p(y_t | y_1, …, y_{t - 1}, c) $$\nWhere in a RNN decoder, this probability is modeled as:\n$$ g(y_{t - 1}, s_t, c) $$\nWhere $s_t$ is the hidden state of the recurrent decoder.\nIn a recurrent encoder-decoder, the first recurrent network encodes the whole sequence and passes it to the decode that decodes it into the output.\nThe architecture looks like this:\nNote that sequences can be of different lengths.\nAttention Original attention mechanism The attention mechanisms improves the previous framework by defining the conditional probability as:\n$$ p(y_i | y_1, …, y_{i - 1}, x) = g(y_{i - 1}, s_i, c_i) $$\nwhere $s_i$ is the hidden state at time $t$ computed by\n$$ s_i = f(s_{i - 1}, y_{i - 1}, c_i) $$\nThe context vector depends on a sequence of annotations $(h_1, …, h_{d})$ to which an encoder maps the input into. Each annotation contains informations about the whole input sequence with a focus of the parts surrounding the i-th vector of the input sequence.\nThe context vector $c_i$ is computed as a weighted sum of annotations:\n$$ c_i = \\sum^{d}{j = 1} \\alpha{ij} h_j $$\nWhere:\n$$ \\alpha_{ij} = \\frac{\\exp(e_{ij})}{\\sum^d_{k = 1} \\exp(e_{ik})} = \\text{softmax}(e_{ij}) $$\nWhere:\n$$ e_{ij} = a(s_{i - 1}, h_j) $$\nBasically, it learns a matrix of values where the encoder hidden states are in rows and the decoder hidden states are in columns. This matrix is used to compute factors that will weight the encoder hidden states to give the model a more focused and relevant context.\nThe alignment is now learnt jointly with the encoder and the decoder.\nGeneralisation The general attention mechanisms uses three main components:\nthe queries $Q$ the keys $K$ the values $V$ It gives:\n$$ \\text{attention}(Q, K, V) = \\text{softmax}(\\frac{QK^T}{\\sqrt{d_k}}) V $$\nLet us put this procedure into code to make it clearer.\nFirst, start by defining the input of the attention layer. This could be for example the word embeddings.\nword_1 = np.array([1, 0, 1, 0], dtype='float32') word_2 = np.array([0, 2, 0, 2], dtype='float32') word_3 = np.array([1, 1, 1, 1], dtype='float32') words = np.vstack([word_1, word_2, word_3]) Obviously, this is going to be a (3, 4) numpy array.\nNow let us define the weights of the attention layer:\nwk = np.array([ [0, 0, 1], [1, 1, 0], [0, 1, 0], [1, 1, 0]], dtype='float32' ) wq = np.array([ [1, 0, 1], [1, 0, 0], [0, 0, 1], [0, 1, 1]], dtype='float32' ) wv = np.array([ [0, 2, 0], [0, 3, 0], [1, 0, 3], [1, 1, 0]], dtype='float32' ) The dimension of all the weights is: (4, 3).\nOnce we have the input vectors stacked together, we can compute the query representations, key representations and value representations. They are simply the dot products of the inputs and the weights:\nquery_representations = words @ wq key_representations = words @ wk value_representations = words @ wv Each representation is a (3, 3) tensor.\nAnd as a scaling factor, we also need the square root of the size of the representations:\ndimension = float(query_representations.shape[0]) ** 0.5 Now that we have representations and the dimension, we can compute the attention scores:\nattention_score = softmax( query_representations @ key_representations.T / dimension, axis=1 ) This is again a (3, 3) tensor.\nAnd finally, let us compute the attention:\nattention = attention_score @ value_representations This is also a (3, 3) tensor.\nWe then need to propagate the gradients to the three different weight matrices:\n$w_k \\to \\frac{\\partial \\text{attention score}}{\\partial w_k}$ $w_q \\to \\frac{\\partial \\text{attention score}}{\\partial w_q}$ $w_v \\to \\frac{\\partial \\text{attention score}}{\\partial w_v}$ And this is how the Attention mechanism is trained.\nOf course, many attention layers can be stacked together.\nTranformers The Transformer architecture was first proposed in a paper called Attention is All You Need, by Google. It was intended for reducing the time to train sequence to sequence models.\nArchitecture Its architecture is as follows:\nThe encoders are made of two different layers:\nA Self-Attention layer A feed forward neural network The decoders however are a bit more complicated because layers are also connected to the output of the last encoder:\nIn the original paper, the number of levels (the number of encoders and the number of decoders) was set to 6. Of course, there is nothing magical about this number, one can experiment with different number.\nSelf-Attention Self-Attention is conceptually very close to Attention. The difference is that Attention is looking at a first sequence to make predictions about a second sequence, Self-Attention is looking at the same sequence to make predictions.\nIt is used to model the links between elements inside sequences. Here is a quick example where we display how much a token from a sequence of words is related to other tokens inside the same sequence.\nMulti-head Attention Multi-head Attention refers to architectures where multiple Attention layers are stacked together.\nTime Series Now that we are familiar with the concept of Attention and Self-Attention, we would like to use those concepts to solve time series problems.\nAs we saw with the Attention mechanism and the code with it, we need to have vectors in order to compute the attention score. We need to embed our time series.\nFirst, there are two kinds of input data:\nunivariate time series: one time series is used as input multivariate time series: multiple time series are used as input data Then there are several kinds of tasks:\nclassification regression forecasting translation segmentation For translating or forecasting a time series, we want to predict future values of the time series based on its history. If we only need one value to be predicted, we can consider it as a sequence of size 1.\nPracticum In this exercise, we are going to develop a simple attention model using Pytorch, to predict a financial time series.\nData The time series will be loaded from a csv file containing the Open High Low Close and Volume metrics for french CAC40 stock values.\nThe file can be downloaded here:\ndata.csv\nWe need to load the data and transform it to the right format.\ndef prepare_dataset(filename: str, n: int = 5) -\u003e Tuple[np.ndarray, np.ndarray]: \"\"\" Reads the file and prepares the dataset for training. The dataset consists of vectors of 5 elements: open, high, low, close, volume. An x is made n vectors of ohlcv values in the past and the y is the ohlcv value of the next day. xs: (batch, n, 5) ys: (batch, 5) :param filename: the data file to read :param n: the number of days to look back :return: tuple of xs and ys \"\"\" pass Here are the steps:\nRead the file using pandas Choosing a stock among the dataframe and filtering out other rows (for instance Accor) Removing some useless columns: the first (that is unnamed), the date, the name Replacing comas by dots inside the volume column Removing rows containing nan Casting values inside the dataframe as float32 Normalizing each column according to this formula: $x \\leftarrow \\frac{x - \\mu(x)}{\\sigma(x)}$ Return the data at the right numpy format: xs: (n, 5) contains the n days before the prediction to be made ys: (1, 5) contains the ground truth of the prediction Forecasting model The forecasting model will be made of two classes that inherits from nn.Module.\nThe first class will be implementing the Self Attention layer and the second class will be the model itself, containing a Self Attention layer as an attribute.\nSelf attention class SelfAttention(nn.Module): def __init__(self, input_dim: int, output_dim: int): super().__init__() pass def forward(self, x: torch.Tensor): pass Model class TimeSeriesForecasting(nn.Module): def __init__(self, input_dim: int, hidden_dim: int, output_dim: int, sequence_length: int): super().__init__() pass def forward(self, x: torch.Tensor): pass The model will contain a self attention layer along with a Flatten layer and a Linear layer.\nTrain procedure Finally, the train procedure can be implemented. It should follow these steps:\nGet the data Split the dataset between train and test Instantiate the model Instantiate the criterion (MSE loss will work fine here) Instantiate the optimizer Train the model on batches (batch size of 8 works ok but feel free to experiment different batch sizes) Test the model to display its predictions against the ground truth OHLCV display In order for you to see the results of your model’s predictions, here is a function that can be used:\ndef display_ohlc(targets: np.ndarray, predictions: np.ndarray): OPEN, HIGH, LOW, CLOSE, VOLUME = 0, 1, 2, 3, 4 x = np.arange(0, targets.shape[0]) fig, (ax, ax2) = plt.subplots(2, figsize=(12, 8), gridspec_kw={'height_ratios': [4, 1]}) for i in range(targets.shape[0]): t_row = targets[i] p_row = predictions[i] target_color = '#228c45' predicted_color = '#4287f5' ax.plot([x[i], x[i]], [t_row[LOW], t_row[HIGH]], color=target_color) ax.plot([x[i], x[i] - 0.1], [t_row[OPEN], t_row[OPEN]], color=target_color) ax.plot([x[i], x[i] + 0.1], [t_row[CLOSE], t_row[CLOSE]], color=target_color) ax.plot([x[i], x[i]], [p_row[LOW], p_row[HIGH]], color=predicted_color) ax.plot([x[i], x[i] - 0.1], [p_row[OPEN], p_row[OPEN]], color=predicted_color) ax.plot([x[i], x[i] + 0.1], [p_row[CLOSE], p_row[CLOSE]], color=predicted_color) ax.spines['right'].set_visible(False) ax.spines['left'].set_visible(False) ax.spines['top'].set_visible(False) ax2.spines['right'].set_visible(False) ax2.spines['left'].set_visible(False) ax2.bar(x, targets[:, -1], color='lightgrey') ax.set_title('Time Series forecasting', loc='left', fontsize=20) plt.subplots_adjust(wspace=0, hspace=0) plt.show() Results analysis The predictions should be close to the ground truth. It might be interesting to see the attention scores of the predictions your algorithm will make. This should represent how much emphasis the model puts on each step in the past to make the prediction.\nDo not hesitate to display attention scores as heatmaps. See if the attention scores are well balanced or not.\nSources Neural Machine Translation by Jointly Learning to Align and Translate - https://arxiv.org/abs/1409.0473 Attention is All You Need - https://arxiv.org/abs/1706.03762 TimeGPT - https://arxiv.org/abs/2310.03589 Non-Stationary Transformers - https://github.com/thuml/Nonstationary_Transformers ",
+  "wordCount" : "1929",
+  "inLanguage": "en",
+  "datePublished": "2025-03-16T15:49:20+01:00",
+  "dateModified": "2025-03-16T15:49:20+01:00",
+  "author":{
+    "@type": "Person",
+    "name": "Julien Seveno"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://bornlex.github.io/posts/epita-3-transformers/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Julien's blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://bornlex.github.io/%3Clink%20/%20abs%20url%3E"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://bornlex.github.io/" accesskey="h" title="Home (Alt + H)">
+                <img src="https://bornlex.github.io/apple-touch-icon.png" alt="" aria-label="logo"
+                    height="35">Home</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://bornlex.github.io/" title="Posts">
+                    <span>Posts</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/Bornlex/Whitespace-interpreter" title="Whitespace Interpreter">
+                    <span>Whitespace Interpreter</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://bornlex.github.io/posts/me/" title="About me">
+                    <span>About me</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://bornlex.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://bornlex.github.io/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      EPITA Courses - Transformers
+    </h1>
+    <div class="post-meta"><span title='2025-03-16 15:49:20 +0100 CET'>March 16, 2025</span>&nbsp;·&nbsp;10 min&nbsp;·&nbsp;1929 words&nbsp;·&nbsp;Julien Seveno&nbsp;|&nbsp;<a href="https://github.com/%3cpath_to_repo%3e/content/posts/epita-3-transformers.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+  </header> 
+  <div class="post-content"><h1 id="context">Context<a hidden class="anchor" aria-hidden="true" href="#context">#</a></h1>
+<p>Generating data is now a hot topic in machine learning. The idea of using statistical methods to produce synthetic data is rather old. Many methods are proven to be effective in different scenarios.</p>
+<p>Today, the most well-known ways to generate synthetic data are:</p>
+<ul>
+<li><strong>VAE</strong></li>
+<li><strong>GAN</strong></li>
+<li><strong>Transformers</strong></li>
+</ul>
+<h1 id="transformers">Transformers<a hidden class="anchor" aria-hidden="true" href="#transformers">#</a></h1>
+<h2 id="a-bit-of-history">A bit of history<a hidden class="anchor" aria-hidden="true" href="#a-bit-of-history">#</a></h2>
+<p>We talked about RNN last week and we saw how they can be used to predict sequences. Unfortunately, RNN suffer some problems, especially with long sequences where they seem to forget what happened.</p>
+<p>Also, training large models is complex. The higher the number of parameters the longer the inference time, and also the larger the required dataset. So a longer computation time for one prediction and more data to train big numbers of parameters. This is why we sometimes hear that deep learning was made possible by Nvidia and the CUDA library allowing researchers to train model on GPU, drastically reducing the time for one inference.
+Because the RNN is connected from the last prediction to the first, it is more difficult to parallelize training.</p>
+<p>When predicting a sequence from a different sequence, the recurrent encoder-decoder appeared.</p>
+<p>Later on some researchers introduced the concept of Attention in a <a href="https://arxiv.org/abs/1409.0473">paper</a> that was later used by Google when creating the Transformer in the famous “<a href="https://arxiv.org/abs/1706.03762">Attention is all you need</a>”.</p>
+<p>This attention mechanism is at the very core of transformers, so let us talk about it. Attention uses a recurrent encoder-decoder framework and builds upon it a mechanism that allows the model to focus on specific parts of the input sequence.</p>
+<h2 id="recurrent-encoder-decoder">Recurrent Encoder-Decoder<a hidden class="anchor" aria-hidden="true" href="#recurrent-encoder-decoder">#</a></h2>
+<p>In the encoder-decoder framework, an recurrent encoder reads the input sequence, a sequence of vectors $x = (x_1, &hellip;, x_{d})$ into a vector $c$, called a hidden vector. From this hidden vector, a recurrent decoder decodes it into a different sequence.</p>
+<p>The most common approach for the recurrent encoder is the one we discussed last week:</p>
+<p>$$
+h_t = f(x_t, h_{t - 1})
+$$</p>
+<p>And</p>
+<p>$$
+c = q(h_1, &hellip;, h_d)
+$$</p>
+<p>Then the recurrent decoder is trained to predict the next vector based on the context vector and the previous tokens:</p>
+<p>$$
+p(y_t | y_1, &hellip;, y_{t - 1}, c)
+$$</p>
+<p>Where in a RNN decoder, this probability is modeled as:</p>
+<p>$$
+g(y_{t - 1}, s_t, c)
+$$</p>
+<p>Where $s_t$ is the hidden state of the recurrent decoder.</p>
+<p>In a recurrent encoder-decoder, the first recurrent network encodes the whole sequence and passes it to the decode that decodes it into the output.</p>
+<p>The architecture looks like this:</p>
+<p><img loading="lazy" src="/epita/encoder-decoder.png" alt="Encoder Decoder Architectre"  />
+</p>
+<p>Note that sequences can be of different lengths.</p>
+<h2 id="attention">Attention<a hidden class="anchor" aria-hidden="true" href="#attention">#</a></h2>
+<h3 id="original-attention-mechanism">Original attention mechanism<a hidden class="anchor" aria-hidden="true" href="#original-attention-mechanism">#</a></h3>
+<p>The attention mechanisms improves the previous framework by defining the conditional probability as:</p>
+<p>$$
+p(y_i | y_1, &hellip;, y_{i - 1}, x) = g(y_{i - 1}, s_i, c_i)
+$$</p>
+<p>where $s_i$ is the hidden state at time $t$ computed by</p>
+<p>$$
+s_i = f(s_{i - 1}, y_{i - 1}, c_i)
+$$</p>
+<p>The context vector depends on a sequence of annotations $(h_1, &hellip;, h_{d})$ to which an encoder maps the input into. Each annotation contains informations about the whole input sequence with a focus of the parts surrounding the i-th vector of the input sequence.</p>
+<p>The context vector $c_i$ is computed as a weighted sum of annotations:</p>
+<p>$$
+c_i = \sum^{d}<em>{j = 1} \alpha</em>{ij} h_j
+$$</p>
+<p>Where:</p>
+<p>$$
+\alpha_{ij} = \frac{\exp(e_{ij})}{\sum^d_{k = 1} \exp(e_{ik})} = \text{softmax}(e_{ij})
+$$</p>
+<p>Where:</p>
+<p>$$
+e_{ij} = a(s_{i - 1}, h_j)
+$$</p>
+<p>Basically, it learns a matrix of values where the encoder hidden states are in rows and the decoder hidden states are in columns. This matrix is used to compute factors that will weight the encoder hidden states to give the model a more focused and relevant context.</p>
+<p>The alignment is now learnt jointly with the encoder and the decoder.</p>
+<h3 id="generalisation">Generalisation<a hidden class="anchor" aria-hidden="true" href="#generalisation">#</a></h3>
+<p>The general attention mechanisms uses three main components:</p>
+<ul>
+<li>the queries $Q$</li>
+<li>the keys $K$</li>
+<li>the values $V$</li>
+</ul>
+<p>It gives:</p>
+<p>$$
+\text{attention}(Q, K, V) = \text{softmax}(\frac{QK^T}{\sqrt{d_k}}) V
+$$</p>
+<p>Let us put this procedure into code to make it clearer.</p>
+<p>First, start by defining the input of the attention layer. This could be for example the word embeddings.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">word_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">word_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">word_3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">words</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">word_1</span><span class="p">,</span> <span class="n">word_2</span><span class="p">,</span> <span class="n">word_3</span><span class="p">])</span>
+</span></span></code></pre></div><p>Obviously, this is going to be a <strong>(3, 4)</strong> numpy array.</p>
+<p>Now let us define the weights of the attention layer:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">wk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+</span></span><span class="line"><span class="cl">	<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">	<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">	<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">	<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;float32&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">wq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+</span></span><span class="line"><span class="cl">	<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">	<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">	<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">	<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;float32&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">wv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+</span></span><span class="line"><span class="cl">	<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">	<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">	<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">	<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;float32&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span></code></pre></div><p>The dimension of all the weights is: <strong>(4, 3)</strong>.</p>
+<p>Once we have the input vectors stacked together, we can compute the query representations, key representations and value representations. They are simply the dot products of the inputs and the weights:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">query_representations</span> <span class="o">=</span> <span class="n">words</span> <span class="o">@</span> <span class="n">wq</span>
+</span></span><span class="line"><span class="cl"><span class="n">key_representations</span> <span class="o">=</span> <span class="n">words</span> <span class="o">@</span> <span class="n">wk</span>
+</span></span><span class="line"><span class="cl"><span class="n">value_representations</span> <span class="o">=</span> <span class="n">words</span> <span class="o">@</span> <span class="n">wv</span>
+</span></span></code></pre></div><p>Each representation is a <strong>(3, 3)</strong> tensor.</p>
+<p>And as a scaling factor, we also need the square root of the size of the representations:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">dimension</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">query_representations</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">**</span> <span class="mf">0.5</span>
+</span></span></code></pre></div><p>Now that we have representations and the dimension, we can compute the attention scores:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">attention_score</span> <span class="o">=</span> <span class="n">softmax</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">	<span class="n">query_representations</span> <span class="o">@</span> <span class="n">key_representations</span><span class="o">.</span><span class="n">T</span> <span class="o">/</span> <span class="n">dimension</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span></code></pre></div><p>This is again a <strong>(3, 3)</strong> tensor.</p>
+<p>And finally, let us compute the attention:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">attention</span> <span class="o">=</span> <span class="n">attention_score</span> <span class="o">@</span> <span class="n">value_representations</span>
+</span></span></code></pre></div><p>This is also a <strong>(3, 3)</strong> tensor.</p>
+<p>We then need to propagate the gradients to the three different weight matrices:</p>
+<ul>
+<li>$w_k \to \frac{\partial \text{attention score}}{\partial w_k}$</li>
+<li>$w_q \to \frac{\partial \text{attention score}}{\partial w_q}$</li>
+<li>$w_v \to \frac{\partial \text{attention score}}{\partial w_v}$</li>
+</ul>
+<p>And this is how the Attention mechanism is trained.</p>
+<p>Of course, many attention layers can be stacked together.</p>
+<h2 id="tranformers">Tranformers<a hidden class="anchor" aria-hidden="true" href="#tranformers">#</a></h2>
+<p>The Transformer architecture was first proposed in a paper called Attention is All You Need, by Google. It was intended for reducing the time to train sequence to sequence models.</p>
+<h3 id="architecture">Architecture<a hidden class="anchor" aria-hidden="true" href="#architecture">#</a></h3>
+<p>Its architecture is as follows:</p>
+<p><img loading="lazy" src="/epita/transformers.png" alt="Transformers"  />
+</p>
+<p>The encoders are made of two different layers:</p>
+<ol>
+<li>A Self-Attention layer</li>
+<li>A feed forward neural network</li>
+</ol>
+<p><img loading="lazy" src="/epita/encoder-block.png" alt="Encoder block"  />
+</p>
+<p>The decoders however are a bit more complicated because layers are also connected to the output of the last encoder:</p>
+<p><img loading="lazy" src="/epita/encoder-decoder2.png" alt="Encoder Decoder"  />
+</p>
+<p>In the original paper, the number of levels (the number of encoders and the number of decoders) was set to 6. Of course, there is nothing magical about this number, one can experiment with different number.</p>
+<h3 id="self-attention">Self-Attention<a hidden class="anchor" aria-hidden="true" href="#self-attention">#</a></h3>
+<p>Self-Attention is conceptually very close to Attention. The difference is that Attention is looking at a first sequence to make predictions about a second sequence, Self-Attention is looking at the same sequence to make predictions.</p>
+<p>It is used to model the links between elements inside sequences. Here is a quick example where we display how much a token from a sequence of words is related to other tokens inside the same sequence.</p>
+<p><img loading="lazy" src="/epita/attention.png" alt="Attention"  />
+</p>
+<h3 id="multi-head-attention">Multi-head Attention<a hidden class="anchor" aria-hidden="true" href="#multi-head-attention">#</a></h3>
+<p>Multi-head Attention refers to architectures where multiple Attention layers are stacked together.</p>
+<h1 id="time-series">Time Series<a hidden class="anchor" aria-hidden="true" href="#time-series">#</a></h1>
+<p>Now that we are familiar with the concept of Attention and Self-Attention, we would like to use those concepts to solve time series problems.</p>
+<p>As we saw with the Attention mechanism and the code with it, we need to have vectors in order to compute the attention score. We need to embed our time series.</p>
+<p>First, there are two kinds of input data:</p>
+<ul>
+<li><strong>univariate</strong> time series: one time series is used as input</li>
+<li><strong>multivariate</strong> time series: multiple time series are used as input data</li>
+</ul>
+<p>Then there are several kinds of tasks:</p>
+<ul>
+<li>classification</li>
+<li>regression</li>
+<li>forecasting</li>
+<li>translation</li>
+<li>segmentation</li>
+</ul>
+<p>For translating or forecasting a time series, we want to predict future values of the time series based on its history. If we only need one value to be predicted, we can consider it as a sequence of size 1.</p>
+<h1 id="practicum">Practicum<a hidden class="anchor" aria-hidden="true" href="#practicum">#</a></h1>
+<p>In this exercise, we are going to develop a simple attention model using Pytorch, to predict a financial time series.</p>
+<h2 id="data">Data<a hidden class="anchor" aria-hidden="true" href="#data">#</a></h2>
+<p>The time series will be loaded from a csv file containing the Open High Low Close and Volume metrics for french CAC40 stock values.</p>
+<p>The file can be downloaded here:</p>
+<p><a href="https://prod-files-secure.s3.us-west-2.amazonaws.com/46946160-b4b9-44b9-b8d5-d6d508f7dd94/bfab9b4a-c905-4a6e-a287-06579d5ea27b/data.csv">data.csv</a></p>
+<p>We need to load the data and transform it to the right format.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">prepare_dataset</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;&#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Reads the file and prepares the dataset for training.
+</span></span></span><span class="line"><span class="cl"><span class="s2">    The dataset consists of vectors of 5 elements: open, high, low, close, volume.
+</span></span></span><span class="line"><span class="cl"><span class="s2">    An x is made n vectors of ohlcv values in the past and the y is the ohlcv value of the next day.
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">    xs: (batch, n, 5)
+</span></span></span><span class="line"><span class="cl"><span class="s2">    ys: (batch, 5)
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">    :param filename: the data file to read
+</span></span></span><span class="line"><span class="cl"><span class="s2">    :param n: the number of days to look back
+</span></span></span><span class="line"><span class="cl"><span class="s2">    :return: tuple of xs and ys
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">pass</span>
+</span></span></code></pre></div><p>Here are the steps:</p>
+<ol>
+<li>Read the file using pandas</li>
+<li>Choosing a stock among the dataframe and filtering out other rows (for instance Accor)</li>
+<li>Removing some useless columns: the first (that is unnamed), the date, the name</li>
+<li>Replacing comas by dots inside the volume column</li>
+<li>Removing rows containing nan</li>
+<li>Casting values inside the dataframe as float32</li>
+<li>Normalizing each column according to this formula: $x \leftarrow \frac{x - \mu(x)}{\sigma(x)}$</li>
+<li>Return the data at the right numpy format:
+<ol>
+<li><strong>xs: (n, 5)</strong> contains the n days before the prediction to be made</li>
+<li><strong>ys: (1, 5)</strong> contains the ground truth of the prediction</li>
+</ol>
+</li>
+</ol>
+<h2 id="forecasting-model">Forecasting model<a hidden class="anchor" aria-hidden="true" href="#forecasting-model">#</a></h2>
+<p>The forecasting model will be made of two classes that inherits from nn.Module.</p>
+<p>The first class will be implementing the Self Attention layer and the second class will be the model itself, containing a Self Attention layer as an attribute.</p>
+<h3 id="self-attention-1">Self attention<a hidden class="anchor" aria-hidden="true" href="#self-attention-1">#</a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">SelfAttention</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">output_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="k">pass</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">pass</span>
+</span></span></code></pre></div><h3 id="model">Model<a hidden class="anchor" aria-hidden="true" href="#model">#</a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">TimeSeriesForecasting</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">output_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">sequence_length</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="k">pass</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">pass</span>
+</span></span></code></pre></div><p>The model will contain a self attention layer along with a Flatten layer and a Linear layer.</p>
+<h2 id="train-procedure">Train procedure<a hidden class="anchor" aria-hidden="true" href="#train-procedure">#</a></h2>
+<p>Finally, the train procedure can be implemented. It should follow these steps:</p>
+<ol>
+<li>Get the data</li>
+<li>Split the dataset between train and test</li>
+<li>Instantiate the model</li>
+<li>Instantiate the criterion (MSE loss will work fine here)</li>
+<li>Instantiate the optimizer</li>
+<li>Train the model on batches (batch size of 8 works ok but feel free to experiment different batch sizes)</li>
+<li>Test the model to display its predictions against the ground truth</li>
+</ol>
+<h2 id="ohlcv-display">OHLCV display<a hidden class="anchor" aria-hidden="true" href="#ohlcv-display">#</a></h2>
+<p>In order for you to see the results of your model’s predictions, here is a function that can be used:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">display_ohlc</span><span class="p">(</span><span class="n">targets</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">predictions</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">OPEN</span><span class="p">,</span> <span class="n">HIGH</span><span class="p">,</span> <span class="n">LOW</span><span class="p">,</span> <span class="n">CLOSE</span><span class="p">,</span> <span class="n">VOLUME</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">targets</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">gridspec_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;height_ratios&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">]})</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">targets</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t_row</span> <span class="o">=</span> <span class="n">targets</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p_row</span> <span class="o">=</span> <span class="n">predictions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">target_color</span> <span class="o">=</span> <span class="s1">&#39;#228c45&#39;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">predicted_color</span> <span class="o">=</span> <span class="s1">&#39;#4287f5&#39;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="p">[</span><span class="n">t_row</span><span class="p">[</span><span class="n">LOW</span><span class="p">],</span> <span class="n">t_row</span><span class="p">[</span><span class="n">HIGH</span><span class="p">]],</span> <span class="n">color</span><span class="o">=</span><span class="n">target_color</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.1</span><span class="p">],</span> <span class="p">[</span><span class="n">t_row</span><span class="p">[</span><span class="n">OPEN</span><span class="p">],</span> <span class="n">t_row</span><span class="p">[</span><span class="n">OPEN</span><span class="p">]],</span> <span class="n">color</span><span class="o">=</span><span class="n">target_color</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.1</span><span class="p">],</span> <span class="p">[</span><span class="n">t_row</span><span class="p">[</span><span class="n">CLOSE</span><span class="p">],</span> <span class="n">t_row</span><span class="p">[</span><span class="n">CLOSE</span><span class="p">]],</span> <span class="n">color</span><span class="o">=</span><span class="n">target_color</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="p">[</span><span class="n">p_row</span><span class="p">[</span><span class="n">LOW</span><span class="p">],</span> <span class="n">p_row</span><span class="p">[</span><span class="n">HIGH</span><span class="p">]],</span> <span class="n">color</span><span class="o">=</span><span class="n">predicted_color</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.1</span><span class="p">],</span> <span class="p">[</span><span class="n">p_row</span><span class="p">[</span><span class="n">OPEN</span><span class="p">],</span> <span class="n">p_row</span><span class="p">[</span><span class="n">OPEN</span><span class="p">]],</span> <span class="n">color</span><span class="o">=</span><span class="n">predicted_color</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.1</span><span class="p">],</span> <span class="p">[</span><span class="n">p_row</span><span class="p">[</span><span class="n">CLOSE</span><span class="p">],</span> <span class="n">p_row</span><span class="p">[</span><span class="n">CLOSE</span><span class="p">]],</span> <span class="n">color</span><span class="o">=</span><span class="n">predicted_color</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;left&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;top&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ax2</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ax2</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;left&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ax2</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">targets</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;lightgrey&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Time Series forecasting&#39;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</span></span></code></pre></div><h2 id="results-analysis">Results analysis<a hidden class="anchor" aria-hidden="true" href="#results-analysis">#</a></h2>
+<p>The predictions should be close to the ground truth. It might be interesting to see the attention scores of the predictions your algorithm will make. This should represent how much emphasis the model puts on each step in the past to make the prediction.</p>
+<p>Do not hesitate to display attention scores as heatmaps. See if the attention scores are well balanced or not.</p>
+<h1 id="sources">Sources<a hidden class="anchor" aria-hidden="true" href="#sources">#</a></h1>
+<ol>
+<li><strong>Neural Machine Translation by Jointly Learning to Align and Translate -</strong> <a href="https://arxiv.org/abs/1409.0473">https://arxiv.org/abs/1409.0473</a></li>
+<li><strong>Attention is All You Need -</strong> <a href="https://arxiv.org/abs/1706.03762">https://arxiv.org/abs/1706.03762</a></li>
+<li><strong>TimeGPT -</strong> <a href="https://arxiv.org/abs/2310.03589">https://arxiv.org/abs/2310.03589</a></li>
+<li><strong>Non-Stationary Transformers -</strong> <a href="https://github.com/thuml/Nonstationary_Transformers">https://github.com/thuml/Nonstationary_Transformers</a></li>
+</ol>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://bornlex.github.io/posts/epita-4-pinn/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>EPITA Courses - Continuous Physics Informed Neural Networks</span>
+  </a>
+  <a class="next" href="https://bornlex.github.io/posts/epita-2-rnn/">
+    <span class="title">Next »</span>
+    <br>
+    <span>EPITA Courses - Recurrent Neural Networks</span>
+  </a>
+</nav>
+
+
+<ul class="share-buttons">
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share EPITA Courses - Transformers on x"
+            href="https://x.com/intent/tweet/?text=EPITA%20Courses%20-%20Transformers&amp;url=https%3a%2f%2fbornlex.github.io%2fposts%2fepita-3-transformers%2f&amp;hashtags=">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share EPITA Courses - Transformers on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fbornlex.github.io%2fposts%2fepita-3-transformers%2f&amp;title=EPITA%20Courses%20-%20Transformers&amp;summary=EPITA%20Courses%20-%20Transformers&amp;source=https%3a%2f%2fbornlex.github.io%2fposts%2fepita-3-transformers%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share EPITA Courses - Transformers on reddit"
+            href="https://reddit.com/submit?url=https%3a%2f%2fbornlex.github.io%2fposts%2fepita-3-transformers%2f&title=EPITA%20Courses%20-%20Transformers">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share EPITA Courses - Transformers on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fbornlex.github.io%2fposts%2fepita-3-transformers%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share EPITA Courses - Transformers on whatsapp"
+            href="https://api.whatsapp.com/send?text=EPITA%20Courses%20-%20Transformers%20-%20https%3a%2f%2fbornlex.github.io%2fposts%2fepita-3-transformers%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share EPITA Courses - Transformers on telegram"
+            href="https://telegram.me/share/url?text=EPITA%20Courses%20-%20Transformers&amp;url=https%3a%2f%2fbornlex.github.io%2fposts%2fepita-3-transformers%2f">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share EPITA Courses - Transformers on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t=EPITA%20Courses%20-%20Transformers&u=https%3a%2f%2fbornlex.github.io%2fposts%2fepita-3-transformers%2f">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+                <path
+                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+</ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2025 <a href="https://bornlex.github.io/">Julien&#39;s blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
