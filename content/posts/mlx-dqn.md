@@ -6,6 +6,8 @@ draft = false
 
 # Reinforcement Learning with Apple MLX Framework
 
+![Meta vs Apple](/dqn/apple-meta.jpg)
+
 Today, a very short article about Apple MLX framework.
 
 I recently learned that Apple has its own machine learning framework, and as a heavy Mac user I thought I’d give it a try.
