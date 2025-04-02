@@ -11,8 +11,21 @@
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 02 Apr 2025 14:22:47 +0100</lastBuildDate>
+    <lastBuildDate>Wed, 02 Apr 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://bornlex.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kolmogorov AI Framework | Part2 - brainfuck</title>
+      <link>https://bornlex.github.io/posts/kolmogorov-environment/</link>
+      <pubDate>Wed, 02 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://bornlex.github.io/posts/kolmogorov-environment/</guid>
+      <description>&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://bornlex.github.io/kolmogorov/brainfuck.png&#34; alt=&#34;brainfuck meme&#34;  /&gt;
+&lt;/p&gt;
+&lt;h1 id=&#34;motivations&#34;&gt;Motivations&lt;/h1&gt;
+&lt;p&gt;I recently started a series of article about a framework I was thinking about, which allows agent to be trained in a reinforcement learning basis, executing one action at a time on specific environments.&lt;/p&gt;
+&lt;p&gt;The first part of the series can be found here: &lt;a href=&#34;https://bornlex.github.io/posts/kolmogorov-ai-framework/&#34;&gt;Kolmogorov AI Framework&lt;/a&gt;.&lt;/p&gt;
+&lt;h1 id=&#34;environment&#34;&gt;Environment&lt;/h1&gt;
+&lt;p&gt;To build this proof of concept, I chose the brainfuck programming language. It is part of the esoteric programming languages family, but it is made of only 6 instructions, making it very easy to start with as an execution environment.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>EPITA Courses - Continuous Physics Informed Neural Networks</title>
       <link>https://bornlex.github.io/posts/epita-4-pinn/</link>

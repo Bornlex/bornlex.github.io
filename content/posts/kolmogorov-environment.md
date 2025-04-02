@@ -1,6 +1,6 @@
 +++
 title = 'Kolmogorov AI Framework | Part2 - brainfuck'
-date = 2025-04-02T14:22:47+01:00
+date = 2025-04-02
 draft = false
 +++
 
