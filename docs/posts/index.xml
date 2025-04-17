@@ -2,34 +2,33 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Julien&#39;s blog</title>
-    <link>http://localhost:1313/posts/</link>
+    <link>https://bornlex.github.io/posts/</link>
     <description>Recent content in Posts on Julien&#39;s blog</description>
     <image>
       <title>Julien&#39;s blog</title>
-      <url>http://localhost:1313/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>http://localhost:1313/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+      <url>https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Wed, 16 Apr 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://bornlex.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Webformers</title>
-      <link>http://localhost:1313/posts/webformers/</link>
+      <link>https://bornlex.github.io/posts/webformers/</link>
       <pubDate>Wed, 16 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/webformers/</guid>
-      <description>&lt;h1 id=&#34;webformers-structured-information-extraction-from-web-documents&#34;&gt;Webformers: Structured Information Extraction from Web Documents&lt;/h1&gt;
-&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
-&lt;p&gt;Extracting structured information from web pages remains a challenging task in natural language processing. The latest innovation in this field comes in the form of Webformers, a novel approach that uses sequence modeling to achieve state-of-the-art performance in web extraction tasks. This article explores how Webformers works, its architecture, and its implications for the future of structured information extraction.&lt;/p&gt;
-&lt;h2 id=&#34;understanding-webformers&#34;&gt;Understanding Webformers&lt;/h2&gt;
-&lt;p&gt;Webformers stands apart from traditional approaches by encoding HTML, target fields, and text sequences within a unified transformer model. The key innovation lies in how it designs specialized HTML tokens for each DOM node, embedding representations from neighboring tokens through graph attention mechanisms, while constructing rich attention patterns between HTML and text tokens.&lt;/p&gt;</description>
+      <guid>https://bornlex.github.io/posts/webformers/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Extracting structured information from web pages remains a challenging task in natural language processing.&lt;/p&gt;
+&lt;p&gt;Regular transformers architecture are not designed to encode hierarchical information. Each token is connected to every tokens in the input sequence, regardless of their position (even though there are a few mechanisms to introduce positional information, such as positional encoding).&lt;/p&gt;
+&lt;p&gt;In a webpage, information is highly structured. The HTML represents a tree, with each node having a parent and potential siblings and children. This makes that some nodes might be semantically connected while relatively far away from each other if we consider only the number of tokens between them.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Kolmogorov AI Framework | Part2 - brainfuck</title>
-      <link>http://localhost:1313/posts/kolmogorov-environment/</link>
+      <link>https://bornlex.github.io/posts/kolmogorov-environment/</link>
       <pubDate>Wed, 02 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/kolmogorov-environment/</guid>
-      <description>&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;http://localhost:1313/kolmogorov/brainfuck.png&#34; alt=&#34;brainfuck meme&#34;  /&gt;
+      <guid>https://bornlex.github.io/posts/kolmogorov-environment/</guid>
+      <description>&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://bornlex.github.io/kolmogorov/brainfuck.png&#34; alt=&#34;brainfuck meme&#34;  /&gt;
 &lt;/p&gt;
 &lt;h1 id=&#34;motivations&#34;&gt;Motivations&lt;/h1&gt;
 &lt;p&gt;I recently started a series of article about a framework I was thinking about, which allows agent to be trained in a reinforcement learning basis, executing one action at a time on specific environments.&lt;/p&gt;
@@ -39,9 +38,9 @@
     </item>
     <item>
       <title>EPITA Courses - Continuous Physics Informed Neural Networks</title>
-      <link>http://localhost:1313/posts/epita-4-pinn/</link>
+      <link>https://bornlex.github.io/posts/epita-4-pinn/</link>
       <pubDate>Sun, 16 Mar 2025 15:54:04 +0100</pubDate>
-      <guid>http://localhost:1313/posts/epita-4-pinn/</guid>
+      <guid>https://bornlex.github.io/posts/epita-4-pinn/</guid>
       <description>&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;Neural networks require large amounts of data to converge. Those data need to represent the task the neural network is trying to learn.&lt;/p&gt;
 &lt;p&gt;Data collection is a tedious process, especially when collecting data can be difficult or expensive. In science, physics for instance, many phenomenon are described using theories that we know are working very well.&lt;/p&gt;
@@ -49,9 +48,9 @@
     </item>
     <item>
       <title>EPITA Courses - Transformers</title>
-      <link>http://localhost:1313/posts/epita-3-transformers/</link>
+      <link>https://bornlex.github.io/posts/epita-3-transformers/</link>
       <pubDate>Sun, 16 Mar 2025 15:49:20 +0100</pubDate>
-      <guid>http://localhost:1313/posts/epita-3-transformers/</guid>
+      <guid>https://bornlex.github.io/posts/epita-3-transformers/</guid>
       <description>&lt;h1 id=&#34;context&#34;&gt;Context&lt;/h1&gt;
 &lt;p&gt;Generating data is now a hot topic in machine learning. The idea of using statistical methods to produce synthetic data is rather old. Many methods are proven to be effective in different scenarios.&lt;/p&gt;
 &lt;p&gt;Today, the most well-known ways to generate synthetic data are:&lt;/p&gt;
@@ -66,9 +65,9 @@
     </item>
     <item>
       <title>EPITA Courses - Recurrent Neural Networks</title>
-      <link>http://localhost:1313/posts/epita-2-rnn/</link>
+      <link>https://bornlex.github.io/posts/epita-2-rnn/</link>
       <pubDate>Sun, 16 Mar 2025 15:46:44 +0100</pubDate>
-      <guid>http://localhost:1313/posts/epita-2-rnn/</guid>
+      <guid>https://bornlex.github.io/posts/epita-2-rnn/</guid>
       <description>&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
 &lt;h2 id=&#34;motivation&#34;&gt;Motivation&lt;/h2&gt;
 &lt;p&gt;Why is it necessary to introduce the concept of recurrence in neural networks?&lt;/p&gt;
@@ -76,9 +75,9 @@
     </item>
     <item>
       <title>EPITA Courses - Timeseries</title>
-      <link>http://localhost:1313/posts/epita-1-timeseries/</link>
+      <link>https://bornlex.github.io/posts/epita-1-timeseries/</link>
       <pubDate>Sun, 16 Mar 2025 15:36:50 +0100</pubDate>
-      <guid>http://localhost:1313/posts/epita-1-timeseries/</guid>
+      <guid>https://bornlex.github.io/posts/epita-1-timeseries/</guid>
       <description>&lt;h1 id=&#34;time-series&#34;&gt;Time Series&lt;/h1&gt;
 &lt;h2 id=&#34;time-series--stochastic-processes&#34;&gt;Time series &amp;amp; stochastic processes&lt;/h2&gt;
 &lt;p&gt;A time series is a set of observations $x_t$ generated sequentially over time $t$.&lt;/p&gt;
@@ -92,9 +91,9 @@
     </item>
     <item>
       <title>About Me</title>
-      <link>http://localhost:1313/posts/me/</link>
+      <link>https://bornlex.github.io/posts/me/</link>
       <pubDate>Sun, 16 Mar 2025 15:35:02 +0100</pubDate>
-      <guid>http://localhost:1313/posts/me/</guid>
+      <guid>https://bornlex.github.io/posts/me/</guid>
       <description>&lt;p&gt;I am Julien, french engineer in AI since 2017.&lt;/p&gt;
 &lt;p&gt;I have worked in several organizations on different topics, all related to AI or where AI is applied to.&lt;/p&gt;
 &lt;p&gt;I love playing golf (even though I am not very good at it…), going to the gym, reading, learning new things and working (not a joke, I do love it).&lt;/p&gt;
@@ -102,11 +101,11 @@
     </item>
     <item>
       <title>MLX DQN</title>
-      <link>http://localhost:1313/posts/mlx-dqn/</link>
+      <link>https://bornlex.github.io/posts/mlx-dqn/</link>
       <pubDate>Sun, 16 Mar 2025 15:12:50 +0100</pubDate>
-      <guid>http://localhost:1313/posts/mlx-dqn/</guid>
+      <guid>https://bornlex.github.io/posts/mlx-dqn/</guid>
       <description>&lt;h1 id=&#34;reinforcement-learning-with-apple-mlx-framework&#34;&gt;Reinforcement Learning with Apple MLX Framework&lt;/h1&gt;
-&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;http://localhost:1313/dqn/apple-meta.jpg&#34; alt=&#34;Meta vs Apple&#34;  /&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://bornlex.github.io/dqn/apple-meta.jpg&#34; alt=&#34;Meta vs Apple&#34;  /&gt;
 &lt;/p&gt;
 &lt;p&gt;Today, a very short article about Apple MLX framework.&lt;/p&gt;
 &lt;p&gt;I recently learned that Apple has its own machine learning framework, and as a heavy Mac user I thought I’d give it a try.&lt;/p&gt;
@@ -115,9 +114,9 @@
     </item>
     <item>
       <title>Kolmogorov AI Framework | Part 1</title>
-      <link>http://localhost:1313/posts/kolmogorov-ai-framework/</link>
+      <link>https://bornlex.github.io/posts/kolmogorov-ai-framework/</link>
       <pubDate>Thu, 13 Mar 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/kolmogorov-ai-framework/</guid>
+      <guid>https://bornlex.github.io/posts/kolmogorov-ai-framework/</guid>
       <description>&lt;h1 id=&#34;shannon-entropy&#34;&gt;Shannon Entropy&lt;/h1&gt;
 &lt;h2 id=&#34;concept&#34;&gt;Concept&lt;/h2&gt;
 &lt;p&gt;In 1948, engineer and mathematician Claude Shannon published a foundational paper for computer science, and later artificial intelligence: A Mathematical Theory of Communication.
@@ -129,9 +128,9 @@ $$&lt;/p&gt;
     </item>
     <item>
       <title>Physics Informed Neural Networks</title>
-      <link>http://localhost:1313/posts/physics-informed-neural-networks/</link>
+      <link>https://bornlex.github.io/posts/physics-informed-neural-networks/</link>
       <pubDate>Mon, 04 Nov 2024 15:10:54 +0100</pubDate>
-      <guid>http://localhost:1313/posts/physics-informed-neural-networks/</guid>
+      <guid>https://bornlex.github.io/posts/physics-informed-neural-networks/</guid>
       <description>&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;Neural networks require large amounts of data to converge. Those data need to represent the task the neural network is trying to learn.&lt;/p&gt;
 &lt;p&gt;Data collection is a tedious process, especially when collecting data can be difficult or expensive. In science, physics for instance, many phenomenon are described using theories that we know are working very well.&lt;/p&gt;
@@ -139,10 +138,10 @@ $$&lt;/p&gt;
     </item>
     <item>
       <title>Croyances ostentatoires</title>
-      <link>http://localhost:1313/posts/croyances/</link>
+      <link>https://bornlex.github.io/posts/croyances/</link>
       <pubDate>Sun, 16 Jun 2024 12:10:27 +0200</pubDate>
-      <guid>http://localhost:1313/posts/croyances/</guid>
-      <description>&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;http://localhost:1313/croyances/map.jpg&#34; alt=&#34;Carte des résultats aux élections européennes&#34;  /&gt;
+      <guid>https://bornlex.github.io/posts/croyances/</guid>
+      <description>&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://bornlex.github.io/croyances/map.jpg&#34; alt=&#34;Carte des résultats aux élections européennes&#34;  /&gt;
 &lt;/p&gt;
 &lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;Au vu de la carte des résultats des élections européennes, on constate immédiatement à quel point le Rassemblement National (RN) est arrivé en tête dans tous les départements, à l&amp;rsquo;exception notable de Paris, et ceci même dans les régions traditionnellement plutôt à gauche, comme la Bretagne.&lt;/p&gt;
@@ -150,10 +149,10 @@ $$&lt;/p&gt;
     </item>
     <item>
       <title>LoRA: Low Rank Adaptation</title>
-      <link>http://localhost:1313/posts/lora/</link>
+      <link>https://bornlex.github.io/posts/lora/</link>
       <pubDate>Fri, 24 May 2024 14:53:18 +0200</pubDate>
-      <guid>http://localhost:1313/posts/lora/</guid>
-      <description>&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;http://localhost:1313/lora/roses.jpg&#34; alt=&#34;LoRA: Low Rank Adaptation&#34;  /&gt;
+      <guid>https://bornlex.github.io/posts/lora/</guid>
+      <description>&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://bornlex.github.io/lora/roses.jpg&#34; alt=&#34;LoRA: Low Rank Adaptation&#34;  /&gt;
 &lt;/p&gt;
 &lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;Whenever we need to use a deep learning model for image or text generation, classification
@@ -167,18 +166,18 @@ of data. On the other hand, using a pre-trained model is easier but might requir
     </item>
     <item>
       <title>AI Revolution, the Nuclear Fusion Effect</title>
-      <link>http://localhost:1313/posts/ai-revolution/</link>
+      <link>https://bornlex.github.io/posts/ai-revolution/</link>
       <pubDate>Tue, 20 Feb 2024 23:04:40 +0100</pubDate>
-      <guid>http://localhost:1313/posts/ai-revolution/</guid>
+      <guid>https://bornlex.github.io/posts/ai-revolution/</guid>
       <description>&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;The spectacular advancements in terms of understanding and generating language have created a massive enthusiasm for artificial intelligence. Every company is looking for ways to integrate some of these technologies into their products, processes, and services. Governments are competing with announcements. The investments are considerable, at least as much as the number of posts on LinkedIn.&lt;/p&gt;
 &lt;p&gt;These recent developments are partly due to a technology initially developed and made public by a Google team, the Transformers. OpenAI was the first company to understand and exploit the potential of this neural network architecture and applied it to text generation through its successive GPT models.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Intelligence Artificielle, l&#39;effet fusion nucléaire</title>
-      <link>http://localhost:1313/posts/ia-revolution/</link>
+      <link>https://bornlex.github.io/posts/ia-revolution/</link>
       <pubDate>Tue, 20 Feb 2024 20:48:59 +0100</pubDate>
-      <guid>http://localhost:1313/posts/ia-revolution/</guid>
+      <guid>https://bornlex.github.io/posts/ia-revolution/</guid>
       <description>&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;Les progrès spectaculaires en termes de compréhension et de génération du langage ont créé un engouement massif pour
 l&amp;rsquo;intelligence artificielle. Toutes les entreprises cherchent comment intégrer certaines de ces technologies dans leurs
@@ -190,21 +189,21 @@ architecture de réseau de neurones et l&amp;rsquo;a appliquée à la générati
     </item>
     <item>
       <title>Le problème des vendeurs de plage</title>
-      <link>http://localhost:1313/posts/vendeurs-plage/</link>
+      <link>https://bornlex.github.io/posts/vendeurs-plage/</link>
       <pubDate>Wed, 31 Jan 2024 17:04:23 +0100</pubDate>
-      <guid>http://localhost:1313/posts/vendeurs-plage/</guid>
+      <guid>https://bornlex.github.io/posts/vendeurs-plage/</guid>
       <description>&lt;p&gt;Pourquoi est-ce que ni l’extrême droite, ni l’extrême gauche ne gagne jamais l’élection présidentielle ?&lt;/p&gt;
 &lt;p&gt;On pourrait penser que la courbe du nombre de votants en fonction du spectre politique ressemble à une courbe gaussienne centrée sur le milieu de l’échiquier politique, avec quelques variations. Il y a plus de gens modérés que d’extrêmes.&lt;/p&gt;
-&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;http://localhost:1313/plage/gaussian.webp&#34; alt=&#34;Loi normale&#34;  /&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://bornlex.github.io/plage/gaussian.webp&#34; alt=&#34;Loi normale&#34;  /&gt;
 &lt;/p&gt;
 &lt;p&gt;Mais si l’on regarde les intentions de vote pour chaque candidat ou les résultats du premier tour de l’élection présidentielle, on réalise rapidement que cette réponse n’est pas satisfaisante.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Ternary Computing</title>
-      <link>http://localhost:1313/posts/ternary-computing/</link>
+      <link>https://bornlex.github.io/posts/ternary-computing/</link>
       <pubDate>Wed, 31 Jan 2024 15:21:00 +0100</pubDate>
-      <guid>http://localhost:1313/posts/ternary-computing/</guid>
-      <description>&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;http://localhost:1313/ternary/ternary.jpeg&#34; alt=&#34;Ternary&#34;  /&gt;
+      <guid>https://bornlex.github.io/posts/ternary-computing/</guid>
+      <description>&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://bornlex.github.io/ternary/ternary.jpeg&#34; alt=&#34;Ternary&#34;  /&gt;
 &lt;/p&gt;
 &lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;First, let us define “computers” as any machine that can compute.&lt;/p&gt;
@@ -214,9 +213,9 @@ architecture de réseau de neurones et l&amp;rsquo;a appliquée à la générati
     </item>
     <item>
       <title>Code injection</title>
-      <link>http://localhost:1313/posts/2018-10-14-code-injection/</link>
+      <link>https://bornlex.github.io/posts/2018-10-14-code-injection/</link>
       <pubDate>Wed, 24 Jan 2024 14:03:13 +0100</pubDate>
-      <guid>http://localhost:1313/posts/2018-10-14-code-injection/</guid>
+      <guid>https://bornlex.github.io/posts/2018-10-14-code-injection/</guid>
       <description>&lt;!-- raw HTML omitted --&gt;
 &lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;J&amp;rsquo;ai découvert l&amp;rsquo;OpenSource Intelligence en m&amp;rsquo;intéressant de près à la sécurité informatique.&lt;/p&gt;

@@ -2,65 +2,65 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/</loc>
+    <loc>https://bornlex.github.io/</loc>
     <lastmod>2025-04-16T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/</loc>
+    <loc>https://bornlex.github.io/posts/</loc>
     <lastmod>2025-04-16T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/webformers/</loc>
+    <loc>https://bornlex.github.io/posts/webformers/</loc>
     <lastmod>2025-04-16T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/kolmogorov-environment/</loc>
+    <loc>https://bornlex.github.io/posts/kolmogorov-environment/</loc>
     <lastmod>2025-04-02T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/epita-4-pinn/</loc>
+    <loc>https://bornlex.github.io/posts/epita-4-pinn/</loc>
     <lastmod>2025-03-16T15:54:04+01:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/epita-3-transformers/</loc>
+    <loc>https://bornlex.github.io/posts/epita-3-transformers/</loc>
     <lastmod>2025-03-16T15:49:20+01:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/epita-2-rnn/</loc>
+    <loc>https://bornlex.github.io/posts/epita-2-rnn/</loc>
     <lastmod>2025-03-16T15:46:44+01:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/epita-1-timeseries/</loc>
+    <loc>https://bornlex.github.io/posts/epita-1-timeseries/</loc>
     <lastmod>2025-03-16T15:36:50+01:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/me/</loc>
+    <loc>https://bornlex.github.io/posts/me/</loc>
     <lastmod>2025-03-16T15:35:02+01:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/mlx-dqn/</loc>
+    <loc>https://bornlex.github.io/posts/mlx-dqn/</loc>
     <lastmod>2025-03-16T15:12:50+01:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/kolmogorov-ai-framework/</loc>
+    <loc>https://bornlex.github.io/posts/kolmogorov-ai-framework/</loc>
     <lastmod>2025-03-13T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/physics-informed-neural-networks/</loc>
+    <loc>https://bornlex.github.io/posts/physics-informed-neural-networks/</loc>
     <lastmod>2024-11-04T15:10:54+01:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/croyances/</loc>
+    <loc>https://bornlex.github.io/posts/croyances/</loc>
     <lastmod>2024-06-16T12:10:27+02:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/lora/</loc>
+    <loc>https://bornlex.github.io/posts/lora/</loc>
     <lastmod>2024-05-24T14:53:18+02:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/ai-revolution/</loc>
+    <loc>https://bornlex.github.io/posts/ai-revolution/</loc>
     <lastmod>2024-02-20T23:04:40+01:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/ia-revolution/</loc>
+    <loc>https://bornlex.github.io/posts/ia-revolution/</loc>
     <lastmod>2024-02-20T20:48:59+01:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/vendeurs-plage/</loc>
+    <loc>https://bornlex.github.io/posts/vendeurs-plage/</loc>
     <lastmod>2024-01-31T17:04:23+01:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/ternary-computing/</loc>
+    <loc>https://bornlex.github.io/posts/ternary-computing/</loc>
     <lastmod>2024-01-31T15:21:00+01:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/2018-10-14-code-injection/</loc>
+    <loc>https://bornlex.github.io/posts/2018-10-14-code-injection/</loc>
     <lastmod>2024-01-24T14:03:13+01:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/</loc>
+    <loc>https://bornlex.github.io/categories/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/</loc>
+    <loc>https://bornlex.github.io/tags/</loc>
   </url>
 </urlset>
