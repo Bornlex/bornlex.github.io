@@ -1,3 +1,1 @@
 User-agent: *
-Disallow:
-Sitemap: https://bornlex.github.io/sitemap.xml

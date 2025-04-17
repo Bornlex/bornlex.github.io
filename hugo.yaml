@@ -124,6 +124,10 @@ menu:
       name: About me
       url: /posts/me/
       weight: 3
+    - identifier: lightpanda.io
+      name: lightpanda.io
+      url: https://lightpanda.io/
+      weight: 4
 # Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
 pygmentsUseClasses: true
 markup:
