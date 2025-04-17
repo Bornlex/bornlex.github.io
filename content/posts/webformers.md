@@ -4,7 +4,6 @@ date = 2025-04-16
 draft = false
 +++
 
-# Webformers: Structured Information Extraction from Web Documents
 
 ## Introduction
 
