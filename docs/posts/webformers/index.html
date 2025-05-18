@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Webformers | Julien&#39;s blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="Introduction
+Extracting structured information from web pages remains a challenging task in natural language processing.
+Regular transformers architecture are not designed to encode hierarchical information. Each token is connected to every tokens in the input sequence, regardless of their position (even though there are a few mechanisms to introduce positional information, such as positional encoding).
+In a webpage, information is highly structured. The HTML represents a tree, with each node having a parent and potential siblings and children. This makes that some nodes might be semantically connected while relatively far away from each other if we consider only the number of tokens between them.">
+<meta name="author" content="Julien Seveno">
+<link rel="canonical" href="https://bornlex.github.io/posts/webformers/">
+<meta name="google-site-verification" content="XYZabc">
+<meta name="yandex-verification" content="XYZabc">
+<meta name="msvalidate.01" content="XYZabc">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b609c58d5c11bb90b1a54e04005d74ad1ddf22165eb79f5533967e57df9c3b50.css" integrity="sha256-tgnFjVwRu5CxpU4EAF10rR3fIhZet59VM5Z&#43;V9&#43;cO1A=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="icon" type="image/png" sizes="16x16" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="icon" type="image/png" sizes="32x32" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="apple-touch-icon" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="mask-icon" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://bornlex.github.io/posts/webformers/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous" />
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false}
+        ]
+    });
+});
+</script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBJC7YD3QZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZBJC7YD3QZ');
+</script>
+
+<meta property="og:title" content="Webformers" />
+<meta property="og:description" content="Introduction
+Extracting structured information from web pages remains a challenging task in natural language processing.
+Regular transformers architecture are not designed to encode hierarchical information. Each token is connected to every tokens in the input sequence, regardless of their position (even though there are a few mechanisms to introduce positional information, such as positional encoding).
+In a webpage, information is highly structured. The HTML represents a tree, with each node having a parent and potential siblings and children. This makes that some nodes might be semantically connected while relatively far away from each other if we consider only the number of tokens between them." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bornlex.github.io/posts/webformers/" /><meta property="og:image" content="https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2025-04-16T00:00:00+00:00" />
+<meta property="article:modified_time" content="2025-04-16T00:00:00+00:00" /><meta property="og:site_name" content="Julien&#39;s blog" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/>
+
+<meta name="twitter:title" content="Webformers"/>
+<meta name="twitter:description" content="Introduction
+Extracting structured information from web pages remains a challenging task in natural language processing.
+Regular transformers architecture are not designed to encode hierarchical information. Each token is connected to every tokens in the input sequence, regardless of their position (even though there are a few mechanisms to introduce positional information, such as positional encoding).
+In a webpage, information is highly structured. The HTML represents a tree, with each node having a parent and potential siblings and children. This makes that some nodes might be semantically connected while relatively far away from each other if we consider only the number of tokens between them."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://bornlex.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Webformers",
+      "item": "https://bornlex.github.io/posts/webformers/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Webformers",
+  "name": "Webformers",
+  "description": "Introduction Extracting structured information from web pages remains a challenging task in natural language processing.\nRegular transformers architecture are not designed to encode hierarchical information. Each token is connected to every tokens in the input sequence, regardless of their position (even though there are a few mechanisms to introduce positional information, such as positional encoding).\nIn a webpage, information is highly structured. The HTML represents a tree, with each node having a parent and potential siblings and children. This makes that some nodes might be semantically connected while relatively far away from each other if we consider only the number of tokens between them.\n",
+  "keywords": [
+    
+  ],
+  "articleBody": "Introduction Extracting structured information from web pages remains a challenging task in natural language processing.\nRegular transformers architecture are not designed to encode hierarchical information. Each token is connected to every tokens in the input sequence, regardless of their position (even though there are a few mechanisms to introduce positional information, such as positional encoding).\nIn a webpage, information is highly structured. The HTML represents a tree, with each node having a parent and potential siblings and children. This makes that some nodes might be semantically connected while relatively far away from each other if we consider only the number of tokens between them.\nTake the following example, from Betclic:\nAnd the corresponding HTML code:\n\u003cdiv class=\"list_content\"\u003e \u003csports-tile routerlinkactive=\"active-link\" class=\"list_item\"\u003e \u003cdiv class=\"list_itemWrapper\" id=\"block-link-0\"\u003e \u003cdiv class=\"list_itemStart\"\u003e \u003cspan class=\"list_itemImg icons icon_sport_football\"\u003e\u003c/span\u003e \u003cspan class=\"list_itemImg flagsIconBg is-EU\"\u003e\u003c/span\u003e \u003c/div\u003e \u003cdiv class=\"list_itemContent\"\u003e \u003cdiv class=\"list_itemTitle\"\u003e Top Football Européen \u003c/div\u003e \u003c/div\u003e \u003c/div\u003e \u003c/sports-tile\u003e \u003csports-tile routerlinkactive=\"active-link\" class=\"list_item\"\u003e \u003cdiv class=\"list_itemWrapper\" id=\"block-link-3453\"\u003e \u003cdiv class=\"list_itemStart\"\u003e \u003cspan class=\"list_itemImg icons icon_sport_football\"\u003e\u003c/span\u003e \u003cspan class=\"list_itemImg flagsIconBg is-EU\"\u003e\u003c/span\u003e \u003c/div\u003e \u003cdiv class=\"list_itemContent\"\u003e \u003cdiv class=\"list_itemTitle\"\u003e Ligue Europa \u003c/div\u003e \u003c/div\u003e \u003c/div\u003e \u003c/sports-tile\u003e \u003csports-tile routerlinkactive=\"active-link\" class=\"list_item\"\u003e \u003cdiv class=\"list_itemWrapper\" id=\"block-link-28946\"\u003e \u003cdiv class=\"list_itemStart\"\u003e \u003cspan class=\"list_itemImg icons icon_sport_football\"\u003e\u003c/span\u003e \u003cspan class=\"list_itemImg flagsIconBg is-EU\"\u003e\u003c/span\u003e \u003c/div\u003e \u003cdiv class=\"list_itemContent\"\u003e \u003cdiv class=\"list_itemTitle\"\u003e Ligue Conférence \u003c/div\u003e \u003c/div\u003e \u003c/div\u003e \u003c/sports-tile\u003e \u003csports-tile routerlinkactive=\"active-link\" class=\"list_item\"\u003e \u003cdiv class=\"list_itemWrapper\" id=\"block-link-88\"\u003e \u003cdiv class=\"list_itemStart\"\u003e \u003cspan class=\"list_itemImg icons icon_sport_football\"\u003e\u003c/span\u003e \u003cspan class=\"list_itemImg flagsIconBg is-DK\"\u003e\u003c/span\u003e \u003c/div\u003e \u003cdiv class=\"list_itemContent\"\u003e \u003cdiv class=\"list_itemTitle\"\u003e Danemark Superliga \u003c/div\u003e \u003c/div\u003e \u003c/div\u003e \u003c/sports-tile\u003e \u003csports-tile routerlinkactive=\"active-link\" class=\"list_item\"\u003e \u003cdiv class=\"list_itemWrapper\" id=\"block-link-114\"\u003e \u003cdiv class=\"list_itemStart\"\u003e \u003cspan class=\"list_itemImg icons icon_sport_tennis\"\u003e\u003c/span\u003e \u003cspan class=\"list_itemImg flagsIconBg is-ES\"\u003e\u003c/span\u003e \u003c/div\u003e \u003cdiv class=\"list_itemContent\"\u003e \u003cdiv class=\"list_itemTitle\"\u003e Barcelone ATP \u003c/div\u003e \u003c/div\u003e \u003c/div\u003e \u003c/sports-tile\u003e \u003csports-tile routerlinkactive=\"active-link\" class=\"list_item\"\u003e \u003cdiv class=\"list_itemWrapper\" id=\"block-link-4684\"\u003e \u003cdiv class=\"list_itemStart\"\u003e \u003cspan class=\"list_itemImg icons icon_sport_football\"\u003e\u003c/span\u003e \u003cspan class=\"list_itemImg flagsIconBg is-SA\"\u003e\u003c/span\u003e \u003c/div\u003e \u003cdiv class=\"list_itemContent\"\u003e \u003cdiv class=\"list_itemTitle\"\u003e Arabie Saoudite PL \u003c/div\u003e \u003c/div\u003e \u003c/div\u003e \u003c/sports-tile\u003e \u003c/div\u003e One can ask a webpage to return all the league names, which are semantically connected. However, even though the names “Top Football Européen” and “Arabie Saoudite PL” are many tokens away from each other, they are siblings. So if we could leverage the HTML graph information, they would be much closer.\nFortunately for us, researchers have already worked on algorithms using sequence modeling to achieve state-of-the-art performance in web extraction tasks, releasing Webformers. This article explores how Webformers works, its architecture, its limitations.\nHow Webformers stands apart from traditional approaches by encoding HTML, target fields, and text sequences within a unified transformer model.\nThe key innovation lies in how it designs specialized HTML tokens for each DOM node, embedding representations from neighboring tokens through graph attention mechanisms, while constructing rich attention patterns between HTML and text tokens.\nKey contributions The Webformers approach makes two significant contributions to the field:\nStructure-aware information extraction that integrates web HTML layout through graph attention mechanisms Rich attention mechanisms for embedding representations among different token types, enabling efficient encoding of long sequences and empowering zero-shot extraction capabilities Problem definition To understand how Webformers functions, we need to define the problem it aims to solve. The web document is processed into. Let us give the authors’ notations:\n$T = (t_1, t_2, …, t_k)$ the text sequence from the web document $t_i$ represents the $i\\text{-th}$ text node on the web $k$ is the total number of text nodes with $t_i = (w_{i_1}, w_{i_2}, …, w_{i_{n_i}})$ as its $n_i$ words/tokens note that the ordering of the text nodes does not matter in this model $G = (V, E)$ the DOM tree of the HTML $V$ is the set of DOM nodes in the tree $E$ is the set of edges the $k$ text nodes are connected in this DOM representation The goal of structured information extraction is that given a set of target fields $F = (f_1, …, f_m)$ to extract their corresponding text information from the web document.\nFor example, from a text field “date” we expect the text span “Dec 13” from the web document.\nThe problem is defined as finding the best text span $\\bar{s_j}$ for each field $f_j$ given the web document $T$ and $G$:\n$$ \\bar{s_j} = \\argmax_{b_j, e_j} Pr(w_{b_j}, w_{e_j} | f_j, T, G) $$\nwhere $b_j$ and $e_j$ are the begin and end offsets of the extracted text span in the web document for text field $f_j$.\nArchitecture WebFormer consists of three main components:\nthe input layer contains the construction of the input tokens of webformer as well as their embeddings, including the field token, the HTML tokens from DOM tree $G$ and the text tokens from the text sequence $T$ the webformer encoder this is the main block encodes the input sequence with rich attention patterns, including HTML to HTML (H2H), HTML to Text (H2T), Text to HTML (T2H) and Text to Text (T2T) attentions as detailed below the output layer the text span corresponding to the field is computed based on the encoded field-dependent text embeddings Input layer The paper introduces 3 new token types:\nField token A set of field tokens are used to represent the text field to be extracted such as title, company, base salary… for a job page By jointly encoding the text field, the authors are able to construct a unique model across all text fields HTML token Each node in the DOM tree $G$ including both internal nodes (non text) and text nodes corresponds to a HTML token The embedding of a HTML token can be viewed as a summarization of the sub-tree rooted by this node The token represents the full doc The token summarizes the text sequence $t_4$ Text token The commonly used word representation in natural language models. In the input layer, every token is converted into a $d$-dimensional embedding vector.\nFor field and text embedding, their final embedding is constructed by concatenating a word embedding and a segment embedding.\nFor HTML token embedding, they are formulated by concatenating a tag embedding and a segment embedding\nThe segment embedding is added to indicate which type the token belongs to (field, HTML, text) and the tag embedding represents different HTML tag of the DOM nodes.\nEncoder The encoder consists of $L$ identical contextual layers plus one feed-forward layer. It defines several attention patterns:\nHTML-to-HTML Compute the attention weights between HTML tokens They seem to use some kind of graph attention (source 43 in the paper) For example is connected to: Itself Its parent Its children and Its siblings HTML-to-Text Computed for the text nodes in the HTML to update their contextual embeddings For example, the HTML token is connected to the tokens in the t4 sequence Text-to-HTML Text tokens are connected with every HTML tokens so they absorb the high-level representation of the web document Text-to-Text Regular attention mechanism Text tokens are only connected to their neighbors (the other text tokens inside the same tag and within a radius $r$) Field token attention (As a reminder, the field tokens represent the data to be extracted (price, article title…)) The field token is connected to every HTML tokens The authors tried to connect the field token to every text tokens on top of HTML tokens but it did not improved the quality of the extraction Overall attention Compute the final token representation based on the above attention patterns For example the text token representation is the combination of the text to text representation + the text to html representation Output layer The output layer extracts the final text span for each field from the text tokens using a softmax function on the output embeddings to generate probabilities for the beginning and ending indices.\nLimitations Despite its advancements, Webformers has two main limitations:\nSingle object focus: The model is designed for pages where each target field has a single text value. For multiple objects, the authors recommend using repeated patterns methods. No rendered page consideration: The model does not take into account the visually rendered page (OCR), focusing solely on the HTML structure. Results Webformers achieves state-of-the-art performance in structured information extraction from web documents. Its ability to leverage the HTML structure through graph attention mechanisms and its rich attention patterns between different token types enable more accurate and efficient extraction compared to previous approaches.\nThe model’s architecture allows for zero-shot extraction capabilities, making it particularly valuable for applications requiring information extraction from previously unseen web page structures.\nConclusion Webformers represents a significant advancement in structured information extraction from web documents. By integrating HTML structure through graph attention and implementing rich attention patterns, it achieves superior performance in web extraction tasks. While limitations exist, the approach opens new possibilities for more accurate and efficient information extraction from the web.\nAs web content continues to grow exponentially, technologies like Webformers will become increasingly important for automated information extraction and knowledge building from web sources.\nAt lightpanda.io, we work on researching and providing developers with the best browser, made for machine and AI. Integrating AI features in a web processing pipeline needs to be consistent and reliable. Webformer gives us a powerful base to understand content coming out of the browser, and plugging other components into it.\nResources The paper: https://arxiv.org/abs/2202.00217 The Github repository: https://github.com/xrr233/Webformer ",
+  "wordCount" : "1492",
+  "inLanguage": "en",
+  "datePublished": "2025-04-16T00:00:00Z",
+  "dateModified": "2025-04-16T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Julien Seveno"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://bornlex.github.io/posts/webformers/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Julien's blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://bornlex.github.io/%3Clink%20/%20abs%20url%3E"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://bornlex.github.io/" accesskey="h" title="Home (Alt + H)">
+                <img src="https://bornlex.github.io/apple-touch-icon.png" alt="" aria-label="logo"
+                    height="35">Home</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://bornlex.github.io/" title="Posts">
+                    <span>Posts</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/Bornlex/Whitespace-interpreter" title="Whitespace Interpreter">
+                    <span>Whitespace Interpreter</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://bornlex.github.io/posts/me/" title="About me">
+                    <span>About me</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://lightpanda.io/" title="lightpanda.io">
+                    <span>lightpanda.io</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://bornlex.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://bornlex.github.io/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      Webformers
+    </h1>
+    <div class="post-meta"><span title='2025-04-16 00:00:00 +0000 UTC'>April 16, 2025</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;1492 words&nbsp;·&nbsp;Julien Seveno&nbsp;|&nbsp;<a href="https://github.com/%3cpath_to_repo%3e/content/posts/webformers.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+  </header> 
+  <div class="post-content"><h2 id="introduction">Introduction<a hidden class="anchor" aria-hidden="true" href="#introduction">#</a></h2>
+<p>Extracting structured information from web pages remains a challenging task in natural language processing.</p>
+<p>Regular transformers architecture are not designed to encode hierarchical information. Each token is connected to every tokens in the input sequence, regardless of their position (even though there are a few mechanisms to introduce positional information, such as positional encoding).</p>
+<p>In a webpage, information is highly structured. The HTML represents a tree, with each node having a parent and potential siblings and children. This makes that some nodes might be semantically connected while relatively far away from each other if we consider only the number of tokens between them.</p>
+<p>Take the following example, from Betclic:</p>
+<p><img loading="lazy" src="/webformers/betclic.png" alt="Betclic"  />
+</p>
+<p>And the corresponding HTML code:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_content&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">sports-tile</span> <span class="na">routerlinkactive</span><span class="o">=</span><span class="s">&#34;active-link&#34;</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_item&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemWrapper&#34;</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;block-link-0&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemStart&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemImg icons icon_sport_football&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemImg flagsIconBg is-EU&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemContent&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemTitle&#34;</span><span class="p">&gt;</span> Top Football Européen <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">sports-tile</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">sports-tile</span> <span class="na">routerlinkactive</span><span class="o">=</span><span class="s">&#34;active-link&#34;</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_item&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemWrapper&#34;</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;block-link-3453&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemStart&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemImg icons icon_sport_football&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemImg flagsIconBg is-EU&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemContent&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemTitle&#34;</span><span class="p">&gt;</span> Ligue Europa <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">sports-tile</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">sports-tile</span> <span class="na">routerlinkactive</span><span class="o">=</span><span class="s">&#34;active-link&#34;</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_item&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemWrapper&#34;</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;block-link-28946&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemStart&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemImg icons icon_sport_football&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemImg flagsIconBg is-EU&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemContent&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemTitle&#34;</span><span class="p">&gt;</span> Ligue Conférence <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">sports-tile</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">sports-tile</span> <span class="na">routerlinkactive</span><span class="o">=</span><span class="s">&#34;active-link&#34;</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_item&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemWrapper&#34;</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;block-link-88&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemStart&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemImg icons icon_sport_football&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemImg flagsIconBg is-DK&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemContent&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemTitle&#34;</span><span class="p">&gt;</span> Danemark Superliga <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">sports-tile</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">sports-tile</span> <span class="na">routerlinkactive</span><span class="o">=</span><span class="s">&#34;active-link&#34;</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_item&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemWrapper&#34;</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;block-link-114&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemStart&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemImg icons icon_sport_tennis&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemImg flagsIconBg is-ES&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemContent&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemTitle&#34;</span><span class="p">&gt;</span> Barcelone ATP <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">sports-tile</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">sports-tile</span> <span class="na">routerlinkactive</span><span class="o">=</span><span class="s">&#34;active-link&#34;</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_item&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemWrapper&#34;</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;block-link-4684&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemStart&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemImg icons icon_sport_football&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemImg flagsIconBg is-SA&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemContent&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;list_itemTitle&#34;</span><span class="p">&gt;</span> Arabie Saoudite PL <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">sports-tile</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>One can ask a webpage to return all the league names, which are semantically connected. However, even though the names “Top Football Européen” and “Arabie Saoudite PL” are many tokens away from each other, they are siblings. So if we could leverage the HTML graph information, they would be much closer.</p>
+<hr>
+<p>Fortunately for us, researchers have already worked on algorithms using sequence modeling to achieve state-of-the-art performance in web extraction tasks, releasing Webformers. This article explores how Webformers works, its architecture, its limitations.</p>
+<h2 id="how">How<a hidden class="anchor" aria-hidden="true" href="#how">#</a></h2>
+<p>Webformers stands apart from traditional approaches by encoding HTML, target fields, and text sequences within a unified transformer model.</p>
+<p>The key innovation lies in how it designs specialized HTML tokens for each DOM node, embedding representations from neighboring tokens through graph attention mechanisms, while constructing rich attention patterns between HTML and text tokens.</p>
+<h3 id="key-contributions">Key contributions<a hidden class="anchor" aria-hidden="true" href="#key-contributions">#</a></h3>
+<p>The Webformers approach makes two significant contributions to the field:</p>
+<ol>
+<li><strong>Structure-aware information extraction</strong> that integrates web HTML layout through graph attention mechanisms</li>
+<li><strong>Rich attention mechanisms</strong> for embedding representations among different token types, enabling efficient encoding of long sequences and empowering zero-shot extraction capabilities</li>
+</ol>
+<h3 id="problem-definition">Problem definition<a hidden class="anchor" aria-hidden="true" href="#problem-definition">#</a></h3>
+<p>To understand how Webformers functions, we need to define the problem it aims to solve. The web document is processed into. Let us give the authors’ notations:</p>
+<ul>
+<li>$T = (t_1, t_2, &hellip;, t_k)$ the <strong>text sequence</strong> from the web document
+<ul>
+<li>$t_i$ represents the $i\text{-th}$ text node on the web</li>
+<li>$k$ is the total number of text nodes with $t_i = (w_{i_1}, w_{i_2}, &hellip;, w_{i_{n_i}})$ as its $n_i$ words/tokens</li>
+<li>note that the ordering of the text nodes does not matter in this model</li>
+</ul>
+</li>
+<li>$G = (V, E)$ the <strong>DOM tree of the HTML</strong>
+<ul>
+<li>$V$ is the set of DOM nodes in the tree</li>
+<li>$E$ is the set of edges</li>
+<li>the $k$ text nodes are connected in this DOM representation</li>
+</ul>
+</li>
+</ul>
+<p>The goal of structured information extraction is that given a set of target fields $F = (f_1, &hellip;, f_m)$ to extract their corresponding text information from the web document.</p>
+<p>For example, from a text field “date” we expect the text span “Dec 13” from the web document.</p>
+<p>The problem is defined as finding the best text span $\bar{s_j}$ for each field $f_j$ given the web document $T$ and $G$:</p>
+<p>$$
+\bar{s_j} = \argmax_{b_j, e_j} Pr(w_{b_j}, w_{e_j} | f_j, T, G)
+$$</p>
+<p>where $b_j$ and $e_j$ are the begin and end offsets of the extracted text span in the web document for text field $f_j$.</p>
+<h3 id="architecture">Architecture<a hidden class="anchor" aria-hidden="true" href="#architecture">#</a></h3>
+<p><img loading="lazy" src="/webformers/architecture.png" alt="Architecture"  />
+</p>
+<p>WebFormer consists of three main components:</p>
+<ul>
+<li><strong>the input layer</strong>
+<ul>
+<li>contains the construction of the input tokens of webformer as well as their embeddings, including the field token, the HTML tokens from DOM tree $G$ and the text tokens from the text sequence $T$</li>
+</ul>
+</li>
+<li><strong>the webformer encoder</strong>
+<ul>
+<li>this is the main block</li>
+<li>encodes the input sequence with rich attention patterns, including HTML to HTML (H2H), HTML to Text (H2T), Text to HTML (T2H) and Text to Text (T2T) attentions as detailed below</li>
+</ul>
+</li>
+<li><strong>the output layer</strong>
+<ul>
+<li>the text span corresponding to the field is computed based on the encoded field-dependent text embeddings</li>
+</ul>
+</li>
+</ul>
+<h3 id="input-layer">Input layer<a hidden class="anchor" aria-hidden="true" href="#input-layer">#</a></h3>
+<p>The paper introduces 3 new token types:</p>
+<ul>
+<li><strong>Field token</strong>
+<ul>
+<li>A set of field tokens are used to represent the text field to be extracted such as title, company, base salary… for a job page</li>
+<li>By jointly encoding the text field, the authors are able to construct a unique model across all text fields</li>
+</ul>
+</li>
+<li><strong>HTML token</strong>
+<ul>
+<li>Each node in the DOM tree $G$ including both internal nodes (non text) and text nodes corresponds to a HTML token</li>
+<li>The embedding of a HTML token can be viewed as a summarization of the sub-tree rooted by this node
+<ul>
+<li>The <!-- raw HTML omitted --> token represents the full doc</li>
+<li>The <!-- raw HTML omitted --> token summarizes the text sequence $t_4$</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Text token</strong>
+<ul>
+<li>The commonly used word representation in natural language models.</li>
+</ul>
+</li>
+</ul>
+<p>In the input layer, every token is converted into a $d$-dimensional embedding vector.</p>
+<p>For field and text embedding, their final embedding is constructed by <strong>concatenating a word embedding and a segment embedding</strong>.</p>
+<p>For HTML token embedding, they are formulated by <strong>concatenating a tag embedding and a segment embedding</strong></p>
+<p>The segment embedding is added to indicate which type the token belongs to (field, HTML, text) and the tag embedding represents different HTML tag of the DOM nodes.</p>
+<h3 id="encoder">Encoder<a hidden class="anchor" aria-hidden="true" href="#encoder">#</a></h3>
+<p>The encoder consists of $L$ identical contextual layers plus one feed-forward layer. It defines several attention patterns:</p>
+<ul>
+<li><strong>HTML-to-HTML</strong>
+<ul>
+<li>Compute the attention weights between HTML tokens</li>
+<li>They seem to use some kind of graph attention (source 43 in the paper)</li>
+<li>For example <!-- raw HTML omitted --> is connected to:
+<ul>
+<li>Itself</li>
+<li>Its parent <!-- raw HTML omitted --></li>
+<li>Its children <!-- raw HTML omitted --> and <!-- raw HTML omitted --></li>
+<li>Its siblings <!-- raw HTML omitted --></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>HTML-to-Text</strong>
+<ul>
+<li>Computed for the text nodes in the HTML to update their contextual embeddings</li>
+<li>For example, the HTML token <!-- raw HTML omitted --> is connected to the tokens in the t4 sequence</li>
+</ul>
+</li>
+<li><strong>Text-to-HTML</strong>
+<ul>
+<li>Text tokens are connected with every HTML tokens so they absorb the high-level representation of the web document</li>
+</ul>
+</li>
+<li><strong>Text-to-Text</strong>
+<ul>
+<li>Regular attention mechanism</li>
+<li>Text tokens are only connected to their neighbors (the other text tokens inside the same tag and within a radius $r$)</li>
+</ul>
+</li>
+<li><strong>Field token attention</strong>
+<ul>
+<li>(As a reminder, the field tokens represent the data to be extracted (price, article title…))</li>
+<li>The field token is connected to every HTML tokens</li>
+<li>The authors tried to connect the field token to every text tokens on top of HTML tokens but it did not improved the quality of the extraction</li>
+</ul>
+</li>
+<li><strong>Overall attention</strong>
+<ul>
+<li>Compute the final token representation based on the above attention patterns</li>
+<li>For example the text token representation is the combination of the text to text representation + the text to html representation</li>
+</ul>
+</li>
+</ul>
+<h3 id="output-layer">Output layer<a hidden class="anchor" aria-hidden="true" href="#output-layer">#</a></h3>
+<p>The output layer extracts the final text span for each field from the text tokens using a softmax function on the output embeddings to generate probabilities for the beginning and ending indices.</p>
+<h2 id="limitations">Limitations<a hidden class="anchor" aria-hidden="true" href="#limitations">#</a></h2>
+<p>Despite its advancements, Webformers has two main limitations:</p>
+<ol>
+<li><strong>Single object focus</strong>: The model is designed for pages where each target field has a single text value. For multiple objects, the authors recommend using repeated patterns methods.</li>
+<li><strong>No rendered page consideration</strong>: The model does not take into account the visually rendered page (OCR), focusing solely on the HTML structure.</li>
+</ol>
+<h2 id="results">Results<a hidden class="anchor" aria-hidden="true" href="#results">#</a></h2>
+<p>Webformers achieves state-of-the-art performance in structured information extraction from web documents. Its ability to leverage the HTML structure through graph attention mechanisms and its rich attention patterns between different token types enable more accurate and efficient extraction compared to previous approaches.</p>
+<p>The model’s architecture allows for zero-shot extraction capabilities, making it particularly valuable for applications requiring information extraction from previously unseen web page structures.</p>
+<p><img loading="lazy" src="/webformers/results.png" alt="Results"  />
+</p>
+<h2 id="conclusion">Conclusion<a hidden class="anchor" aria-hidden="true" href="#conclusion">#</a></h2>
+<p>Webformers represents a significant advancement in structured information extraction from web documents. By integrating HTML structure through graph attention and implementing rich attention patterns, it achieves superior performance in web extraction tasks. While limitations exist, the approach opens new possibilities for more accurate and efficient information extraction from the web.</p>
+<p>As web content continues to grow exponentially, technologies like Webformers will become increasingly important for automated information extraction and knowledge building from web sources.</p>
+<p>At <a href="https://lightpanda.io/">lightpanda.io</a>, we work on researching and providing developers with the best browser, made for machine and AI. Integrating AI features in a web processing pipeline needs to be consistent and reliable. Webformer gives us a powerful base to understand content coming out of the browser, and plugging other components into it.</p>
+<h2 id="resources">Resources<a hidden class="anchor" aria-hidden="true" href="#resources">#</a></h2>
+<ul>
+<li>The paper: <a href="https://arxiv.org/abs/2202.00217">https://arxiv.org/abs/2202.00217</a></li>
+<li>The Github repository: <a href="https://github.com/xrr233/Webformer">https://github.com/xrr233/Webformer</a></li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://bornlex.github.io/posts/flash-attention/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>Flash Attention</span>
+  </a>
+  <a class="next" href="https://bornlex.github.io/posts/kolmogorov-environment/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Kolmogorov AI Framework | Part2 - brainfuck</span>
+  </a>
+</nav>
+
+
+<ul class="share-buttons">
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Webformers on x"
+            href="https://x.com/intent/tweet/?text=Webformers&amp;url=https%3a%2f%2fbornlex.github.io%2fposts%2fwebformers%2f&amp;hashtags=">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Webformers on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fbornlex.github.io%2fposts%2fwebformers%2f&amp;title=Webformers&amp;summary=Webformers&amp;source=https%3a%2f%2fbornlex.github.io%2fposts%2fwebformers%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Webformers on reddit"
+            href="https://reddit.com/submit?url=https%3a%2f%2fbornlex.github.io%2fposts%2fwebformers%2f&title=Webformers">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Webformers on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fbornlex.github.io%2fposts%2fwebformers%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Webformers on whatsapp"
+            href="https://api.whatsapp.com/send?text=Webformers%20-%20https%3a%2f%2fbornlex.github.io%2fposts%2fwebformers%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Webformers on telegram"
+            href="https://telegram.me/share/url?text=Webformers&amp;url=https%3a%2f%2fbornlex.github.io%2fposts%2fwebformers%2f">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Webformers on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t=Webformers&u=https%3a%2f%2fbornlex.github.io%2fposts%2fwebformers%2f">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+                <path
+                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+</ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2025 <a href="https://bornlex.github.io/">Julien&#39;s blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

@@ -25,6 +25,16 @@
 &lt;p&gt;In 2022, a paper introduced a way to compute the attention result by only working on sub vectors to reduce memory I/O.&lt;/p&gt;</description>
     </item>
     <item>
+      <title>Webformers</title>
+      <link>https://bornlex.github.io/posts/webformers/</link>
+      <pubDate>Wed, 16 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://bornlex.github.io/posts/webformers/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Extracting structured information from web pages remains a challenging task in natural language processing.&lt;/p&gt;
+&lt;p&gt;Regular transformers architecture are not designed to encode hierarchical information. Each token is connected to every tokens in the input sequence, regardless of their position (even though there are a few mechanisms to introduce positional information, such as positional encoding).&lt;/p&gt;
+&lt;p&gt;In a webpage, information is highly structured. The HTML represents a tree, with each node having a parent and potential siblings and children. This makes that some nodes might be semantically connected while relatively far away from each other if we consider only the number of tokens between them.&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>Kolmogorov AI Framework | Part2 - brainfuck</title>
       <link>https://bornlex.github.io/posts/kolmogorov-environment/</link>
       <pubDate>Wed, 02 Apr 2025 00:00:00 +0000</pubDate>
