@@ -11,8 +11,19 @@
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 02 Apr 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 18 May 2025 18:00:59 +0200</lastBuildDate>
     <atom:link href="https://bornlex.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Flash Attention</title>
+      <link>https://bornlex.github.io/posts/flash-attention/</link>
+      <pubDate>Sun, 18 May 2025 18:00:59 +0200</pubDate>
+      <guid>https://bornlex.github.io/posts/flash-attention/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Transformers have revolutionized the field of machine learning, emerging as the dominant architectural choice across various applications.&lt;/p&gt;
+&lt;p&gt;However, their reliance on self-attention mechanisms introduces significant computational challenges, particularly due to quadratic time and memory complexity relative to sequence length.&lt;/p&gt;
+&lt;p&gt;While approximate solutions exist, their limited adoption stems from an overemphasis on theoretical FLOP counts rather than practical performance metrics.&lt;/p&gt;
+&lt;p&gt;In 2022, a paper introduced a way to compute the attention result by only working on sub vectors to reduce memory I/O.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Kolmogorov AI Framework | Part2 - brainfuck</title>
       <link>https://bornlex.github.io/posts/kolmogorov-environment/</link>
