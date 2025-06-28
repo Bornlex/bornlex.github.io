@@ -11,8 +11,16 @@
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 18 May 2025 18:00:59 +0200</lastBuildDate>
+    <lastBuildDate>Thu, 05 Jun 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://bornlex.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Nemotron</title>
+      <link>https://bornlex.github.io/posts/nemotron/</link>
+      <pubDate>Thu, 05 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>https://bornlex.github.io/posts/nemotron/</guid>
+      <description>&lt;h2 id=&#34;nemotron-advancing-tool-calling-llms-with-rule-based-reinforcement-learning-&#34;&gt;&lt;strong&gt;Nemotron: Advancing Tool-Calling LLMs with Rule-Based Reinforcement Learning 🤖&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Large Language Models (LLMs) are becoming increasingly powerful, and their ability to interact with external tools and APIs significantly expands their capabilities. Nvidia&amp;rsquo;s Nemotron paper introduces an innovative approach to training LLMs for more effective tool use, focusing on a &lt;strong&gt;rule-based reinforcement learning (RL)&lt;/strong&gt; pipeline. This method aims to overcome the common hurdle of requiring large, meticulously curated datasets, allowing models to learn optimal tool-calling strategies more autonomously.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Flash Attention</title>
       <link>https://bornlex.github.io/posts/flash-attention/</link>
