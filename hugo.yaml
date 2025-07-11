@@ -72,7 +72,7 @@ params:
   # home-info mode
   homeInfoParams:
     Title: "Hi there \U0001F44B"
-    Content: "I am working as Founding AI Engineer @ lightpanda.io! My areas of interest are: intelligence, AI/ML, agents. I love working on new things, achieving results. I have created a tech that I sold to a company working with intelligence services. I also advised various companies, from startups/scaleups to worldwise corporations on their AI roadmaps."
+    Content: "I am working as Founding AI Engineer @ lightpanda.io! My areas of interest are: intelligence, AI/ML, agents. I love working on new things, achieving results. I have created a tech that I sold to a company working with intelligence services. I also advised various companies, from startups/scaleups to worldwide corporations on their AI roadmaps."
 
   socialIcons:
     - name: medium

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Posts on Julien&#39;s blog</title>
     <link>https://bornlex.github.io/posts/</link>
@@ -9,10 +9,27 @@
       <url>https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
       <link>https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo -- 0.148.1</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 05 Jun 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 11 Jul 2025 20:55:05 +0100</lastBuildDate>
     <atom:link href="https://bornlex.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Chain-of-Thought is LLMs prompting themselves</title>
+      <link>https://bornlex.github.io/posts/llm-prompting/</link>
+      <pubDate>Fri, 11 Jul 2025 20:55:05 +0100</pubDate>
+      <guid>https://bornlex.github.io/posts/llm-prompting/</guid>
+      <description>&lt;p&gt;Let’s take the following notations:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$f_{\theta}: X \to Y$ the LLM parametrized by its weights $\theta$&lt;/li&gt;
+&lt;li&gt;$X$ the set of tasks (prompts, made of tokens)&lt;/li&gt;
+&lt;li&gt;$Y$ the set of answers to those tasks (made of tokens as well)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The best parameters for the model are given by:&lt;/p&gt;
+&lt;p&gt;$$
+\theta^* = \argmax_{\theta} f_{\theta}(y | x) \text{ with } x, y \in X, Y
+$$&lt;/p&gt;
+&lt;p&gt;When fine tuning a model to think, the model is trained to answer a sequence a tokens in between the prompt and the answer that can be manually curated instead of outputing the final answer straight away. Let’s call this sequence of tokens $c \in C$. The optimal weights are now given by:&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Nemotron</title>
       <link>https://bornlex.github.io/posts/nemotron/</link>
@@ -47,8 +64,7 @@
       <link>https://bornlex.github.io/posts/kolmogorov-environment/</link>
       <pubDate>Wed, 02 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://bornlex.github.io/posts/kolmogorov-environment/</guid>
-      <description>&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://bornlex.github.io/kolmogorov/brainfuck.png&#34; alt=&#34;brainfuck meme&#34;  /&gt;
-&lt;/p&gt;
+      <description>&lt;p&gt;&lt;img alt=&#34;brainfuck meme&#34; loading=&#34;lazy&#34; src=&#34;https://bornlex.github.io/kolmogorov/brainfuck.png&#34;&gt;&lt;/p&gt;
 &lt;h1 id=&#34;motivations&#34;&gt;Motivations&lt;/h1&gt;
 &lt;p&gt;I recently started a series of article about a framework I was thinking about, which allows agent to be trained in a reinforcement learning basis, executing one action at a time on specific environments.&lt;/p&gt;
 &lt;p&gt;The first part of the series can be found here: &lt;a href=&#34;https://bornlex.github.io/posts/kolmogorov-ai-framework/&#34;&gt;Kolmogorov AI Framework&lt;/a&gt;.&lt;/p&gt;
@@ -124,8 +140,7 @@
       <pubDate>Sun, 16 Mar 2025 15:12:50 +0100</pubDate>
       <guid>https://bornlex.github.io/posts/mlx-dqn/</guid>
       <description>&lt;h1 id=&#34;reinforcement-learning-with-apple-mlx-framework&#34;&gt;Reinforcement Learning with Apple MLX Framework&lt;/h1&gt;
-&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://bornlex.github.io/dqn/apple-meta.jpg&#34; alt=&#34;Meta vs Apple&#34;  /&gt;
-&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&#34;Meta vs Apple&#34; loading=&#34;lazy&#34; src=&#34;https://bornlex.github.io/dqn/apple-meta.jpg&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Today, a very short article about Apple MLX framework.&lt;/p&gt;
 &lt;p&gt;I recently learned that Apple has its own machine learning framework, and as a heavy Mac user I thought I’d give it a try.&lt;/p&gt;
 &lt;p&gt;It is very easy to use and intuitive, the syntax is nice and looks like Numpy and PyTorch, which is convenient as a PyTorch user.&lt;/p&gt;
@@ -160,8 +175,7 @@ $$&lt;/p&gt;
       <link>https://bornlex.github.io/posts/croyances/</link>
       <pubDate>Sun, 16 Jun 2024 12:10:27 +0200</pubDate>
       <guid>https://bornlex.github.io/posts/croyances/</guid>
-      <description>&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://bornlex.github.io/croyances/map.jpg&#34; alt=&#34;Carte des résultats aux élections européennes&#34;  /&gt;
-&lt;/p&gt;
+      <description>&lt;p&gt;&lt;img alt=&#34;Carte des résultats aux élections européennes&#34; loading=&#34;lazy&#34; src=&#34;https://bornlex.github.io/croyances/map.jpg&#34;&gt;&lt;/p&gt;
 &lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;Au vu de la carte des résultats des élections européennes, on constate immédiatement à quel point le Rassemblement National (RN) est arrivé en tête dans tous les départements, à l&amp;rsquo;exception notable de Paris, et ceci même dans les régions traditionnellement plutôt à gauche, comme la Bretagne.&lt;/p&gt;
 &lt;p&gt;Mais ce qui m&amp;rsquo;a frappé, et qui s&amp;rsquo;explique, je pense, à l&amp;rsquo;aide des analyses réalisées par l&amp;rsquo;Ifop que je cite plus bas, c&amp;rsquo;est à quel point ce que je lisais sur LinkedIn était en décalage avec cette carte. Alors que le RN est à presque un tier des suffrages exprimés, toutes les publications que je pouvais lire sur LinkedIn (ou presque) dans les jours qui ont suivi étaient orientées politiquement à gauche ou en faveur de la majorité présidentielle.&lt;/p&gt;</description>
@@ -171,8 +185,7 @@ $$&lt;/p&gt;
       <link>https://bornlex.github.io/posts/lora/</link>
       <pubDate>Fri, 24 May 2024 14:53:18 +0200</pubDate>
       <guid>https://bornlex.github.io/posts/lora/</guid>
-      <description>&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://bornlex.github.io/lora/roses.jpg&#34; alt=&#34;LoRA: Low Rank Adaptation&#34;  /&gt;
-&lt;/p&gt;
+      <description>&lt;p&gt;&lt;img alt=&#34;LoRA: Low Rank Adaptation&#34; loading=&#34;lazy&#34; src=&#34;https://bornlex.github.io/lora/roses.jpg&#34;&gt;&lt;/p&gt;
 &lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;Whenever we need to use a deep learning model for image or text generation, classification
 or any other task, we have two possibilities:&lt;/p&gt;
@@ -213,8 +226,7 @@ architecture de réseau de neurones et l&amp;rsquo;a appliquée à la générati
       <guid>https://bornlex.github.io/posts/vendeurs-plage/</guid>
       <description>&lt;p&gt;Pourquoi est-ce que ni l’extrême droite, ni l’extrême gauche ne gagne jamais l’élection présidentielle ?&lt;/p&gt;
 &lt;p&gt;On pourrait penser que la courbe du nombre de votants en fonction du spectre politique ressemble à une courbe gaussienne centrée sur le milieu de l’échiquier politique, avec quelques variations. Il y a plus de gens modérés que d’extrêmes.&lt;/p&gt;
-&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://bornlex.github.io/plage/gaussian.webp&#34; alt=&#34;Loi normale&#34;  /&gt;
-&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&#34;Loi normale&#34; loading=&#34;lazy&#34; src=&#34;https://bornlex.github.io/plage/gaussian.webp&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Mais si l’on regarde les intentions de vote pour chaque candidat ou les résultats du premier tour de l’élection présidentielle, on réalise rapidement que cette réponse n’est pas satisfaisante.&lt;/p&gt;</description>
     </item>
     <item>
@@ -222,8 +234,7 @@ architecture de réseau de neurones et l&amp;rsquo;a appliquée à la générati
       <link>https://bornlex.github.io/posts/ternary-computing/</link>
       <pubDate>Wed, 31 Jan 2024 15:21:00 +0100</pubDate>
       <guid>https://bornlex.github.io/posts/ternary-computing/</guid>
-      <description>&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://bornlex.github.io/ternary/ternary.jpeg&#34; alt=&#34;Ternary&#34;  /&gt;
-&lt;/p&gt;
+      <description>&lt;p&gt;&lt;img alt=&#34;Ternary&#34; loading=&#34;lazy&#34; src=&#34;https://bornlex.github.io/ternary/ternary.jpeg&#34;&gt;&lt;/p&gt;
 &lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;First, let us define “computers” as any machine that can compute.&lt;/p&gt;
 &lt;p&gt;At first, analog machines were used. For example, electronic amplifiers can be used to perform integration, differentiation, root extraction, compute logarithm.&lt;/p&gt;

@@ -14,7 +14,7 @@ Large Language Models (LLMs) are becoming increasingly powerful, and their abili
 <meta name="google-site-verification" content="XYZabc">
 <meta name="yandex-verification" content="XYZabc">
 <meta name="msvalidate.01" content="XYZabc">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.b609c58d5c11bb90b1a54e04005d74ad1ddf22165eb79f5533967e57df9c3b50.css" integrity="sha256-tgnFjVwRu5CxpU4EAF10rR3fIhZet59VM5Z&#43;V9&#43;cO1A=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.8fe10233a706bc87f2e08b3cf97b8bd4c0a80f10675a143675d59212121037c0.css" integrity="sha256-j&#43;ECM6cGvIfy4Is8&#43;XuL1MCoDxBnWhQ2ddWSEhIQN8A=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
 <link rel="icon" type="image/png" sizes="16x16" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
 <link rel="icon" type="image/png" sizes="32x32" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
@@ -60,20 +60,21 @@ document.addEventListener("DOMContentLoaded", function() {
   gtag('config', 'G-ZBJC7YD3QZ');
 </script>
 
-<meta property="og:title" content="Nemotron" />
-<meta property="og:description" content="Nemotron: Advancing Tool-Calling LLMs with Rule-Based Reinforcement Learning 🤖
-Large Language Models (LLMs) are becoming increasingly powerful, and their ability to interact with external tools and APIs significantly expands their capabilities. Nvidia&rsquo;s Nemotron paper introduces an innovative approach to training LLMs for more effective tool use, focusing on a rule-based reinforcement learning (RL) pipeline. This method aims to overcome the common hurdle of requiring large, meticulously curated datasets, allowing models to learn optimal tool-calling strategies more autonomously." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://bornlex.github.io/posts/nemotron/" /><meta property="og:image" content="https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2025-06-05T00:00:00+00:00" />
-<meta property="article:modified_time" content="2025-06-05T00:00:00+00:00" /><meta property="og:site_name" content="Julien&#39;s blog" />
-
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/>
-
-<meta name="twitter:title" content="Nemotron"/>
+<meta property="og:url" content="https://bornlex.github.io/posts/nemotron/">
+  <meta property="og:site_name" content="Julien&#39;s blog">
+  <meta property="og:title" content="Nemotron">
+  <meta property="og:description" content="Nemotron: Advancing Tool-Calling LLMs with Rule-Based Reinforcement Learning 🤖 Large Language Models (LLMs) are becoming increasingly powerful, and their ability to interact with external tools and APIs significantly expands their capabilities. Nvidia’s Nemotron paper introduces an innovative approach to training LLMs for more effective tool use, focusing on a rule-based reinforcement learning (RL) pipeline. This method aims to overcome the common hurdle of requiring large, meticulously curated datasets, allowing models to learn optimal tool-calling strategies more autonomously.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-06-05T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-06-05T00:00:00+00:00">
+      <meta property="og:image" content="https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E">
+<meta name="twitter:title" content="Nemotron">
 <meta name="twitter:description" content="Nemotron: Advancing Tool-Calling LLMs with Rule-Based Reinforcement Learning 🤖
-Large Language Models (LLMs) are becoming increasingly powerful, and their ability to interact with external tools and APIs significantly expands their capabilities. Nvidia&rsquo;s Nemotron paper introduces an innovative approach to training LLMs for more effective tool use, focusing on a rule-based reinforcement learning (RL) pipeline. This method aims to overcome the common hurdle of requiring large, meticulously curated datasets, allowing models to learn optimal tool-calling strategies more autonomously."/>
+Large Language Models (LLMs) are becoming increasingly powerful, and their ability to interact with external tools and APIs significantly expands their capabilities. Nvidia&rsquo;s Nemotron paper introduces an innovative approach to training LLMs for more effective tool use, focusing on a rule-based reinforcement learning (RL) pipeline. This method aims to overcome the common hurdle of requiring large, meticulously curated datasets, allowing models to learn optimal tool-calling strategies more autonomously.">
 
 
 <script type="application/ld+json">
@@ -109,7 +110,7 @@ Large Language Models (LLMs) are becoming increasingly powerful, and their abili
   "articleBody": "Nemotron: Advancing Tool-Calling LLMs with Rule-Based Reinforcement Learning 🤖 Large Language Models (LLMs) are becoming increasingly powerful, and their ability to interact with external tools and APIs significantly expands their capabilities. Nvidia’s Nemotron paper introduces an innovative approach to training LLMs for more effective tool use, focusing on a rule-based reinforcement learning (RL) pipeline. This method aims to overcome the common hurdle of requiring large, meticulously curated datasets, allowing models to learn optimal tool-calling strategies more autonomously.\nWhy Nemotron Improving an LLM’s proficiency in using external tools typically falls into two categories:\nEnhancing core LLM capabilities: This involves techniques like Supervised Fine-Tuning (SFT) or reinforcement learning, which directly modify the model’s internal parameters. Optimizing prompting strategies: This explores how to best instruct the LLM to use tools effectively through carefully designed prompts. Both avenues heavily depend on high-quality, curated data. Collecting and preparing such data, especially for complex, multi-step tasks involving multiple tool interactions, is a significant bottleneck. It’s often time-consuming and expensive.\nThe Nemotron paper, much like the Deepseek R1 project, demonstrates the potential of a simpler, rule-based RL training pipeline. By defining rewards based solely on the correctness of the answer and the format of the output, models can discover effective strategies on their own, reducing the dependency on manually curated datasets.\nCore Concepts Nemotron’s approach leverages several key ideas:\nSFT Tool-Calling: While SFT is a common method for initially teaching models tool use, Nemotron builds upon this by applying RL for further refinement. Binary Reward Function: The learning signal is straightforward – the model receives a reward of 1 if its output is entirely correct (both in format and tool usage) and 0 otherwise. This clear-cut feedback simplifies the reward mechanism. GRPO (Generalized Reinforcement Policy Optimization): This specific RL algorithm is used to optimize the LLM’s policy based on the rewards received. Rule-Based RL: This is the cornerstone of the approach. The reward mechanism isn’t based on complex, learned reward models but on predefined rules: Format of the answer: The model is asked to structure its reasoning process within tags and its tool calls within tags. Correctness of the answer itself: The actual tool selected and the arguments provided must be accurate. Problem Formulation Consider an LLM and a set of available external tools, denoted as:\n$$ \\mathcal{Z} = \\left\\{ z_i \\right\\}^I_{i = 1} $$ that the LLM can use.\nEach tool can be represented as a 3-tuple $(n_i, d_i, k_i)$ being:\n$n_i$ the tool’s name $d_i$ the tool’s description $k_i$ the tool’s arguments At each decision step $t$, the LLM receives both the historical context $c_t$ and the set of tools it has access to $\\tilde{\\mathcal{Z}}$ and decides the next action:\n$$ \\pi(c_t, \\tilde{\\mathcal{Z}}) \\to a_t, a_t \\in \\mathcal{Z} $$\nGiven the historical context $c_t$ and the set of tools $\\mathcal{Z}$, the model generates a set of candidates responses $[O^1, O^2, …, O^N]$ where each $O^i \\in \\mathcal{O}$. Here $\\mathcal{O}$ denotes the space of possible output responses comprising:\ntextual reasoning associated action $a_n$ These responses are then evaluated using a reward function yielding a reward set $ \\left\\{ r_1, r_2, ..., r_N \\right\\} $ . The policy $\\pi_{\\theta}$ is then optimized using GRPO:\n$$ \\mathcal{L}_{\\text{GRPO}}(\\theta) = \\mathbb{E}_{(c_t, \\mathcal{Z})}\\mathbb{E}_{O^i \\sim \\mathcal{O}} [\\min (\\rho_i A_i, \\text{clip}(\\rho_i, 1 - \\epsilon, 1 + \\epsilon)A_i) = \\beta \\text{D}_{\\text{KL}}(\\pi_{\\theta}||\\pi_{\\text{old}})] $$ Where\n$$ \\rho_i = \\frac{\\pi_{\\theta}(O^i | c_t, \\mathcal{Z})}{\\pi_{\\text{old}}(O^i | c_t, \\mathcal{Z})} $$\nAnd\n$$ A_i = \\frac{r_i - \\text{mean}(r_1, r_2, …, r_N)}{\\text{std}(r_1, r_2, …, r_N)} $$\nAnd $\\epsilon$ and $\\beta$ are hyperparameters.\nData Preparation The research utilized existing datasets for tool-calling tasks:\nxLAM: Available on Hugging Face (Salesforce/xlam-function-calling-60k). ToolACE: Available on Hugging Face (Team-ACE/ToolACE). Both datasets offer synthetic tool-calling trajectories, including single-turn and multi-turn interactions. However, since these datasets are often generated by other LLMs, they can contain inconsistencies and unstructured formats. This makes them unsuitable for direct use in the GRPO training pipeline, which requires precise evaluation.\nTherefore, a crucial preprocessing step was implemented:\nFiltering: Samples with invalid tool calls were removed. This specifically targeted instances where the tool called was not actually present in the provided list of candidate tools for that sample. Parsing and Validation: Both the candidate tool calls and the ground truth tool calls were parsed as JSON objects. Trajectories that failed this parsing step (indicating malformed data) were discarded. The Thinking Template To facilitate the rule-based reward system, a specific output format was enforced.\nThe set of available tools is defined for the model between and tags. The model is then required to output its reasoning or thinking process enclosed within and tags. Finally, any tool calls must be outputted between and tags. The model can make multiple tool calls, formatted as a list. This structured output allows for programmatic checking of the model’s adherence to the desired format and simplifies the extraction of tool calls for evaluation.\nReward Modeling The authors designed a reward system that checks two main aspects:\nCorrect tool’s name. Correct tool’s arguments. Correctness of the reasoning format. Format Checking This ensures the model follows the specified structural conventions. Specifically, it verifies that the reasoning and tool call(s) are correctly enclosed within the and tags, respectively.\nTool-Calling Checking This component assesses the accuracy of the actual tool invocation. The tool call output (within the tags) is parsed, typically as dictionaries. This allows for an exact match against the ground truth:\nThe name of the called tool must match the expected tool. All required arguments must be present and correct. Binary Reward Definition Based on these checks, a simple binary reward is assigned:\n$$ \\left\\{\\begin{matrix} 1 \\text{ if } \\texttt{FormatCorrect}(O_t) \\wedge \\texttt{ToolCallMatch}(a_t, a_t^*) \\\\ 0 \\text{ otherwise} \\end{matrix}\\right. $$ Here, Ot is the model’s output at step t, at is the tool call made by the model, and at∗ is the ground truth (correct) tool call. The model only gets a positive reward if both the format is correct AND the tool call matches the ground truth.\nKey Questions Answered This research directly addresses two important questions:\nCan rule-based RL be applied to train tool-calling models? Yes. The Nemotron paper successfully demonstrates that a rule-based RL pipeline, using a binary reward based on output format and tool call accuracy, can effectively train LLMs for tool use. How should such an RL pipeline be designed? The pipeline should involve: A clear thinking template to structure model output. A binary reward function that checks both format adherence and tool call correctness (name and arguments). An appropriate RL algorithm like GRPO to optimize the model’s policy. Careful data preprocessing to ensure the training data, even if initially synthetic, is clean and consistently formatted for reliable reward calculation. Superiority of this approach The main advantage of Nemotron’s rule-based RL strategy is its potential to reduce the heavy reliance on meticulously curated datasets. By allowing the model to learn from relatively simple, rule-based feedback, researchers can sidestep some of the most labor-intensive parts of training advanced LLMs. This echoes the success of systems like Deepseek R1, which also benefited from rule-based reward mechanisms, enabling models to discover effective strategies more autonomously.\nMy 2 cents This work hints at broader trends in AI development:\nRise of Synthetic Environments: The success of rule-based RL suggests a future where more training occurs in synthetic environments. In these controlled settings, agents can perform tasks, receive clear feedback, and improve iteratively, much like DeepMind’s AlphaZero learned to master games. Generality of Reinforcement Learning: RL is a highly general framework. It can, in principle, encapsulate approaches like supervised fine-tuning (SFT) but without the stringent need for perfectly curated, human-annotated data. This reduces the risk of introducing human biases inherent in manual data creation. Consolidated Frameworks: We will likely see the AI community gravitate towards more consolidated RL frameworks and invest in developing diverse and robust environments where AI agents can be pretrained or continually improved in isolation before being deployed in real-world scenarios. Conclusion Nvidia’s Nemotron paper offers a promising direction for developing more capable and autonomous tool-using LLMs. By employing a rule-based reinforcement learning approach with a binary reward system and the GRPO algorithm, it demonstrates a path to reduce the dependency on extensive, manually curated datasets, potentially accelerating the development of sophisticated AI agents.\nSources Paper: Nemotron: A Rule-based Reinforcement Learning Framework for Tool-calling Language Models - https://arxiv.org/abs/2505.00024 Code: NVlabs/Tool-N1 on GitHub - https://github.com/NVlabs/Tool-N1 ",
   "wordCount" : "1393",
   "inLanguage": "en",
-  "datePublished": "2025-06-05T00:00:00Z",
+  "image": "https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E","datePublished": "2025-06-05T00:00:00Z",
   "dateModified": "2025-06-05T00:00:00Z",
   "author":{
     "@type": "Person",
@@ -146,7 +147,7 @@ Large Language Models (LLMs) are becoming increasingly powerful, and their abili
                 <img src="https://bornlex.github.io/apple-touch-icon.png" alt="" aria-label="logo"
                     height="35">Home</a>
             <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
@@ -166,8 +167,6 @@ Large Language Models (LLMs) are becoming increasingly powerful, and their abili
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-                <ul class="lang-switch"><li>|</li>
-                </ul>
             </div>
         </div>
         <ul id="menu">
@@ -214,7 +213,7 @@ Large Language Models (LLMs) are becoming increasingly powerful, and their abili
     <h1 class="post-title entry-hint-parent">
       Nemotron
     </h1>
-    <div class="post-meta"><span title='2025-06-05 00:00:00 +0000 UTC'>June 5, 2025</span>&nbsp;·&nbsp;7 min&nbsp;·&nbsp;1393 words&nbsp;·&nbsp;Julien Seveno&nbsp;|&nbsp;<a href="https://github.com/%3cpath_to_repo%3e/content/posts/nemotron.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+    <div class="post-meta"><span title='2025-06-05 00:00:00 +0000 UTC'>June 5, 2025</span>&nbsp;·&nbsp;7 min&nbsp;·&nbsp;1393 words&nbsp;·&nbsp;Julien Seveno&nbsp;|&nbsp;<a href="https://github.com/%3cpath_to_repo%3e/content/posts/nemotron.md" rel="noopener noreferrer edit" target="_blank">Suggest Changes</a>
 
 </div>
   </header> 
@@ -243,8 +242,7 @@ Large Language Models (LLMs) are becoming increasingly powerful, and their abili
 </ul>
 </li>
 </ul>
-<p><img loading="lazy" src="/nemotron/pipeline.png" alt="The Nemotron Pipeline"  />
-</p>
+<p><img alt="The Nemotron Pipeline" loading="lazy" src="/nemotron/pipeline.png"></p>
 <hr>
 <h3 id="problem-formulation"><strong>Problem Formulation</strong><a hidden class="anchor" aria-hidden="true" href="#problem-formulation">#</a></h3>
 <p>Consider an LLM and a set of available external tools, denoted as:</p>
@@ -306,8 +304,7 @@ $$</p>
 <li>Finally, any tool calls must be outputted between <code>&lt;tool_call&gt;</code> and <code>&lt;/tool_call&gt;</code> tags. The model can make multiple tool calls, formatted as a list.</li>
 </ul>
 <p>This structured output allows for programmatic checking of the model&rsquo;s adherence to the desired format and simplifies the extraction of tool calls for evaluation.</p>
-<p><img loading="lazy" src="/nemotron/thinking.png" alt="The Nemotron Thinking Template"  />
-</p>
+<p><img alt="The Nemotron Thinking Template" loading="lazy" src="/nemotron/thinking.png"></p>
 <hr>
 <h3 id="reward-modeling"><strong>Reward Modeling</strong><a hidden class="anchor" aria-hidden="true" href="#reward-modeling">#</a></h3>
 <p>The authors designed a reward system that checks two main aspects:</p>
@@ -386,6 +383,11 @@ $$
     <ul class="post-tags">
     </ul>
 <nav class="paginav">
+  <a class="prev" href="https://bornlex.github.io/posts/llm-prompting/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>Chain-of-Thought is LLMs prompting themselves</span>
+  </a>
   <a class="next" href="https://bornlex.github.io/posts/flash-attention/">
     <span class="title">Next »</span>
     <br>
@@ -466,7 +468,8 @@ $$
     </main>
     
 <footer class="footer">
-    <span>&copy; 2025 <a href="https://bornlex.github.io/">Julien&#39;s blog</a></span>
+        <span>&copy; 2025 <a href="https://bornlex.github.io/">Julien&#39;s blog</a></span> · 
+
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &

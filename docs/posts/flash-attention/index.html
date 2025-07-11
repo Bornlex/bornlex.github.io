@@ -17,7 +17,7 @@ In 2022, a paper introduced a way to compute the attention result by only workin
 <meta name="google-site-verification" content="XYZabc">
 <meta name="yandex-verification" content="XYZabc">
 <meta name="msvalidate.01" content="XYZabc">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.b609c58d5c11bb90b1a54e04005d74ad1ddf22165eb79f5533967e57df9c3b50.css" integrity="sha256-tgnFjVwRu5CxpU4EAF10rR3fIhZet59VM5Z&#43;V9&#43;cO1A=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.8fe10233a706bc87f2e08b3cf97b8bd4c0a80f10675a143675d59212121037c0.css" integrity="sha256-j&#43;ECM6cGvIfy4Is8&#43;XuL1MCoDxBnWhQ2ddWSEhIQN8A=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
 <link rel="icon" type="image/png" sizes="16x16" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
 <link rel="icon" type="image/png" sizes="32x32" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
@@ -63,26 +63,27 @@ document.addEventListener("DOMContentLoaded", function() {
   gtag('config', 'G-ZBJC7YD3QZ');
 </script>
 
-<meta property="og:title" content="Flash Attention" />
-<meta property="og:description" content="Introduction
-Transformers have revolutionized the field of machine learning, emerging as the dominant architectural choice across various applications.
+<meta property="og:url" content="https://bornlex.github.io/posts/flash-attention/">
+  <meta property="og:site_name" content="Julien&#39;s blog">
+  <meta property="og:title" content="Flash Attention">
+  <meta property="og:description" content="Introduction Transformers have revolutionized the field of machine learning, emerging as the dominant architectural choice across various applications.
 However, their reliance on self-attention mechanisms introduces significant computational challenges, particularly due to quadratic time and memory complexity relative to sequence length.
 While approximate solutions exist, their limited adoption stems from an overemphasis on theoretical FLOP counts rather than practical performance metrics.
-In 2022, a paper introduced a way to compute the attention result by only working on sub vectors to reduce memory I/O." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://bornlex.github.io/posts/flash-attention/" /><meta property="og:image" content="https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2025-05-18T18:00:59+02:00" />
-<meta property="article:modified_time" content="2025-05-18T18:00:59+02:00" /><meta property="og:site_name" content="Julien&#39;s blog" />
-
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/>
-
-<meta name="twitter:title" content="Flash Attention"/>
+In 2022, a paper introduced a way to compute the attention result by only working on sub vectors to reduce memory I/O.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-05-18T18:00:59+02:00">
+    <meta property="article:modified_time" content="2025-05-18T18:00:59+02:00">
+      <meta property="og:image" content="https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E">
+<meta name="twitter:title" content="Flash Attention">
 <meta name="twitter:description" content="Introduction
 Transformers have revolutionized the field of machine learning, emerging as the dominant architectural choice across various applications.
 However, their reliance on self-attention mechanisms introduces significant computational challenges, particularly due to quadratic time and memory complexity relative to sequence length.
 While approximate solutions exist, their limited adoption stems from an overemphasis on theoretical FLOP counts rather than practical performance metrics.
-In 2022, a paper introduced a way to compute the attention result by only working on sub vectors to reduce memory I/O."/>
+In 2022, a paper introduced a way to compute the attention result by only working on sub vectors to reduce memory I/O.">
 
 
 <script type="application/ld+json">
@@ -118,7 +119,7 @@ In 2022, a paper introduced a way to compute the attention result by only workin
   "articleBody": "Introduction Transformers have revolutionized the field of machine learning, emerging as the dominant architectural choice across various applications.\nHowever, their reliance on self-attention mechanisms introduces significant computational challenges, particularly due to quadratic time and memory complexity relative to sequence length.\nWhile approximate solutions exist, their limited adoption stems from an overemphasis on theoretical FLOP counts rather than practical performance metrics.\nIn 2022, a paper introduced a way to compute the attention result by only working on sub vectors to reduce memory I/O.\nHardware Performance GPU memory GPUs utilize two types of memory:\nHigh Bandwidth Memory (HBM) Static Random Access Memory (SRAM) As comparison with a regular computer and CPU, SRAM can be seen as the registers of the GPU and HBM would be the RAM of the GPU.\nWhile SRAM offers significantly faster processing speeds, it is considerably more limited in capacity compared to HBM. Due to the increasing speed gap between compute and memory operations, memory access has become a bottleneck, making efficient SRAM utilization increasingly critical for performance optimization.\nExecution model GPUs operate by utilizing a massive number of parallel threads to execute operations called kernels.\nDuring execution, each kernel follows a specific pattern: it loads input data from the High Bandwidth Memory (HBM) into the faster Static Random Access Memory (SRAM), performs the necessary computations, and then writes the results back to HBM.\nPerformance characteristics In analyzing the performance of deep learning operations, it’s helpful to distinguish between compute-bound and memory-bound behavior. Each operation can fall into one of these categories depending on whether computation or memory access is the primary bottleneck. A useful metric for identifying this is arithmetic intensity, defined as the number of arithmetic operations per byte of memory access. Higher arithmetic intensity typically indicates a compute-bound operation, while lower intensity points to a memory-bound one.\nCompute-bound operations: Performance is limited by the number of arithmetic operations. Memory access time is relatively small. Examples: matrix multiplication with a large inner dimension, convolution with a large number of channels. Memory-bound operations: Performance is limited by the number of memory accesses. Computation time is relatively small. Examples: elementwise operations (activation, dropout), reduction operations (sum, softmax, batch norm, layer norm). Kernel fusion If multiple times the same operation applied to the same input, the input is loaded only once from HBM instead of multiple times, which further reduces the number of operations.\nStandard Attention Let’s take a look at how the attention mechanism works.\nGiven input sequences $Q, K, V \\in \\mathbb{R}^{N \\times d}$, $N$ the sequence length and $d$ the head dimension, we want to compute the attention output $O \\in \\mathbb{R}^{N \\times d}$:\n$$ \\textbf{S} = \\textbf{QK}^T \\in \\mathbb{R}^{N \\times N}, \\textbf{P} = \\text{softmax}(\\textbf{S}) \\in \\mathbb{R}^{N \\times N}, \\textbf{O} = \\textbf{PV} \\in \\mathbb{R}^{N \\times d} $$\nWhere softmax is applied row-wise.\nAttention implementations creates matrices $\\textbf{S, P}$ to HBM, which takes $O(N^2)$ memory.\nOften $N \\gg d$, for instance for GPT-2:\n$N = 1024$ $d = 64$ Because the softmax is element-wise it is memory-bound.\nThere are other element-wise operations like masking and dropout. So there have been attempts to fuse operations like masking with softmax.\nHere is the full algorithm, with the description of what is loaded from where and what is computed.\nFlash Attention The goal of FlashAttention is, given the input sequences $\\textbf{Q, K, V} \\in \\mathbb{R}^{N \\times d}$ in HBM, to compute the attention output $\\textbf{O} \\in \\mathbb{R}^{N \\times d}$ and write it to HBM. The goal is to reduce the amount of HBM accesses to sub-quadratic in $N$.\nThe strategy works as follow:\nSplit the inputs $\\textbf{Q, K, V}$ into blocks Load them from slow HBM to SRAM Compute the attention with respect to those blocks By scaling the output for each block by the right normalization factor before adding them up, we get the correct result at the end Tiling The idea of tiling is to compute attention by blocks. Unfortunately, the softmax couples the columns of $\\textbf{K}$ (because one line of the $\\textbf{P}$ matrix requires all the columns of the $\\textbf{K}$ matrix to be computed, and the softmax needs them all at once).\nSo we need to decompose the large softmax with scaling.\nAs a reminder, the softmax function for vector $x \\in \\mathbb{R}^N$ is defined as follows:\n$$ \\text{softmax}(x_i) = \\frac{e^{x_i}}{\\sum_j^N e^{x_j}} \\forall x_i \\in x $$\nAnd can be rewritten as:\n$$ \\text{softmax}(x_i) = \\frac{e^{x_i - m(x)}}{\\sum_j^N e^{x_j - m(x)}} $$\nwith $m(x) = \\max_i x_i$.\nThe paper defines two function that are applied on vectors:\nThe function $f$ being defined as:\n$$ f(x) = [e^{x_1 - m(x)}, …, e^{x_B - m(x)}] $$\nAnd the function $l$:\n$$ l(x) = \\sum_i f(x)_i $$\nFrom those two functions, it is possible to compute the softmax of a vector by:\n$$ \\text{softmax}(x) = \\frac{f(x)}{l(x)} $$\nNow imagine that the vector we want to compute the softmax on is big, and that we want to split it into two sub vectors.\nLet’s take two vectors $x^{(1)}, x^{(2)} \\in \\mathbb{R}^B$ with $B$ being the size of a block. We can decompose the softmax of the concatenated vector $x = [x^{(1)}, x^{(2)}] \\in \\mathbb{R}^{2B}$ as:\n$$ m(x) = m([x^{(1)}, x^{(2)}]) = m([m(x^{(1)}), m(x^{(2)})]) $$\nWhere the global maximum is the maximum of local maxima, obviously.\nThen the paper defines two local vectors:\n$f(x) = [e^{m(x^{(1)})-m(x)}f(x^{(1)}), e^{m(x^{(2)})-m(x)}f(x^{(2)})]$ $l(x) = l([x^{(1)}, x^{(2)}])$ For a vector of size $B$.\nWhen using this formula inside the $f$ vector above, we get for the first element of the vector:\n$$ e^{x_1 - m(x^{(1)})} e^{m(x^{(1)}) - m(x)} = e^{x_1 - m(x)} $$\nWhich is what we need to compute the softmax as seen in the softmax formula before.\nThe second term gives:\n$$ l(x) = l([x^{(1)}, x^{(2)}]) = e^{m(x^{(1)}) - m(x)}l(x^{(1)}) + e^{m(x^{(2)}) - m(x)}l(x^{(2)}) $$\nWhich indeed give the right softmax formula on the global vector after\n$$ \\text{softmax}(x) = \\frac{f(x)}{l(x)} $$\nSo by only keeping track of some local statistics like the maximum and the $l(x^{(i)})$ results, we can indeed compute the softmax function one block at a time.\nRecomputation The goal here is not to store the whole $\\mathbf{S}, \\mathbf{P} \\in \\mathbb{R}^{N \\times N}$ matrices in memory.\nThanks to the method we described above, we can recompute the attention matrices $\\mathbf{S}$ and $\\mathbf{P}$ easily from both the softmax normalization statistics $(m, l)$ and the blocks of $\\mathbf{Q}, \\mathbf{K}, \\mathbf{V}$ that are already loaded in SRAM.\nConclusion The full algorithm (which is a bit complicated but explains precisely what to load to memory, what calculation to make, what to store…) and results can be found in the paper.\nThe idea of this article was more to understand how we can infer a global statistic about a matrix or a vector by only working on small pieces of such matrix or vector.\nSources Paper: https://arxiv.org/abs/2205.14135# Implementation: https://github.com/Dao-AILab/flash-attention ",
   "wordCount" : "1131",
   "inLanguage": "en",
-  "datePublished": "2025-05-18T18:00:59+02:00",
+  "image": "https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E","datePublished": "2025-05-18T18:00:59+02:00",
   "dateModified": "2025-05-18T18:00:59+02:00",
   "author":{
     "@type": "Person",
@@ -155,7 +156,7 @@ In 2022, a paper introduced a way to compute the attention result by only workin
                 <img src="https://bornlex.github.io/apple-touch-icon.png" alt="" aria-label="logo"
                     height="35">Home</a>
             <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
@@ -175,8 +176,6 @@ In 2022, a paper introduced a way to compute the attention result by only workin
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-                <ul class="lang-switch"><li>|</li>
-                </ul>
             </div>
         </div>
         <ul id="menu">
@@ -223,7 +222,7 @@ In 2022, a paper introduced a way to compute the attention result by only workin
     <h1 class="post-title entry-hint-parent">
       Flash Attention
     </h1>
-    <div class="post-meta"><span title='2025-05-18 18:00:59 +0200 CEST'>May 18, 2025</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;1131 words&nbsp;·&nbsp;Julien Seveno&nbsp;|&nbsp;<a href="https://github.com/%3cpath_to_repo%3e/content/posts/flash-attention.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+    <div class="post-meta"><span title='2025-05-18 18:00:59 +0200 +0200'>May 18, 2025</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;1131 words&nbsp;·&nbsp;Julien Seveno&nbsp;|&nbsp;<a href="https://github.com/%3cpath_to_repo%3e/content/posts/flash-attention.md" rel="noopener noreferrer edit" target="_blank">Suggest Changes</a>
 
 </div>
   </header> 
@@ -232,8 +231,7 @@ In 2022, a paper introduced a way to compute the attention result by only workin
 <p>However, their reliance on self-attention mechanisms introduces significant computational challenges, particularly due to quadratic time and memory complexity relative to sequence length.</p>
 <p>While approximate solutions exist, their limited adoption stems from an overemphasis on theoretical FLOP counts rather than practical performance metrics.</p>
 <p>In 2022, a paper introduced a way to compute the attention result by only working on sub vectors to reduce memory I/O.</p>
-<p><img loading="lazy" src="/flash-attention/architecture.png" alt="Flash Attention architecture"  />
-</p>
+<p><img alt="Flash Attention architecture" loading="lazy" src="/flash-attention/architecture.png"></p>
 <h2 id="hardware-performance">Hardware Performance<a hidden class="anchor" aria-hidden="true" href="#hardware-performance">#</a></h2>
 <h3 id="gpu-memory">GPU memory<a hidden class="anchor" aria-hidden="true" href="#gpu-memory">#</a></h3>
 <p>GPUs utilize two types of memory:</p>
@@ -282,8 +280,7 @@ $$</p>
 <p>Because the softmax is element-wise it is memory-bound.</p>
 <p>There are other element-wise operations like masking and dropout. So there have been attempts to fuse operations like masking with softmax.</p>
 <p>Here is the full algorithm, with the description of what is loaded from where and what is computed.</p>
-<p><img loading="lazy" src="/flash-attention/algorithm1.png" alt="Regular attention"  />
-</p>
+<p><img alt="Regular attention" loading="lazy" src="/flash-attention/algorithm1.png"></p>
 <h2 id="flash-attention">Flash Attention<a hidden class="anchor" aria-hidden="true" href="#flash-attention">#</a></h2>
 <p>The goal of FlashAttention is, given the input sequences $\textbf{Q, K, V} \in \mathbb{R}^{N \times d}$ in HBM, to compute the attention output $\textbf{O} \in \mathbb{R}^{N \times d}$ and write it to HBM. The goal is to reduce the amount of HBM accesses to sub-quadratic in $N$.</p>
 <p>The strategy works as follow:</p>
@@ -448,7 +445,8 @@ $$</p>
     </main>
     
 <footer class="footer">
-    <span>&copy; 2025 <a href="https://bornlex.github.io/">Julien&#39;s blog</a></span>
+        <span>&copy; 2025 <a href="https://bornlex.github.io/">Julien&#39;s blog</a></span> · 
+
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
