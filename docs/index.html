@@ -168,7 +168,7 @@ document.addEventListener("DOMContentLoaded", function() {
         <h1>Hi there 👋</h1>
     </header>
     <div class="entry-content">
-        I am working as Founding AI Engineer @ lightpanda.io! My areas of interest are: intelligence, AI/ML, agents. I love working on new things, achieving results. I have created a tech that I sold to a company working with intelligence services. I also advised various companies, from startups/scaleups to worldwise corporations on their AI roadmaps.
+        I am working as Founding AI Engineer @ lightpanda.io! My areas of interest are: intelligence, AI/ML, agents. I love working on new things, achieving results. I have created a tech that I sold to a company working with intelligence services. I also advised various companies, from startups/scaleups to worldwide corporations on their AI roadmaps.
     </div>
     <footer class="entry-footer">
         <div class="social-icons" >
@@ -218,6 +218,22 @@ Sign bit : 1 bit Exponent : 8 bits Significant precision : 7 bits So the total s
   </div>
   <footer class="entry-footer"><span title='2025-08-29 22:40:21 +0200 CEST'>August 29, 2025</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;1579 words&nbsp;·&nbsp;Julien Seveno</footer>
   <a class="entry-link" aria-label="post link to Ai Finetuning Learnings" href="https://bornlex.github.io/posts/ai-finetuning-learnings/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Chain-of-Thought is LLMs prompting themselves
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Let’s take the following notations:
+$f_{\theta}: X \to Y$ the LLM parametrized by its weights $\theta$ $X$ the set of tasks (prompts, made of tokens) $Y$ the set of answers to those tasks (made of tokens as well) The best parameters for the model are given by:
+$$ \theta^* = \argmax_{\theta} f_{\theta}(y | x) \text{ with } x, y \in X, Y $$
+When fine tuning a model to think, the model is trained to answer a sequence a tokens in between the prompt and the answer that can be manually curated instead of outputing the final answer straight away. Let’s call this sequence of tokens $c \in C$. The optimal weights are now given by:
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-07-11 20:55:05 +0100 +0100'>July 11, 2025</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;261 words&nbsp;·&nbsp;Julien Seveno</footer>
+  <a class="entry-link" aria-label="post link to Chain-of-Thought is LLMs prompting themselves" href="https://bornlex.github.io/posts/llm-prompting/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -337,22 +353,6 @@ To forecast non-deterministic time series, we assume that there is a probability
   </div>
   <footer class="entry-footer"><span title='2025-03-16 15:36:50 +0100 CET'>March 16, 2025</span>&nbsp;·&nbsp;20 min&nbsp;·&nbsp;4164 words&nbsp;·&nbsp;Julien Seveno</footer>
   <a class="entry-link" aria-label="post link to EPITA Courses - Timeseries" href="https://bornlex.github.io/posts/epita-1-timeseries/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">About Me
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>I am Julien, french engineer in AI since 2017.
-I have worked in several organizations on different topics, all related to AI or where AI is applied to.
-I love playing golf (even though I am not very good at it…), going to the gym, reading, learning new things and working (not a joke, I do love it).
-I sometimes write articles about tech, most of them are AI related:
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-03-16 15:35:02 +0100 CET'>March 16, 2025</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;188 words&nbsp;·&nbsp;Julien Seveno</footer>
-  <a class="entry-link" aria-label="post link to About Me" href="https://bornlex.github.io/posts/me/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

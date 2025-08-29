@@ -180,156 +180,21 @@ document.addEventListener("DOMContentLoaded", function() {
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Ai Finetuning Learnings
+    <h2 class="entry-hint-parent">Code injection
     </h2>
   </header>
   <div class="entry-content">
-    <p>When fine tuning or even training a model, hardware resources are often the bottleneck, and with today’s model sizes, the limiting factor is often GPU memory.
-As an example, let’s take a Qwen 2.5 3B models. As the name says, it contains approximately 3 billion parameters. The model available on HuggingFace is saved with bf16, meaning it contains:
-Sign bit : 1 bit Exponent : 8 bits Significant precision : 7 bits So the total size in memory for 1 parameter among the 3 billion is 16 bits, which is 2 bytes. To store the whole model, the memory will need to be at least 6 billion bytes (6Gb).
+    <p> Introduction J’ai découvert l’OpenSource Intelligence en m’intéressant de près à la sécurité informatique.
+Lorsque des pirates préparent une attaque sur un système d’information (SI), ils ont besoin d’avoir autant d’informations que possible afin de mener à bien les opérations. En effet, les systèmes d’exploitation (OS), les serveurs utilisés, les versions de ces serveurs et de ces OS conditionnent énormément la manière dont va se dérouler l’attaque.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2025-08-29 22:40:21 +0200 CEST'>August 29, 2025</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;1579 words&nbsp;·&nbsp;Julien Seveno</footer>
-  <a class="entry-link" aria-label="post link to Ai Finetuning Learnings" href="https://bornlex.github.io/posts/ai-finetuning-learnings/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Chain-of-Thought is LLMs prompting themselves
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Let’s take the following notations:
-$f_{\theta}: X \to Y$ the LLM parametrized by its weights $\theta$ $X$ the set of tasks (prompts, made of tokens) $Y$ the set of answers to those tasks (made of tokens as well) The best parameters for the model are given by:
-$$ \theta^* = \argmax_{\theta} f_{\theta}(y | x) \text{ with } x, y \in X, Y $$
-When fine tuning a model to think, the model is trained to answer a sequence a tokens in between the prompt and the answer that can be manually curated instead of outputing the final answer straight away. Let’s call this sequence of tokens $c \in C$. The optimal weights are now given by:
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-07-11 20:55:05 +0100 +0100'>July 11, 2025</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;261 words&nbsp;·&nbsp;Julien Seveno</footer>
-  <a class="entry-link" aria-label="post link to Chain-of-Thought is LLMs prompting themselves" href="https://bornlex.github.io/posts/llm-prompting/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Nemotron
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Nemotron: Advancing Tool-Calling LLMs with Rule-Based Reinforcement Learning 🤖 Large Language Models (LLMs) are becoming increasingly powerful, and their ability to interact with external tools and APIs significantly expands their capabilities. Nvidia’s Nemotron paper introduces an innovative approach to training LLMs for more effective tool use, focusing on a rule-based reinforcement learning (RL) pipeline. This method aims to overcome the common hurdle of requiring large, meticulously curated datasets, allowing models to learn optimal tool-calling strategies more autonomously.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-06-05 00:00:00 +0000 UTC'>June 5, 2025</span>&nbsp;·&nbsp;7 min&nbsp;·&nbsp;1393 words&nbsp;·&nbsp;Julien Seveno</footer>
-  <a class="entry-link" aria-label="post link to Nemotron" href="https://bornlex.github.io/posts/nemotron/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Flash Attention
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Introduction Transformers have revolutionized the field of machine learning, emerging as the dominant architectural choice across various applications.
-However, their reliance on self-attention mechanisms introduces significant computational challenges, particularly due to quadratic time and memory complexity relative to sequence length.
-While approximate solutions exist, their limited adoption stems from an overemphasis on theoretical FLOP counts rather than practical performance metrics.
-In 2022, a paper introduced a way to compute the attention result by only working on sub vectors to reduce memory I/O.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-05-18 18:00:59 +0200 CEST'>May 18, 2025</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;1131 words&nbsp;·&nbsp;Julien Seveno</footer>
-  <a class="entry-link" aria-label="post link to Flash Attention" href="https://bornlex.github.io/posts/flash-attention/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Webformers
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Introduction Extracting structured information from web pages remains a challenging task in natural language processing.
-Regular transformers architecture are not designed to encode hierarchical information. Each token is connected to every tokens in the input sequence, regardless of their position (even though there are a few mechanisms to introduce positional information, such as positional encoding).
-In a webpage, information is highly structured. The HTML represents a tree, with each node having a parent and potential siblings and children. This makes that some nodes might be semantically connected while relatively far away from each other if we consider only the number of tokens between them.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-04-16 00:00:00 +0000 UTC'>April 16, 2025</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;1492 words&nbsp;·&nbsp;Julien Seveno</footer>
-  <a class="entry-link" aria-label="post link to Webformers" href="https://bornlex.github.io/posts/webformers/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Kolmogorov AI Framework | Part2 - brainfuck
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p> Motivations I recently started a series of article about a framework I was thinking about, which allows agent to be trained in a reinforcement learning basis, executing one action at a time on specific environments.
-The first part of the series can be found here: Kolmogorov AI Framework.
-Environment To build this proof of concept, I chose the brainfuck programming language. It is part of the esoteric programming languages family, but it is made of only 6 instructions, making it very easy to start with as an execution environment.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-04-02 00:00:00 +0000 UTC'>April 2, 2025</span>&nbsp;·&nbsp;7 min&nbsp;·&nbsp;1416 words&nbsp;·&nbsp;Julien Seveno</footer>
-  <a class="entry-link" aria-label="post link to Kolmogorov AI Framework | Part2 - brainfuck" href="https://bornlex.github.io/posts/kolmogorov-environment/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">EPITA Courses - Continuous Physics Informed Neural Networks
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Introduction Neural networks require large amounts of data to converge. Those data need to represent the task the neural network is trying to learn.
-Data collection is a tedious process, especially when collecting data can be difficult or expensive. In science, physics for instance, many phenomenon are described using theories that we know are working very well.
-Using those data as regularization can help neural networks generalize better with less data.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-03-16 15:54:04 +0100 CET'>March 16, 2025</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;1673 words&nbsp;·&nbsp;Julien Seveno</footer>
-  <a class="entry-link" aria-label="post link to EPITA Courses - Continuous Physics Informed Neural Networks" href="https://bornlex.github.io/posts/epita-4-pinn/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">EPITA Courses - Transformers
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Context Generating data is now a hot topic in machine learning. The idea of using statistical methods to produce synthetic data is rather old. Many methods are proven to be effective in different scenarios.
-Today, the most well-known ways to generate synthetic data are:
-VAE GAN Transformers Transformers A bit of history We talked about RNN last week and we saw how they can be used to predict sequences. Unfortunately, RNN suffer some problems, especially with long sequences where they seem to forget what happened.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-03-16 15:49:20 +0100 CET'>March 16, 2025</span>&nbsp;·&nbsp;10 min&nbsp;·&nbsp;1929 words&nbsp;·&nbsp;Julien Seveno</footer>
-  <a class="entry-link" aria-label="post link to EPITA Courses - Transformers" href="https://bornlex.github.io/posts/epita-3-transformers/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">EPITA Courses - Recurrent Neural Networks
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Introduction Motivation Why is it necessary to introduce the concept of recurrence in neural networks?
-We know certain things in sequence. Let’s take the example of the alphabet. We can recite it without even thinking about it in the order from A to Z. However, if we were asked to recite it backwards, or even worse, to recite the alphabet based on the position of the letters (give the 17th letter, then the 5th…), we would be unable to do so.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-03-16 15:46:44 +0100 CET'>March 16, 2025</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;1702 words&nbsp;·&nbsp;Julien Seveno</footer>
-  <a class="entry-link" aria-label="post link to EPITA Courses - Recurrent Neural Networks" href="https://bornlex.github.io/posts/epita-2-rnn/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">EPITA Courses - Timeseries
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Time Series Time series &amp; stochastic processes A time series is a set of observations $x_t$ generated sequentially over time $t$.
-There are two main types of time series:
-continuous time series discrete time series We can also differentiate time series whose values can be determined by mathematical functions, deterministic time series, from the time series that have some random component, non-deterministic time series.
-To forecast non-deterministic time series, we assume that there is a probability model that generates the observations of the time series.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-03-16 15:36:50 +0100 CET'>March 16, 2025</span>&nbsp;·&nbsp;20 min&nbsp;·&nbsp;4164 words&nbsp;·&nbsp;Julien Seveno</footer>
-  <a class="entry-link" aria-label="post link to EPITA Courses - Timeseries" href="https://bornlex.github.io/posts/epita-1-timeseries/"></a>
+  <footer class="entry-footer"><span title='2024-01-24 14:03:13 +0100 CET'>January 24, 2024</span>&nbsp;·&nbsp;10 min&nbsp;·&nbsp;2014 words&nbsp;·&nbsp;Julien Seveno</footer>
+  <a class="entry-link" aria-label="post link to Code injection" href="https://bornlex.github.io/posts/2018-10-14-code-injection/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
-    <a class="next" href="https://bornlex.github.io/posts/page/2/">Next&nbsp;&nbsp;»
+    <a class="prev" href="https://bornlex.github.io/posts/page/2/">
+      «&nbsp;Prev&nbsp;
     </a>
   </nav>
 </footer>

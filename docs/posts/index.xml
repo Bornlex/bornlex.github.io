@@ -28,6 +28,23 @@
 &lt;p&gt;So the total size in memory for 1 parameter among the 3 billion is 16 bits, which is 2 bytes. To store the whole model, the memory will need to be at least 6 billion bytes (6Gb).&lt;/p&gt;</description>
     </item>
     <item>
+      <title>Chain-of-Thought is LLMs prompting themselves</title>
+      <link>https://bornlex.github.io/posts/llm-prompting/</link>
+      <pubDate>Fri, 11 Jul 2025 20:55:05 +0100</pubDate>
+      <guid>https://bornlex.github.io/posts/llm-prompting/</guid>
+      <description>&lt;p&gt;Let’s take the following notations:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$f_{\theta}: X \to Y$ the LLM parametrized by its weights $\theta$&lt;/li&gt;
+&lt;li&gt;$X$ the set of tasks (prompts, made of tokens)&lt;/li&gt;
+&lt;li&gt;$Y$ the set of answers to those tasks (made of tokens as well)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The best parameters for the model are given by:&lt;/p&gt;
+&lt;p&gt;$$
+\theta^* = \argmax_{\theta} f_{\theta}(y | x) \text{ with } x, y \in X, Y
+$$&lt;/p&gt;
+&lt;p&gt;When fine tuning a model to think, the model is trained to answer a sequence a tokens in between the prompt and the answer that can be manually curated instead of outputing the final answer straight away. Let’s call this sequence of tokens $c \in C$. The optimal weights are now given by:&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>Nemotron</title>
       <link>https://bornlex.github.io/posts/nemotron/</link>
       <pubDate>Thu, 05 Jun 2025 00:00:00 +0000</pubDate>
