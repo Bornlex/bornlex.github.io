@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Ai Finetuning Learnings | Julien&#39;s blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="When fine tuning or even training a model, hardware resources are often the bottleneck, and with today’s model sizes, the limiting factor is often GPU memory.
+As an example, let’s take a Qwen 2.5 3B models. As the name says, it contains approximately 3 billion parameters. The model available on HuggingFace is saved with bf16, meaning it contains:
+
+Sign bit : 1 bit
+Exponent : 8 bits
+Significant precision : 7 bits
+
+So the total size in memory for 1 parameter among the 3 billion is 16 bits, which is 2 bytes. To store the whole model, the memory will need to be at least 6 billion bytes (6Gb).">
+<meta name="author" content="Julien Seveno">
+<link rel="canonical" href="https://bornlex.github.io/posts/ai-finetuning-learnings/">
+<meta name="google-site-verification" content="XYZabc">
+<meta name="yandex-verification" content="XYZabc">
+<meta name="msvalidate.01" content="XYZabc">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b609c58d5c11bb90b1a54e04005d74ad1ddf22165eb79f5533967e57df9c3b50.css" integrity="sha256-tgnFjVwRu5CxpU4EAF10rR3fIhZet59VM5Z&#43;V9&#43;cO1A=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="icon" type="image/png" sizes="16x16" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="icon" type="image/png" sizes="32x32" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="apple-touch-icon" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="mask-icon" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://bornlex.github.io/posts/ai-finetuning-learnings/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous" />
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false}
+        ]
+    });
+});
+</script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBJC7YD3QZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZBJC7YD3QZ');
+</script>
+
+<meta property="og:title" content="Ai Finetuning Learnings" />
+<meta property="og:description" content="When fine tuning or even training a model, hardware resources are often the bottleneck, and with today’s model sizes, the limiting factor is often GPU memory.
+As an example, let’s take a Qwen 2.5 3B models. As the name says, it contains approximately 3 billion parameters. The model available on HuggingFace is saved with bf16, meaning it contains:
+
+Sign bit : 1 bit
+Exponent : 8 bits
+Significant precision : 7 bits
+
+So the total size in memory for 1 parameter among the 3 billion is 16 bits, which is 2 bytes. To store the whole model, the memory will need to be at least 6 billion bytes (6Gb)." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bornlex.github.io/posts/ai-finetuning-learnings/" /><meta property="og:image" content="https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2025-08-29T22:40:21+02:00" />
+<meta property="article:modified_time" content="2025-08-29T22:40:21+02:00" /><meta property="og:site_name" content="Julien&#39;s blog" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/>
+
+<meta name="twitter:title" content="Ai Finetuning Learnings"/>
+<meta name="twitter:description" content="When fine tuning or even training a model, hardware resources are often the bottleneck, and with today’s model sizes, the limiting factor is often GPU memory.
+As an example, let’s take a Qwen 2.5 3B models. As the name says, it contains approximately 3 billion parameters. The model available on HuggingFace is saved with bf16, meaning it contains:
+
+Sign bit : 1 bit
+Exponent : 8 bits
+Significant precision : 7 bits
+
+So the total size in memory for 1 parameter among the 3 billion is 16 bits, which is 2 bytes. To store the whole model, the memory will need to be at least 6 billion bytes (6Gb)."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://bornlex.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Ai Finetuning Learnings",
+      "item": "https://bornlex.github.io/posts/ai-finetuning-learnings/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Ai Finetuning Learnings",
+  "name": "Ai Finetuning Learnings",
+  "description": "When fine tuning or even training a model, hardware resources are often the bottleneck, and with today’s model sizes, the limiting factor is often GPU memory.\nAs an example, let’s take a Qwen 2.5 3B models. As the name says, it contains approximately 3 billion parameters. The model available on HuggingFace is saved with bf16, meaning it contains:\nSign bit : 1 bit Exponent : 8 bits Significant precision : 7 bits So the total size in memory for 1 parameter among the 3 billion is 16 bits, which is 2 bytes. To store the whole model, the memory will need to be at least 6 billion bytes (6Gb).\n",
+  "keywords": [
+    
+  ],
+  "articleBody": "When fine tuning or even training a model, hardware resources are often the bottleneck, and with today’s model sizes, the limiting factor is often GPU memory.\nAs an example, let’s take a Qwen 2.5 3B models. As the name says, it contains approximately 3 billion parameters. The model available on HuggingFace is saved with bf16, meaning it contains:\nSign bit : 1 bit Exponent : 8 bits Significant precision : 7 bits So the total size in memory for 1 parameter among the 3 billion is 16 bits, which is 2 bytes. To store the whole model, the memory will need to be at least 6 billion bytes (6Gb).\nBut of course we cannot just store the model, we have to store the training data as well, the intermediary results of the computation throughout the neural network, and even the gradients in order to be able to train the model.\nAs an example, let’s take a toy neural network that contains 2 layers. The model would look like that:\nWhere:\n$x \\in X$ is the input data $L_1, L_2$ are the two layers, containing parameters $\\theta_1, \\theta_2$ respectively $y$ is the output of the neural network $L$ is the value of the loss function Every time we want to compute $\\hat{y}$ from $x$ we have to go through this computation graph:\nWhere :\n$\\theta_1 \\in \\mathbb{R}^{d \\times d_1}$ the parameters of the first layer $\\theta_2 \\in \\mathbb{R}^{d_1 \\times d_2}$ the parameters of the second layer $x \\in \\mathbb{R}^{b \\times d}$ is the input data as in the previous figure $b$ is the batch size $d$ is the dimension of the data $x’ \\in \\mathbb{R}^{b \\times d_1}$ is the intermediary result $x’ = f^1_{\\theta_1}(x)$ $\\hat{y} \\in \\mathbb{R}^{b \\times d_2}$ is the prediction (written $y’$ in the figure) given by $\\hat{y} = f^2_{\\theta_2}(x’)$ $y \\in \\mathbb{R}^{b \\times d_2}$ is the ground truth $L = L(\\hat{y}, y) \\in \\mathbb{R}$ is the loss The graph indicates what input nodes are required to compute any node. So for example, to compute the prediction, we have to have the intermediary result and the parameters of the second layer loaded in memory.\nIf we want to load the whole graph into memory to perform a forward pass, we then have to load all the previous tensors, which means storing in memory:\n$d * d_1 * 2$ bytes for $\\theta_1$ $d_1 * d_2 * 2$ bytes for $\\theta_2$ $b * d * 2$ bytes for $x$ $b * d_1 * 2$ bytes for $x'$ $b * d_2 * 2$ bytes for $\\hat{y}$ $b * 2$ bytes for $L$ Considering the following values:\nb 32 d 1000 d1 1000 d2 1000 Gives 4.192.032 bytes. Among that, the two layers of the models (the parameters) account for 4.000.000 bytes.\nNow that we understand the context a bit more clearly, let’s talk about how we can reduce the memory footprint.\nGradient Accumulation As we saw in the toy example, we are working with batches of data. Instead of sampling one example, running it through the network, computing the loss, the gradients and updating the model, we do it for a few examples at a time. It improves convergence and stabilize training.\nBut it comes with a cost, which is more memory required to work. Instead of loading 1 example of size 1000 (in the previous case), we have to load 32 examples of size 1000.\nAnd things get worse if we are talking about a language model. A language model works with a few tokens, let’s say 1024, and each token is then embedded in a tensor of size depending on the model provider. For example, DeepSeek-v3 and R1 use an embedding of size 7168. So when we batch the data, we actually create tensors of size $b * 1024 * 7168 = 7 340 032 * b$. Which is a lot!\nIn this case, using a small batch or a big batch can make a huge difference in terms of memory usage.\nThis is where gradient accumulation comes into play.\nInstead of loading the whole batch into memory, gradient accumulation loads only a fraction of a batch (for example 4 training samples instead of 32), performs the forward pass and compute the gradient of the loss function. It then loads another fraction of the batch, does the same operation on it and “accumulates” the gradient until a certain point is reached.\nThen, after the accumulation steps, the optimizer can update the weights as if the gradients had been computed on the whole batch.\nThe whole point here is that we do not have to load the whole batch at once. So instead of loading $7 340 032 * 32 = 234.881.024 = 234 \\text{Mb}$ we can only load one eighth of that.\nGradient Checkpointing Gradient checkpointing is a bit trickier to understand.\nPebbles To understand memory requirements of computation, computer scientists use the concept of pebble game, introduced in 1975 in a paper called “Complete Register Allocation Problems” !\nIn order to compute each value inside a computation graph (like the one we showed previously), we need to first load its dependencies in memory. The pebble game represents this as placing a pebble on the dependency nodes of the value we want to compute. If all dependency nodes have pebbles on them, all the required values are stored in memory and the node is ready for execution. Of course, when computing the node, we store its value into memory, so we place a pebble on it as well.\nAnd like memory, we have a finite set of pebbles ! Meaning that we need to be smart when placing the pebbles, and making sure we are not leaving a pebble on a node that is not needed anymore.\nLet’s recall the computation graph we used earlier. If we want to compute the $x’$ node, we would have to load the value $x$ and the parameters $\\theta_1$ in memory which are its dependencies:\nOnce the two children values loaded, we can compute $x’$. Now moving forward to the second node to be computed : $\\hat{y}$. We again need to load its children, but $x’$ is already loaded, so $\\theta_2$ needs a pebble:\nIt is easy to notice that the two children nodes that we loaded into memory earlier are not needed anymore. So $x$ and $\\theta_1$ can be freed, and their pebbles can be reclaimed.\nAnd we will go all the way up to the loss function. Because no node has more than 2 dependencies, we can reach the loss function with only 3 pebbles instead of 7 if we keep the whole graph stored in memory.\nCheckpointing Now that we understand clearly how we can optimize memory consumption by freeing the nodes that are not directly needed for computation, we can get back to our original problem.\nWe know what it is possible to store only the immediate children nodes for the forward pass. But when training or fine tuning a model, we need to be able to compute the gradients and retropropagate them through the network.\nThe same logic can be applied to the backward pass. Indeed, to compute the gradient of the loss function with respect to node $x’$ for instance, we have to compute the gradient of the loss wrt $\\hat{y}$ first, then use it as a child node.\nTo update the weights of the model, we need to compute two gradients :\n$\\frac{\\partial L(\\hat{y}, y)}{\\partial \\theta_2}$ $\\frac{\\partial L(\\hat{y}, y)}{\\partial \\theta_1}$ The first expression is easy to compute :\n$$ \\frac{\\partial L(\\hat{y}, y)}{\\partial \\theta_2} = \\frac{\\partial L(\\hat{y}, y)}{\\partial \\hat{y}} \\frac{\\partial \\hat{y}}{\\partial \\theta_2} $$\nWe notice the gradient of the loss with respect to the prediction $\\hat{y}$.\nThen the second formula :\n$$ \\frac{\\partial L(\\hat{y}, y)}{\\partial \\theta_1} = \\frac{\\partial L(\\hat{y}, y)}{\\partial \\hat{y}} \\frac{\\partial \\hat{y}}{\\partial x’} \\frac{\\partial x’}{\\partial \\theta_1} $$\nThis one is interesting because we see 3 gradients :\nthe gradient of the loss wrt the prediction the gradient of the prediction wrt the intermediary $x'$ the gradient of the intermediary node wrt the parameters of the first layer To calculate this, you need the value of the intermediate activation $x’$, which was computed during the forward pass. The standard approach is to store all these activations in memory during the forward pass so they are available for the backward pass. For very deep models with many layers, these stored activations can consume an enormous amount of memory — often more than the model weights themselves.\nThe solution : Re-compute, don’t store\nGradient checkpointing takes a radical approach: it avoids storing most of the intermediate activations during the forward pass.\nForward Pass: As the model executes the forward pass, it calculates all the activations but immediately discards most of them to free up memory. It only saves a few strategically chosen activations, called “checkpoints”. The kept nodes can be decided by the framework or even manually. Usually, around $\\sqrt{n}$ nodes are kept. Backward Pass: When the backward pass needs an intermediate activation that was discarded, the model doesn’t have it. Instead, it recomputes it on the fly. It takes the most recently saved checkpoint and runs a partial forward pass from that checkpoint up to the point where the required activation is produced. By re-running small segments of the forward pass during the backward pass, the model can avoid storing the bulk of the activations. This dramatically reduces memory usage at the cost of some re-computation, making it possible to train much larger models on the same hardware.\n",
+  "wordCount" : "1579",
+  "inLanguage": "en",
+  "datePublished": "2025-08-29T22:40:21+02:00",
+  "dateModified": "2025-08-29T22:40:21+02:00",
+  "author":{
+    "@type": "Person",
+    "name": "Julien Seveno"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://bornlex.github.io/posts/ai-finetuning-learnings/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Julien's blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://bornlex.github.io/%3Clink%20/%20abs%20url%3E"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://bornlex.github.io/" accesskey="h" title="Home (Alt + H)">
+                <img src="https://bornlex.github.io/apple-touch-icon.png" alt="" aria-label="logo"
+                    height="35">Home</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://bornlex.github.io/" title="Posts">
+                    <span>Posts</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/Bornlex/Whitespace-interpreter" title="Whitespace Interpreter">
+                    <span>Whitespace Interpreter</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://bornlex.github.io/posts/me/" title="About me">
+                    <span>About me</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://lightpanda.io/" title="lightpanda.io">
+                    <span>lightpanda.io</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://bornlex.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://bornlex.github.io/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      Ai Finetuning Learnings
+    </h1>
+    <div class="post-meta"><span title='2025-08-29 22:40:21 +0200 CEST'>August 29, 2025</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;1579 words&nbsp;·&nbsp;Julien Seveno&nbsp;|&nbsp;<a href="https://github.com/%3cpath_to_repo%3e/content/posts/ai-finetuning-learnings.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+  </header> 
+  <div class="post-content"><p>When fine tuning or even training a model, hardware resources are often the bottleneck, and with today’s model sizes, the limiting factor is often <strong>GPU memory</strong>.</p>
+<p>As an example, let’s take a Qwen 2.5 3B models. As the name says, it contains approximately 3 billion parameters. The model available on HuggingFace is saved with bf16, meaning it contains:</p>
+<ul>
+<li>Sign bit : 1 bit</li>
+<li>Exponent : 8 bits</li>
+<li>Significant precision : 7 bits</li>
+</ul>
+<p>So the total size in memory for 1 parameter among the 3 billion is 16 bits, which is 2 bytes. To store the whole model, the memory will need to be at least 6 billion bytes (6Gb).</p>
+<p>But of course we cannot just store the model, we have to store the training data as well, the intermediary results of the computation throughout the neural network, and even the gradients in order to be able to train the model.</p>
+<hr>
+<p>As an example, let’s take a toy neural network that contains 2 layers. The model would look like that:</p>
+<p><img loading="lazy" src="/learnings/nn.png" alt="Fully Connected Neural Network"  />
+</p>
+<p>Where:</p>
+<ul>
+<li>$x \in X$ is the input data</li>
+<li>$L_1, L_2$ are the two layers, containing parameters $\theta_1, \theta_2$ respectively</li>
+<li>$y$ is the output of the neural network</li>
+<li>$L$ is the value of the loss function</li>
+</ul>
+<p>Every time we want to compute $\hat{y}$ from $x$ we have to go through this computation graph:</p>
+<p><img loading="lazy" src="/learnigns/computation-graph.png" alt="Computation Graph"  />
+</p>
+<p>Where :</p>
+<ul>
+<li>$\theta_1 \in \mathbb{R}^{d \times d_1}$ the parameters of the first layer</li>
+<li>$\theta_2 \in \mathbb{R}^{d_1 \times d_2}$ the parameters of the second layer</li>
+<li>$x \in \mathbb{R}^{b \times d}$ is the input data as in the previous figure
+<ul>
+<li>$b$ is the batch size</li>
+<li>$d$ is the dimension of the data</li>
+</ul>
+</li>
+<li>$x&rsquo; \in \mathbb{R}^{b \times d_1}$ is the intermediary result $x&rsquo; = f^1_{\theta_1}(x)$</li>
+<li>$\hat{y} \in \mathbb{R}^{b \times d_2}$ is the prediction (written $y&rsquo;$ in the figure) given by $\hat{y} = f^2_{\theta_2}(x&rsquo;)$</li>
+<li>$y \in \mathbb{R}^{b \times d_2}$ is the ground truth</li>
+<li>$L = L(\hat{y}, y) \in \mathbb{R}$ is the loss</li>
+</ul>
+<p>The graph indicates what input nodes are required to compute any node. So for example, to compute the prediction, we have to have the intermediary result and the parameters of the second layer loaded in memory.</p>
+<p>If we want to load the whole graph into memory to perform a forward pass, we then have to load all the previous tensors, which means storing in memory:</p>
+<ul>
+<li>$d * d_1 * 2$ bytes for $\theta_1$</li>
+<li>$d_1 * d_2 * 2$ bytes for $\theta_2$</li>
+<li>$b * d * 2$ bytes for $x$</li>
+<li>$b * d_1 * 2$ bytes for $x'$</li>
+<li>$b * d_2 * 2$ bytes for $\hat{y}$</li>
+<li>$b * 2$ bytes for $L$</li>
+</ul>
+<p>Considering the following values:</p>
+<table>
+  <thead>
+      <tr>
+          <th>b</th>
+          <th>32</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>d</td>
+          <td>1000</td>
+      </tr>
+      <tr>
+          <td>d1</td>
+          <td>1000</td>
+      </tr>
+      <tr>
+          <td>d2</td>
+          <td>1000</td>
+      </tr>
+  </tbody>
+</table>
+<p>Gives 4.192.032 bytes. Among that, the two layers of the models (the parameters) account for 4.000.000 bytes.</p>
+<p>Now that we understand the context a bit more clearly, let’s talk about how we can reduce the memory footprint.</p>
+<h2 id="gradient-accumulation">Gradient Accumulation<a hidden class="anchor" aria-hidden="true" href="#gradient-accumulation">#</a></h2>
+<p>As we saw in the toy example, we are working with batches of data. Instead of sampling one example, running it through the network, computing the loss, the gradients and updating the model, we do it for a few examples at a time. It improves convergence and stabilize training.</p>
+<p>But it comes with a cost, which is more memory required to work. Instead of loading 1 example of size 1000 (in the previous case), we have to load 32 examples of size 1000.</p>
+<p>And things get worse if we are talking about a language model. A language model works with a few tokens, let’s say 1024, and each token is then embedded in a tensor of size depending on the model provider. For example, DeepSeek-v3 and R1 use an embedding of size 7168.
+So when we batch the data, we actually create tensors of size $b * 1024 * 7168 = 7 340 032 * b$. Which is a lot!</p>
+<p>In this case, using a small batch or a big batch can make a huge difference in terms of memory usage.</p>
+<p>This is where <strong>gradient accumulation</strong> comes into play.</p>
+<p>Instead of loading the whole batch into memory, gradient accumulation loads only a fraction of a batch (for example 4 training samples instead of 32), performs the forward pass and compute the gradient of the loss function. It then loads another fraction of the batch, does the same operation on it and “accumulates” the gradient until a certain point is reached.</p>
+<p>Then, after the accumulation steps, the optimizer can update the weights as if the gradients had been computed on the whole batch.</p>
+<p>The whole point here is that we do not have to load the whole batch at once. So instead of loading $7 340 032 * 32 = 234.881.024 = 234 \text{Mb}$ we can only load one eighth of that.</p>
+<h2 id="gradient-checkpointing">Gradient Checkpointing<a hidden class="anchor" aria-hidden="true" href="#gradient-checkpointing">#</a></h2>
+<p>Gradient checkpointing is a bit trickier to understand.</p>
+<h3 id="pebbles">Pebbles<a hidden class="anchor" aria-hidden="true" href="#pebbles">#</a></h3>
+<p>To understand memory requirements of computation, computer scientists use the concept of pebble game, introduced in 1975 in a paper called <a href="https://dl.acm.org/doi/10.1145/800125.804049">“Complete Register Allocation Problems”</a> !</p>
+<p>In order to compute each value inside a computation graph (like the one we showed previously), we need to first load its dependencies in memory. The pebble game represents this as placing a pebble on the dependency nodes of the value we want to compute. If all dependency nodes have pebbles on them, all the required values are stored in memory and the node is ready for execution. Of course, when computing the node, we store its value into memory, so we place a pebble on it as well.</p>
+<p>And like memory, we have a finite set of pebbles ! Meaning that we need to be smart when placing the pebbles, and making sure we are not leaving a pebble on a node that is not needed anymore.</p>
+<p>Let’s recall the computation graph we used earlier. If we want to compute the $x&rsquo;$ node, we would have to load the value $x$ and the parameters $\theta_1$ in memory which are its dependencies:</p>
+<p><img loading="lazy" src="/learnings/computation-graph2.png" alt="Computation Graph"  />
+</p>
+<p>Once the two children values loaded, we can compute $x&rsquo;$. Now moving forward to the second node to be computed : $\hat{y}$. We again need to load its children, but $x&rsquo;$ is already loaded, so $\theta_2$ needs a pebble:</p>
+<p><img loading="lazy" src="/learnings/computation-graph3.png" alt="Computation Graph"  />
+</p>
+<p>It is easy to notice that the two children nodes that we loaded into memory earlier are not needed anymore. So $x$ and $\theta_1$ can be freed, and their pebbles can be reclaimed.</p>
+<p>And we will go all the way up to the loss function. Because no node has more than 2 dependencies, we can reach the loss function with only 3 pebbles instead of 7 if we keep the whole graph stored in memory.</p>
+<h3 id="checkpointing">Checkpointing<a hidden class="anchor" aria-hidden="true" href="#checkpointing">#</a></h3>
+<p>Now that we understand clearly how we can optimize memory consumption by freeing the nodes that are not directly needed for computation, we can get back to our original problem.</p>
+<p>We know what it is possible to store only the immediate children nodes for the forward pass. But when training or fine tuning a model, we need to be able to compute the gradients and retropropagate them through the network.</p>
+<p>The same logic can be applied to the backward pass. Indeed, to compute the gradient of the loss function with respect to node $x&rsquo;$ for instance, we have to compute the gradient of the loss wrt $\hat{y}$ first, then use it as a child node.</p>
+<p>To update the weights of the model, we need to compute two gradients :</p>
+<ul>
+<li>$\frac{\partial L(\hat{y}, y)}{\partial \theta_2}$</li>
+<li>$\frac{\partial L(\hat{y}, y)}{\partial \theta_1}$</li>
+</ul>
+<p>The first expression is easy to compute :</p>
+<p>$$
+\frac{\partial L(\hat{y}, y)}{\partial \theta_2} = \frac{\partial L(\hat{y}, y)}{\partial \hat{y}} \frac{\partial \hat{y}}{\partial \theta_2}
+$$</p>
+<p>We notice the gradient of the loss with respect to the prediction $\hat{y}$.</p>
+<p>Then the second formula :</p>
+<p>$$
+\frac{\partial L(\hat{y}, y)}{\partial \theta_1} = \frac{\partial L(\hat{y}, y)}{\partial \hat{y}} \frac{\partial \hat{y}}{\partial x&rsquo;} \frac{\partial x&rsquo;}{\partial \theta_1}
+$$</p>
+<p>This one is interesting because we see 3 gradients :</p>
+<ul>
+<li>the gradient of the loss wrt the prediction</li>
+<li>the gradient of the prediction wrt the intermediary $x'$</li>
+<li>the gradient of the intermediary node wrt the parameters of the first layer</li>
+</ul>
+<p>To calculate this, you need the value of the intermediate activation $x&rsquo;$, which was computed during the forward pass. The standard approach is to store all these activations in memory during the forward pass so they are available for the backward pass. For very deep models with many layers, these stored activations can consume an enormous amount of memory — often more than the model weights themselves.</p>
+<hr>
+<p><strong>The solution : Re-compute, don’t store</strong></p>
+<p>Gradient checkpointing takes a radical approach: it avoids storing most of the intermediate activations during the forward pass.</p>
+<ol>
+<li><strong>Forward Pass</strong>: As the model executes the forward pass, it calculates all the activations but immediately discards most of them to free up memory. It only saves a few strategically chosen activations, called &ldquo;checkpoints&rdquo;. The kept nodes can be decided by the framework or even manually. Usually, around $\sqrt{n}$ nodes are kept.</li>
+<li><strong>Backward Pass</strong>: When the backward pass needs an intermediate activation that was discarded, the model doesn&rsquo;t have it. Instead, it recomputes it on the fly. It takes the most recently saved checkpoint and runs a partial forward pass from that checkpoint up to the point where the required activation is produced.</li>
+</ol>
+<p>By re-running small segments of the forward pass during the backward pass, the model can avoid storing the bulk of the activations. This dramatically reduces memory usage at the cost of some re-computation, making it possible to train much larger models on the same hardware.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://bornlex.github.io/posts/nemotron/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Nemotron</span>
+  </a>
+</nav>
+
+
+<ul class="share-buttons">
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Ai Finetuning Learnings on x"
+            href="https://x.com/intent/tweet/?text=Ai%20Finetuning%20Learnings&amp;url=https%3a%2f%2fbornlex.github.io%2fposts%2fai-finetuning-learnings%2f&amp;hashtags=">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Ai Finetuning Learnings on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fbornlex.github.io%2fposts%2fai-finetuning-learnings%2f&amp;title=Ai%20Finetuning%20Learnings&amp;summary=Ai%20Finetuning%20Learnings&amp;source=https%3a%2f%2fbornlex.github.io%2fposts%2fai-finetuning-learnings%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Ai Finetuning Learnings on reddit"
+            href="https://reddit.com/submit?url=https%3a%2f%2fbornlex.github.io%2fposts%2fai-finetuning-learnings%2f&title=Ai%20Finetuning%20Learnings">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Ai Finetuning Learnings on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fbornlex.github.io%2fposts%2fai-finetuning-learnings%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Ai Finetuning Learnings on whatsapp"
+            href="https://api.whatsapp.com/send?text=Ai%20Finetuning%20Learnings%20-%20https%3a%2f%2fbornlex.github.io%2fposts%2fai-finetuning-learnings%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Ai Finetuning Learnings on telegram"
+            href="https://telegram.me/share/url?text=Ai%20Finetuning%20Learnings&amp;url=https%3a%2f%2fbornlex.github.io%2fposts%2fai-finetuning-learnings%2f">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Ai Finetuning Learnings on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t=Ai%20Finetuning%20Learnings&u=https%3a%2f%2fbornlex.github.io%2fposts%2fai-finetuning-learnings%2f">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+                <path
+                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+</ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2025 <a href="https://bornlex.github.io/">Julien&#39;s blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

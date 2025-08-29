@@ -180,6 +180,21 @@ document.addEventListener("DOMContentLoaded", function() {
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Ai Finetuning Learnings
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>When fine tuning or even training a model, hardware resources are often the bottleneck, and with today’s model sizes, the limiting factor is often GPU memory.
+As an example, let’s take a Qwen 2.5 3B models. As the name says, it contains approximately 3 billion parameters. The model available on HuggingFace is saved with bf16, meaning it contains:
+Sign bit : 1 bit Exponent : 8 bits Significant precision : 7 bits So the total size in memory for 1 parameter among the 3 billion is 16 bits, which is 2 bytes. To store the whole model, the memory will need to be at least 6 billion bytes (6Gb).
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-08-29 22:40:21 +0200 CEST'>August 29, 2025</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;1579 words&nbsp;·&nbsp;Julien Seveno</footer>
+  <a class="entry-link" aria-label="post link to Ai Finetuning Learnings" href="https://bornlex.github.io/posts/ai-finetuning-learnings/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Nemotron
     </h2>
   </header>
@@ -311,22 +326,6 @@ I sometimes write articles about tech, most of them are AI related:
   </div>
   <footer class="entry-footer"><span title='2025-03-16 15:35:02 +0100 CET'>March 16, 2025</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;188 words&nbsp;·&nbsp;Julien Seveno</footer>
   <a class="entry-link" aria-label="post link to About Me" href="https://bornlex.github.io/posts/me/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">MLX DQN
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Reinforcement Learning with Apple MLX Framework Today, a very short article about Apple MLX framework.
-I recently learned that Apple has its own machine learning framework, and as a heavy Mac user I thought I’d give it a try.
-It is very easy to use and intuitive, the syntax is nice and looks like Numpy and PyTorch, which is convenient as a PyTorch user.
-As an example, let me present a Deep Q Learning implementation that I wrote. It comes from a nice DeepMind paper.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-03-16 15:12:50 +0100 CET'>March 16, 2025</span>&nbsp;·&nbsp;5 min&nbsp;·&nbsp;1064 words&nbsp;·&nbsp;Julien Seveno</footer>
-  <a class="entry-link" aria-label="post link to MLX DQN" href="https://bornlex.github.io/posts/mlx-dqn/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
