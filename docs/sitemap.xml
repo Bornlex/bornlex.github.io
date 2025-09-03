@@ -2,13 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://bornlex.github.io/posts/ai-finetuning-learnings/</loc>
-    <lastmod>2025-08-29T22:40:21+02:00</lastmod>
-  </url><url>
     <loc>https://bornlex.github.io/</loc>
-    <lastmod>2025-08-29T22:40:21+02:00</lastmod>
+    <lastmod>2025-09-03T21:48:23+02:00</lastmod>
+  </url><url>
+    <loc>https://bornlex.github.io/posts/gradient-trick/</loc>
+    <lastmod>2025-09-03T21:48:23+02:00</lastmod>
   </url><url>
     <loc>https://bornlex.github.io/posts/</loc>
+    <lastmod>2025-09-03T21:48:23+02:00</lastmod>
+  </url><url>
+    <loc>https://bornlex.github.io/posts/ai-finetuning-learnings/</loc>
     <lastmod>2025-08-29T22:40:21+02:00</lastmod>
   </url><url>
     <loc>https://bornlex.github.io/posts/llm-prompting/</loc>

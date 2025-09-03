@@ -11,8 +11,21 @@
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 29 Aug 2025 22:40:21 +0200</lastBuildDate>
+    <lastBuildDate>Wed, 03 Sep 2025 21:48:23 +0200</lastBuildDate>
     <atom:link href="https://bornlex.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Log Derivation Trick</title>
+      <link>https://bornlex.github.io/posts/gradient-trick/</link>
+      <pubDate>Wed, 03 Sep 2025 21:48:23 +0200</pubDate>
+      <guid>https://bornlex.github.io/posts/gradient-trick/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Today, let’s talk about reinforcement learning, and more specifically policy-based reinforcement learning.&lt;/p&gt;
+&lt;p&gt;Policy-based reinforcement learning is when we directly parametrize the policy, meaning we are looking for a policy such as :&lt;/p&gt;
+&lt;p&gt;$$
+\pi_{\theta}(s, a) = p(a | s, \theta)
+$$&lt;/p&gt;
+&lt;p&gt;In other words, we are looking for a function that represents the probability of our agent taking a specific action $a$ in a state $s$. Think about a state as the position on the chess board for instance and the action as the move to be played next.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Ai Finetuning Learnings</title>
       <link>https://bornlex.github.io/posts/ai-finetuning-learnings/</link>
