@@ -103,3 +103,26 @@ $$
 $$
 
 This gives us in what direction to shift the parameters in order to maximize the objective function (as judged by $f$).
+
+## Conclusion
+
+Let’s think a bit about what we did here. Basically, we had a first formula and we reworked it a bit to get another formula. But why ? This is very subtle, and the key is **computability**.
+
+Using the first formula $\nabla_{\theta} E_{x \sim p(x | \theta)} [f(x)]$ is not enough because it would require us to evaluate the entire state space, which is usually enormous in reinforcement learning. It is practically impossible to enumerate all possible states.
+
+> But what is the difference with the second equation ?? It still is an expectancy over a distribution !
+> 
+
+Indeed it is, but with a big difference : there is a term inside the sum that depends on $\theta$. And this makes the whole thing works, because now we can sample using any sampling method such as Monte-Carlo, and have a term that depends on the parameters, meaning that it is possible to know how much the current parameters impacted the reward.
+
+Because it is possible to just sample a trajectory and compute how much this trajectory affected the reward without having to enumerate the whole space, the method works.
+
+We went from
+
+> I need to know how changing $\theta$ affects the probability of every possible state. (impossible)
+> 
+
+To
+
+> I need to know how changing $\theta$ affects the probability of just the states I actually sampled. (doable)
+>
