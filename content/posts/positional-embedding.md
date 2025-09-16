@@ -129,3 +129,31 @@ For the binary representation.
 For the sinusoidal representation.
 
 Of course the values are not the same, but the alternation is similar which is something our model can learn.
+
+### Implementation
+
+Here is a naive implementation of the sinusoidal positional embedding :
+
+```python
+import torch
+from torch import nn
+
+class PositionalEmbedding(nn.Module):
+    def __init__(self, embedding_size: int):
+        super().__init__()
+
+        self.__embedding_size = embedding_size
+
+    def forward(self, x, *args, **kwargs):
+        mask = torch.zeros_like(x)
+
+        for pos in range(x.shape[-2]):
+            for index in range(x.shape[-1]):
+                input_tensor = torch.tensor(pos / (10000 ** (2 * index / self.__embedding_size)))
+                if index % 2 == 0:
+                    mask[:, pos, index] = torch.sin(input_tensor)
+                else:
+                    mask[:, pos, index] = torch.cos(input_tensor)
+
+        return mask
+```
