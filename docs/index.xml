@@ -11,8 +11,20 @@
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 03 Sep 2025 21:48:23 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 16 Sep 2025 13:33:36 +0200</lastBuildDate>
     <atom:link href="https://bornlex.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>GPT Series - Positional Embedding</title>
+      <link>https://bornlex.github.io/posts/positional-embedding/</link>
+      <pubDate>Tue, 16 Sep 2025 13:33:36 +0200</pubDate>
+      <guid>https://bornlex.github.io/posts/positional-embedding/</guid>
+      <description>&lt;h2 id=&#34;positional-embedding&#34;&gt;Positional embedding&lt;/h2&gt;
+&lt;h3 id=&#34;motivation&#34;&gt;Motivation&lt;/h3&gt;
+&lt;p&gt;As we saw earlier, multi-head self attention layer assigns the same output for every identical token, regardless of their position. This can cause obvious problems in sentences where the same word is used multiple times to represent different entities such as :&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The red car turned left where the yellow card turned left.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;The two occurrences of the “car” word represent different actual cars. They cannot be treated the same way.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Log Derivation Trick</title>
       <link>https://bornlex.github.io/posts/gradient-trick/</link>
