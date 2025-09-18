@@ -147,13 +147,14 @@ class PositionalEmbedding(nn.Module):
     def forward(self, x, *args, **kwargs):
         mask = torch.zeros_like(x)
 
-        for pos in range(x.shape[-2]):
-            for index in range(x.shape[-1]):
-                input_tensor = torch.tensor(pos / (10000 ** (2 * index / self.__embedding_size)))
-                if index % 2 == 0:
-                    mask[:, pos, index] = torch.sin(input_tensor)
-                else:
-                    mask[:, pos, index] = torch.cos(input_tensor)
+        for pos in range(x.shape[1]):
+            mask[:, pos, :] = pos
+
+        for index in range(x.shape[-1]):
+            mask[:, :, index] /= (10000 ** (2 * index / self.__embedding_size))
+
+        mask[:, :, 0::2] = torch.sin(mask[:, :, 0::2])
+        mask[:, :, 1::2] = torch.cos(mask[:, :, 1::2])
 
         return mask
 ```
