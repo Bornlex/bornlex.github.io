@@ -11,8 +11,17 @@
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 16 Sep 2025 13:33:36 +0200</lastBuildDate>
+    <lastBuildDate>Thu, 25 Sep 2025 14:25:38 +0200</lastBuildDate>
     <atom:link href="https://bornlex.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>GPT Series - Multi-head Self Attention</title>
+      <link>https://bornlex.github.io/posts/gpt-mha/</link>
+      <pubDate>Thu, 25 Sep 2025 14:25:38 +0200</pubDate>
+      <guid>https://bornlex.github.io/posts/gpt-mha/</guid>
+      <description>&lt;h3 id=&#34;motivations&#34;&gt;Motivations&lt;/h3&gt;
+&lt;p&gt;Attention is now a key component for most AI systems, wether they are working with images, sequences of tokens in language processing. It has been introduced by one of the most famous papers in deep learning : &lt;a href=&#34;https://arxiv.org/pdf/1706.03762&#34;&gt;Attention is All You Need&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The idea behind attention is to map two sequences (or the same sequence to itself, called cross attention) and learn how items in the sequences are related to each other. Whether it is to map two sequences of two different languages in the case of translation, or to map tokens from the same sequence to identify links between words such as :&lt;/p&gt;</description>
+    </item>
     <item>
       <title>GPT Series - Positional Embedding</title>
       <link>https://bornlex.github.io/posts/positional-embedding/</link>
