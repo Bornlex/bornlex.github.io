@@ -82,6 +82,9 @@ params:
       url: "https://www.linkedin.com/in/juliensevenopiltant/"
     - name: github
       url: "https://github.com/bornlex"
+    - name: "Kofi"
+      title: "Buy me a Ko-Fi !"
+      url: "https://ko-fi.com/julienseveno"
 
   analytics:
     google:
