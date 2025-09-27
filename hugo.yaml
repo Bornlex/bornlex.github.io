@@ -19,6 +19,7 @@ params:
   DateFormat: "January 2, 2006"
   defaultTheme: light # dark, light
   disableThemeToggle: false
+  ShowAllPagesInArchive: true
 
   social: true
 
@@ -116,6 +117,10 @@ menu:
       name: Posts
       url: /
       weight: 1
+    - identifier: archives
+      name: Archives
+      url: /archives
+      weight: 2
     - identifier: whitespace
       name: Whitespace Interpreter
       url: https://github.com/Bornlex/Whitespace-interpreter
