@@ -2,6 +2,7 @@
 title = 'EPITA Courses - Recurrent Neural Networks'
 date = 2025-03-16T15:46:44+01:00
 draft = false
+math = true
 +++
 
 # Introduction
@@ -235,11 +236,15 @@ Inputs will be successive bits that the network will have to add and the output 
 
 In such a case, we obviously see why a RNN might work where a simple NN could not, because of the result of the previous addition needs to be kept in memory.
 
-$\begin{matrix}
+{{< latex >}}
+$$
+\begin{matrix}
 & 1 & 0 & 1 & 1 \\
 + & 0 & 0 & 0 & 1 \\
 = & 1 & 1 & 0 & 0 \\
-\end{matrix}$
+\end{matrix}
+$$
+{{< /latex >}}
 
 ## Link
 
