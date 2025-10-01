@@ -20,9 +20,9 @@ We can also differentiate time series whose values can be determined by mathemat
 
 To forecast non-deterministic time series, we assume that there is a probability model that generates the observations of the time series.
 
-**Definition**: A *discrete time stochastic process* is a sequence of random variables  $\left\{ X_t \right\}$ defined over time $t$.
+**Definition**: A *discrete time stochastic process* is a sequence of random variables  $ \left\\{ X_t \right\\} $ defined over time $t$.
 
-We can then think about a time series as a particular realization of a stochastic process: $(X_0, X_1, ..., X_n)$.
+We can then think about a time series as a particular realization of a stochastic process: $ (X_0, X_1, ..., X_n) $.
 
 Time series analysis is about uncovering the stochastic process that has generated the time series.
 
@@ -37,7 +37,7 @@ Let’s define these properties and the time series whose properties are constan
 
 </aside>
 
-Let  $\left\{ X_t \right\}$ be a time series. The *mean function* of  $\left\{ X_t \right\}$ is defined as
+Let $\left\\{ X_t \right\\}$ be a time series. The *mean function* of $\left\\{ X_t \right\\}$ is defined as
 
 $$
 \mu(t) = E(X_t)
@@ -54,7 +54,7 @@ Now, let’s define the covariance function between two random variables of our 
 
 </aside>
 
-Let $\left\{ X_t \right\}$ be a time series. The *covariance function* of $\left\{ X_t \right\}$ is
+Let $\left\\{ X_t \right\\}$ be a time series. The *covariance function* of $\left\\{ X_t \right\\}$ is
 
 $$
 \gamma(t, t+h) = \text{Cov}(X_t, X_{t+h}) = E[(X_t - \mu(t)). (X_{t+h} - \mu(t + h))]
@@ -69,7 +69,7 @@ Where $t = 1, 2, ..., n$ and $h = 1, 2, ..., n - t$.
 
 </aside>
 
-Let $\left\{ X_t \right\}$ be a time series. $\left\{ X_t \right\}$ is *strictly stationary* if $(X_1, ..., X_n)$ and $(X_{1 + h}, ..., X_{n + h})$ have the same joint distribution for all $h$.
+Let $\left\\{ X_t \right\\}$ be a time series. $\left\\{ X_t \right\\}$ is *strictly stationary* if $(X_1, ..., X_n)$ and $(X_{1 + h}, ..., X_{n + h})$ have the same joint distribution for all $h$.
 
 ---
 
@@ -80,7 +80,7 @@ It means that the time series is stationary if the distribution is unchanged aft
 
 </aside>
 
-Let $\left\{ X_t \right\}$ be a time series. $\left\{ X_t \right\}$ is *weakly stationary* if
+Let $\left|\{ X_t \right\\}$ be a time series. $\left\\{ X_t \right\\}$ is *weakly stationary* if
 
 1. $E(X_t^2) < \infty$ for all $t$
 2. $\mu(r) = \mu(s)$ for all $r, s$
@@ -101,7 +101,7 @@ Since the covariance only depends on lag $h$ on weakly stationary time series, w
 
 </aside>
 
-Let $\left\{ X_t \right\}$ be a weakly stationary time series. The *autocovariance function* of $\left\{ X_t \right\}$ at lag $h$ is
+Let $\left\\{ X_t \right\\}$ be a weakly stationary time series. The *autocovariance function* of $\left\\{ X_t \right\\}$ at lag $h$ is
 
 $$
 \gamma(h) = \text{Cov}(X_t, X_{t + h}) = E[(X_t - \mu) . (X_{t + h} - \mu)]
@@ -118,7 +118,7 @@ From this definition, we can define the *autocorrelation function*.
 
 </aside>
 
-Let $\left\{ X_t \right\}$ be a weakly stationary time series. The *autocorrelation function* of $\left\{ X_t \right\}$ at lag $h$ is
+Let $\left\\{ X_t \right\\}$ be a weakly stationary time series. The *autocorrelation function* of $\left\\{ X_t \right\\}$ at lag $h$ is
 
 $$
 \rho(h) = \frac{\gamma(h)}{\gamma(0)}
@@ -144,7 +144,7 @@ Now that we gave some definitions, let’s show some examples of time series and
 
 ![White Noise](/epita/white-noise.png)
 
-White noise consists of a sequence of uncorrelated random variables $\left\{ X_t \right\}$ with mean $\mu$ and variance $\sigma^2$. If the random variables follow a normal distribution, the series is called *gaussian white noise.* Gaussian white noise is made of independent and identically distributed variables.
+White noise consists of a sequence of uncorrelated random variables $\left\\{ X_t \right\\}$ with mean $\mu$ and variance $\sigma^2$. If the random variables follow a normal distribution, the series is called *gaussian white noise.* Gaussian white noise is made of independent and identically distributed variables.
 
 Here is a plot of the gaussian white noise of variance  
 $\sigma^2 = 1$ and $\mu = 0$.
@@ -155,7 +155,7 @@ Since the random variables are independent, they are not correlated, so its auto
 
 ![Random Walk](/epita/random-walk.png)
 
-**Definition**: Let $\left\{ X_t \right\}$ be a time series and $\left\{ W_t \right\}$ an IID noise time series. $\left\{ X_t \right\}$ is a *random walk* if
+**Definition**: Let $\left\\{ X_t \right\\}$ be a time series and $\left\\{ W_t \right\\}$ an IID noise time series. $\left\\{ X_t \right\\}$ is a *random walk* if
 
 - $X_1 = W_1$
 - $X_t = X_{t-1} + W_t$ if $t > 1$
@@ -166,24 +166,24 @@ $$
 X_t = \sum^t_{i=1} W_i
 $$
 
-The mean of this time series is the mean of $\left\{ W_t \right\}$ and its covariance is given by
+The mean of this time series is the mean of $\left\\{ W_t \right\\}$ and its covariance is given by :
 
 $$
-\text{Cov}(X_t, X_{t + h}) = \text{Cov}(\sum^t_{i=1} W_i, \sum^{t+h}_{i=1} W_i) = \sum^t_{i=1} \text{Cov}(W_i, W_i) = t \sigma^2
+\text{Cov}(X_t, X_{t + h}) = \text{Cov}(\sum^t_{i=1} W_i, \sum^{t+h}\_{i=1} W\_i) = \sum^t_{i=1} \text{Cov}(W_i, W_i) = t \sigma^2
 $$
 
 ### Exercise: prove the previous result
 
 $$
-\text{Cov}(X_t, X_{t + h}) = \text{Cov}(\sum^t_{i=1} W_i, \sum^{t+h}_{i=1} W_i)
+\text{Cov}(X_t, X_{t + h}) = \text{Cov}(\sum^t_{i=1} W_i, \sum^{t+h}\_{i=1} W_i)
 $$
 
 $$
-\text{Cov}(X_t, X_{t + h}) = \text{Cov}(\sum^t_{i=1} W_i, \sum^{t}_{i=1} W_i + \sum^{t + h}_{i=t + 1} W_i)
+\text{Cov}(X_t, X_{t + h}) = \text{Cov}(\sum^t_{i=1} W_i, \sum^{t}\_{i=1} W_i + \sum^{t + h}_{i=t + 1} W_i)
 $$
 
 $$
-\text{Cov}(X_t, X_{t + h}) = \text{Cov}(\sum^t_{i=1} W_i, \sum^{t}_{i=1} W_i) + \text{Cov}(\sum^t_{i=1} W_i, \sum^{t + h}_{i=t + 1} W_i)
+\text{Cov}(X_t, X_{t + h}) = \text{Cov}(\sum^t_{i=1} W_i, \sum^{t}\_{i=1} W_i) + \text{Cov}(\sum^t_{i=1} W_i, \sum^{t + h}_{i=t + 1} W_i)
 $$
 
 $$
@@ -219,12 +219,12 @@ Stationary processes are series which some of their properties do not vary with 
 All stationary processes can be represented a follow
 
 $$
-X_t = \mu + \sum^{\infty}_{i = -\infty} \psi_i W_{t - i}
+X_t = \mu + \sum^{\infty}\_{i = -\infty} \psi_i W_{t - i}
 $$
 
 for all $t$.
 
-$\mu \in \mathbb{R}$, $\left\{ \psi_i \right\}$ is an absolutely summable sequence of constants and $\left\{ W_i \right\}$ is a white noise series with mean $0$ and variance $\sigma^2$.
+$\mu \in \mathbb{R}$, $\left\\{ \psi_i \right\\}$ is an absolutely summable sequence of constants and $\left\\{ W_i \right\\}$ is a white noise series with mean $0$ and variance $\sigma^2$.
 
 ### Absolutely summable sequence
 
@@ -261,11 +261,11 @@ $$
 The mean of the linear process is $\mu$ and its covariance function is given by:
 
 $$
-\gamma(h) = \text{Cov}(X_t, X_{t+h}) = \text{Cov}(\mu + \sum^{\infty}_{i = -\infty} \psi_i W_{t - i}, \mu + \sum^{\infty}_{i = -\infty} \psi_i W_{t + h - i})
+\gamma(h) = \text{Cov}(X_t, X_{t+h}) = \text{Cov}(\mu + \sum^{\infty}\_{i = -\infty} \psi_i W_{t - i}, \mu + \sum^{\infty}\_{i = -\infty} \psi_i W_{t + h - i})
 $$
 
 $$
-\gamma(h) = \sum^{\infty}_{i = -\infty} \psi_i \psi_{i + h} \text{Cov}(W_{t - i}, W_{t - i}) = \sigma^2 \sum^{\infty}_{i = -\infty} \psi_i \psi_{i + h}
+\gamma(h) = \sum^{\infty}\_{i = -\infty} \psi_i \psi_{i + h} \text{Cov}(W_{t - i}, W_{t - i}) = \sigma^2 \sum^{\infty}\_{i = -\infty} \psi_i \psi_{i + h}
 $$
 
 since $\text{Cov}(W_{t - i}, W_{t + h - i}) = 0$ if $t - i \neq t + h - i$.
@@ -278,7 +278,7 @@ since $\text{Cov}(W_{t - i}, W_{t + h - i}) = 0$ if $t - i \neq t + h - i$.
 A linear process is said to be *causal* or a *causal function of* $\left\{ Z_t \right\}$ if there exists constants $\left\{ \psi_i \right\}$ such that $\sum^{\infty}_{i = 0} |\psi_i| \lt \infty$ and:
 
 $$
-X_t = \sum^{\infty}_{i = 0} \psi_i W_{t - i}
+X_t = \sum^{\infty}\_{i = 0} \psi_i W_{t - i}
 $$
 
 for all $t$.
@@ -290,10 +290,10 @@ for all $t$.
 
 </aside>
 
-A linear process is *invertible* if there exists constants $\left\{ \pi_i \right\}$ such that $\sum^{\infty}_{i = 0} |\pi_i| \lt \infty$ and:
+A linear process is *invertible* if there exists constants $\left\\{ \pi_i \right\\}$ such that $\sum^{\infty}_{i = 0} |\pi_i| \lt \infty$ and:
 
 $$
-W_t = \sum^{\infty}_{i = 0} \pi_i X_{t - i}
+W_t = \sum^{\infty}\_{i = 0} \pi_i X_{t - i}
 $$
 
 for all $t$.
@@ -309,7 +309,7 @@ Autoregressive models are based on the idea that the current value can be expres
 
 </aside>
 
-Let $\left\{ X_t \right\}$ be a time series and $\left\{ W_t \right\}$ a white noise series. An *autoregressive model of order p* is defined as:
+Let $\left\\{ X_t \right\\}$ be a time series and $\left\\{ W_t \right\\}$ a white noise series. An *autoregressive model of order p* is defined as:
 
 $$
 X_t = c + \sum_{i = 1}^{p} \phi_i X_{t - i} + W_t
@@ -462,7 +462,7 @@ The idea behind moving average processes is that current values can be expressed
 
 </aside>
 
-Let $\left\{ X_t \right\}$ be a time series and $\left\{ W_t \right\}$ be a white noise series. A *moving average model of order q* is defined as:
+Let $\left\\{ X_t \right\\}$ be a time series and $\left\\{ W_t \right\\}$ be a white noise series. A *moving average model of order q* is defined as:
 
 $$
 X_t = W_t - \theta_1 W_{t - 1} - ... - \theta_q W_{t - q}
@@ -502,7 +502,7 @@ We can mix those two types of models into one.
 
 </aside>
 
-Let $\left\{ X_t \right\}$ be a time series and $\left\{ W_t \right\}$ a white noise series. An *autoregressive moving average process of order (p, q)* is defined as:
+Let $\left\\{ X_t \right\\}$ be a time series and $\left\\{ W_t \right\\}$ a white noise series. An *autoregressive moving average process of order (p, q)* is defined as:
 
 $$
 X_t = \phi_1 X_{t - 1} + ... + \phi_p X_{t - p} + W_t - \theta_1 W_{t - 1} - ... - \theta_q W_{t - q}
@@ -597,7 +597,7 @@ which is stationary.
 
 </aside>
 
-Let $\left\{ X_t \right\}$ be a time series and $d$ a positive integer. $\left\{ X_t \right\}$ is an *autoregressive integrated moving average model of order (p, d, q)* if:
+Let $\left\\{ X_t \right\\}$ be a time series and $d$ a positive integer. $\left\\{ X_t \right\\}$ is an *autoregressive integrated moving average model of order (p, d, q)* if:
 
 $$
 Y_t = (1 - B)^d X_t
@@ -640,7 +640,7 @@ We give the SARIMA process definition for information purposes only, we won’t 
 
 </aside>
 
-Let $\left\{ X_t \right\}$ be a time series and $d, D$ positive integers. $\left\{ X_t \right\}$ is a *seasonal autoregressive integrated moving average model of order (p, d, q) with period s* if the process $Y_t = (1 - B)^d(1 - B^2)^DX_t$ is a causal $\text{ARMA}$ process defined by:
+Let $\left\\{ X_t \right\\}$ be a time series and $d, D$ positive integers. $\left\\{ X_t \right\\}$ is a *seasonal autoregressive integrated moving average model of order (p, d, q) with period s* if the process $Y_t = (1 - B)^d(1 - B^2)^DX_t$ is a causal $\text{ARMA}$ process defined by:
 
 $$
 \phi(B)\Phi(B^s)Y_t = \theta(B)\Theta(B^s)W_t
@@ -670,7 +670,7 @@ If the data are not stationary in mean, we differentiate it until it is. If the 
 
 </aside>
 
-Let $\left\{ X_t \right\}$ be a time series. We define the *Box-Cox transformation* $f_{\lambda}$ as:
+Let $\left\\{ X_t \right\\}$ be a time series. We define the *Box-Cox transformation* $f_{\lambda}$ as:
 
 $$
 f_{\lambda}(X_t) =  \begin{cases} \frac{X_t^{\lambda} - 1}{\lambda} & \text{ if } \lambda > 0 \\ \ln X_t & \text{ if } \lambda = 0 \end{cases} 
@@ -696,7 +696,7 @@ This method estimates the parameters that maximise the probability of the observ
 
 </aside>
 
-Let $\left\{ X_t \right\}$ be a time series and $\Gamma_n$ the covariance matrix. Assuming that $\Gamma_n$ is non singular, the *function of likelihood* of $X_t$ is:
+Let $\left\\{ X_t \right\\}$ be a time series and $\Gamma_n$ the covariance matrix. Assuming that $\Gamma_n$ is non singular, the *function of likelihood* of $X_t$ is:
 
 $$
 L(\Gamma_n) = (2\pi)^{-n/2} \text{det}(\Gamma_n)^{-1/2} \exp(-\frac{1}{2}X_n\Gamma_n^{-1}X'_n)
@@ -704,7 +704,7 @@ $$
 
 Note that the covariance matrix depends on the values of the parameters, so it depends on the chosen model.
 
-In case $\left\{ X_t \right\}$ is univariate, the function of likelihood becomes:
+In case $\left\\{ X_t \right\\}$ is univariate, the function of likelihood becomes:
 
 $$
 L(X_t) = \frac{1}{(2\pi)^{n/2} \sigma^n}\exp(- \frac{1}{2 \sigma^2} \sum (X_i - \mu)^2)
@@ -712,7 +712,7 @@ $$
 
 ---
 
-Practically, we will assume the noise $\left\{ W_t \right\}$ follows a normal distribution $N(0, \sigma^2)$. This is why we can get such a likelihood function.
+Practically, we will assume the noise $\left\\{ W_t \right\\}$ follows a normal distribution $N(0, \sigma^2)$. This is why we can get such a likelihood function.
 
 Once we have this likelihood function, we will take its logarithm. Because the logarithm is a monotonic function, it does not change the value of the minimum.
 
@@ -761,7 +761,7 @@ In order to find the model with the highest potential of “good fitting”, we 
 
 </aside>
 
-Let $\left\{ X_t \right\}$ be a time series and $L$ be the likelihood function of the model. The Akaike information criterion is given by:
+Let $\left\\{ X_t \right\\}$ be a time series and $L$ be the likelihood function of the model. The Akaike information criterion is given by:
 
 $$
 AIC = 2k - 2\ln(L)
