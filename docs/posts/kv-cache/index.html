@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>GPT Series - KV Cache | Julien&#39;s blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="The KV cache is an important feature in today’s LLM infrastructure. To understand exactly what it brings, let’s recall how LLMs are being used for inference.
+Introduction
+
+Feel free to read my article about Multi-head Self Attention for more explanation about the variations around the Attention layer !
+
+When LLMs are being used in production to generate text, they generate one word at a time. For example, from the following prompt :">
+<meta name="author" content="Julien Seveno">
+<link rel="canonical" href="https://bornlex.github.io/posts/kv-cache/">
+<meta name="google-site-verification" content="XYZabc">
+<meta name="yandex-verification" content="XYZabc">
+<meta name="msvalidate.01" content="XYZabc">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b609c58d5c11bb90b1a54e04005d74ad1ddf22165eb79f5533967e57df9c3b50.css" integrity="sha256-tgnFjVwRu5CxpU4EAF10rR3fIhZet59VM5Z&#43;V9&#43;cO1A=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="icon" type="image/png" sizes="16x16" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="icon" type="image/png" sizes="32x32" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="apple-touch-icon" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="mask-icon" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://bornlex.github.io/posts/kv-cache/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous" />
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false}
+        ]
+    });
+});
+</script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBJC7YD3QZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZBJC7YD3QZ');
+</script>
+
+<meta property="og:title" content="GPT Series - KV Cache" />
+<meta property="og:description" content="The KV cache is an important feature in today’s LLM infrastructure. To understand exactly what it brings, let’s recall how LLMs are being used for inference.
+Introduction
+
+Feel free to read my article about Multi-head Self Attention for more explanation about the variations around the Attention layer !
+
+When LLMs are being used in production to generate text, they generate one word at a time. For example, from the following prompt :" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bornlex.github.io/posts/kv-cache/" /><meta property="og:image" content="https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2025-10-01T14:35:54+02:00" />
+<meta property="article:modified_time" content="2025-10-01T14:35:54+02:00" /><meta property="og:site_name" content="Julien&#39;s blog" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/>
+
+<meta name="twitter:title" content="GPT Series - KV Cache"/>
+<meta name="twitter:description" content="The KV cache is an important feature in today’s LLM infrastructure. To understand exactly what it brings, let’s recall how LLMs are being used for inference.
+Introduction
+
+Feel free to read my article about Multi-head Self Attention for more explanation about the variations around the Attention layer !
+
+When LLMs are being used in production to generate text, they generate one word at a time. For example, from the following prompt :"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://bornlex.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "GPT Series - KV Cache",
+      "item": "https://bornlex.github.io/posts/kv-cache/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "GPT Series - KV Cache",
+  "name": "GPT Series - KV Cache",
+  "description": "The KV cache is an important feature in today’s LLM infrastructure. To understand exactly what it brings, let’s recall how LLMs are being used for inference.\nIntroduction Feel free to read my article about Multi-head Self Attention for more explanation about the variations around the Attention layer !\nWhen LLMs are being used in production to generate text, they generate one word at a time. For example, from the following prompt :\n",
+  "keywords": [
+    
+  ],
+  "articleBody": "The KV cache is an important feature in today’s LLM infrastructure. To understand exactly what it brings, let’s recall how LLMs are being used for inference.\nIntroduction Feel free to read my article about Multi-head Self Attention for more explanation about the variations around the Attention layer !\nWhen LLMs are being used in production to generate text, they generate one word at a time. For example, from the following prompt :\nWhere is the cat ?\nThe model might generate something like :\nThe cat is sitting on the couch.\nTo make the visualisation simpler, we are going to make a few assumptions :\nthe model uses words as tokens (which is not the case in reality) the batch is made of only one prompt (the one above) the embedding size $d$ is 3 the attention dimension $d_k$ is the same as the embedding dimension $d$ The prompt looks like this :\nand once embedded, we get a tensor of the following shape (5, 3) :\nTo start with the attention layer, we project this tensor along the queries, keys and values. Because we used $d = d_k$, the queries, keys and values tensors are going to have the same (5, 3) shape.\nThen we need to compute the attention score by computing the matrix multiplication between the queries and the transposed keys. The result of this multiplication is a square matrix representing the attention score, mapping the input sequence tokens to themselves.\nEvery line I represented on the drawing is the mapping from one token of the input sequence to all the other tokens.\nLet’s break down the operations :\nWe first project the input sequence of shape by multiplying the input tensor with the 3 linear layers : The queries The keys The values We then compute the attention score We normalize it We multiply by the values FLOPs Let’s show what it looks like in terms of shapes and number of operations to perform :\nShapes # Operations Project the input in the queries space (b, n, d) x (d, d) b x n x d x dk Project the input in the keys space (b, n, d) x (d, d) b x n x d x dk Project the input in the values space (b, n, d) x (d, d) b x n x d x dk Compute the attention score (b, n, d) x (d, n) b x n x dk x n Normalize the attention score (b, n, n) b x n x n Multiplication by the values (b, n, n) x (n, d) b x n x n x dv Which gives :\n$$ 3 \\times b \\times n \\times d \\times d_k $$\nTo project the input tensor, then :\n$$ b \\times n^2 (d_k + d_v + 1) $$\nFor the rest of the calculation.\nNote that the number of operations increases quadratically with the size of the input sequence.\nOptimisation On the first run, we have to compute the queries, keys and values for the whole sequence. Every token needs to be projected. Once we have the 3 matrices, we can compute the attention score, normalize it (by dividing by the dimension of the keys) and then apply softmax before finally multiplying this intermediary result by the values. We thus get the final result.\nThe final result will allow us to get the next predicted token, which here could be “The”, the first word answer by the model to our prompt.\nSince LLMs are auto regressive models, this first prediction will be concatenated to the input sequence as the last token and the generation process will take place once again for the model to predict the second token. And so on until the model predicts an “end-of-text” token, indicating that the generation is over.\nThe second run interests us. Indeed, when we had the first sequence of tokens, we projected it by multiplying it by the queries, keys and values matrices and then we multiplied matrices together. It means that we already performed most of the needed computation for the second run.\nWe actually can simply multiply the new token by the weights matrices to have it projected, and then compute its attention score against the whole sequence to get the second predicted token.\nLet’s show in red what we already computed from the previous run :\nAs we can see on the drawing, most of the projections and most of the attention score has already been computed from the previous run. Storing those values somewhere in cache is going to allow us to save a whole lot of processing time.\nThis is exactly what KV-cache is for.\nInstead of recomputing the keys and values projections on the whole sequence, we are going to compute them on the latest token and concatenate it with the keys and values from the previous run that we stored in cache.\nLast optimization On top of this, note that we could only project only the last token in queries’ space. I have shown in blue the values required to compute the last vector in the attention layer’s output.\nSince the prediction is going to be the last vector of the model, we need the full keys, the full values but only the last item of the queries projection.\nOf course, if we stack attention layers, we are going to need to whole sequence, forcing us to compute the attention output on the whole sequence, and thus project the whole input sequence in queries space.\nImplementation The implementation is pretty straightforward. One can just register two buffers :\nself.register_buffer(\"cache_k\", None, persistent=False) self.register_buffer(\"cache_v\", None, persistent=False) And then use them to retrieve the previous keys and values if they are in the cache already or simply fill the cache if they are not :\nif use_cache: if self.cache_k is None: self.cache_k, self.cache_v = keys_new, values_new else: self.cache_k = torch.cat([self.cache_k, keys_new], dim=1) self.cache_v = torch.cat([self.cache_v, values_new], dim=1) keys, values = self.cache_k, self.cache_v else: keys, values = keys_new, values_new ",
+  "wordCount" : "1001",
+  "inLanguage": "en",
+  "datePublished": "2025-10-01T14:35:54+02:00",
+  "dateModified": "2025-10-01T14:35:54+02:00",
+  "author":{
+    "@type": "Person",
+    "name": "Julien Seveno"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://bornlex.github.io/posts/kv-cache/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Julien's blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://bornlex.github.io/%3Clink%20/%20abs%20url%3E"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://bornlex.github.io/" accesskey="h" title="Home (Alt + H)">
+                <img src="https://bornlex.github.io/apple-touch-icon.png" alt="" aria-label="logo"
+                    height="35">Home</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://bornlex.github.io/" title="Posts">
+                    <span>Posts</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://bornlex.github.io/archives" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/Bornlex/Whitespace-interpreter" title="Whitespace Interpreter">
+                    <span>Whitespace Interpreter</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://bornlex.github.io/posts/me/" title="About me">
+                    <span>About me</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://bornlex.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://bornlex.github.io/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      GPT Series - KV Cache
+    </h1>
+    <div class="post-meta"><span title='2025-10-01 14:35:54 +0200 CEST'>October 1, 2025</span>&nbsp;·&nbsp;5 min&nbsp;·&nbsp;1001 words&nbsp;·&nbsp;Julien Seveno&nbsp;|&nbsp;<a href="https://github.com/%3cpath_to_repo%3e/content/posts/kv-cache.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+  </header> 
+  <div class="post-content"><p>The KV cache is an important feature in today’s LLM infrastructure. To understand exactly what it brings, let’s recall how LLMs are being used for inference.</p>
+<h3 id="introduction">Introduction<a hidden class="anchor" aria-hidden="true" href="#introduction">#</a></h3>
+<!-- raw HTML omitted -->
+<p>Feel free to read my article about <a href="https://bornlex.github.io/posts/gpt-mha/">Multi-head Self Attention</a> for more explanation about the variations around the Attention layer !</p>
+<!-- raw HTML omitted -->
+<p>When LLMs are being used in production to generate text, they generate one word at a time. For example, from the following prompt :</p>
+<blockquote>
+<p>Where is the cat ?</p></blockquote>
+<p>The model might generate something like :</p>
+<blockquote>
+<p>The cat is sitting on the couch.</p></blockquote>
+<p>To make the visualisation simpler, we are going to make a few assumptions :</p>
+<ul>
+<li>the model uses words as tokens (which is not the case in reality)</li>
+<li>the batch is made of only one prompt (the one above)</li>
+<li>the embedding size $d$ is 3</li>
+<li>the attention dimension $d_k$ is the same as the embedding dimension $d$</li>
+</ul>
+<p>The prompt looks like this :</p>
+<p><img loading="lazy" src="/kv/prompt.png" alt="Tokenization of the prompt"  />
+</p>
+<p>and once embedded, we get a tensor of the following shape (5, 3) :</p>
+<p><img loading="lazy" src="/kv/tensor.png" alt="Tensor"  />
+</p>
+<p>To start with the attention layer, we project this tensor along the queries, keys and values. Because we used $d = d_k$, the queries, keys and values tensors are going to have the same (5, 3) shape.</p>
+<p>Then we need to compute the attention score by computing the matrix multiplication between the queries and the transposed keys. The result of this multiplication is a square matrix representing the attention score, mapping the input sequence tokens to themselves.</p>
+<p>Every line I represented on the drawing is the mapping from one token of the input sequence to all the other tokens.</p>
+<p><img loading="lazy" src="/kv/attention.png" alt="Attention graph"  />
+</p>
+<p>Let’s break down the operations :</p>
+<ol>
+<li>We first project the input sequence of shape by multiplying the input tensor with the 3 linear layers :
+<ol>
+<li>The queries</li>
+<li>The keys</li>
+<li>The values</li>
+</ol>
+</li>
+<li>We then compute the attention score</li>
+<li>We normalize it</li>
+<li>We multiply by the values</li>
+</ol>
+<h3 id="flops">FLOPs<a hidden class="anchor" aria-hidden="true" href="#flops">#</a></h3>
+<p>Let’s show what it looks like in terms of shapes and number of operations to perform :</p>
+<table>
+  <thead>
+      <tr>
+          <th></th>
+          <th><strong>Shapes</strong></th>
+          <th><strong># Operations</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Project the input in the queries space</strong></td>
+          <td>(b, n, d) x (d, d)</td>
+          <td>b x n x d x dk</td>
+      </tr>
+      <tr>
+          <td><strong>Project the input in the keys space</strong></td>
+          <td>(b, n, d) x (d, d)</td>
+          <td>b x n x d x dk</td>
+      </tr>
+      <tr>
+          <td><strong>Project the input in the values space</strong></td>
+          <td>(b, n, d) x (d, d)</td>
+          <td>b x n x d x dk</td>
+      </tr>
+      <tr>
+          <td><strong>Compute the attention score</strong></td>
+          <td>(b, n, d) x (d, n)</td>
+          <td>b x n x dk x n</td>
+      </tr>
+      <tr>
+          <td><strong>Normalize the attention score</strong></td>
+          <td>(b, n, n)</td>
+          <td>b x n x n</td>
+      </tr>
+      <tr>
+          <td><strong>Multiplication by the values</strong></td>
+          <td>(b, n, n) x (n, d)</td>
+          <td>b x n x n x dv</td>
+      </tr>
+  </tbody>
+</table>
+<p>Which gives :</p>
+<p>$$
+3 \times b \times n \times d \times d_k
+$$</p>
+<p>To project the input tensor, then :</p>
+<p>$$
+b \times n^2 (d_k + d_v + 1)
+$$</p>
+<p>For the rest of the calculation.</p>
+<!-- raw HTML omitted -->
+<p>Note that the number of operations increases quadratically with the size of the input sequence.</p>
+<!-- raw HTML omitted -->
+<h3 id="optimisation">Optimisation<a hidden class="anchor" aria-hidden="true" href="#optimisation">#</a></h3>
+<p>On the first run, we have to compute the queries, keys and values for the whole sequence. Every token needs to be projected. Once we have the 3 matrices, we can compute the attention score, normalize it (by dividing by the dimension of the keys) and then apply softmax before finally multiplying this intermediary result by the values. We thus get the final result.</p>
+<p>The final result will allow us to get the next predicted token, which here could be “The”, the first word answer by the model to our prompt.</p>
+<p>Since LLMs are auto regressive models, this first prediction will be concatenated to the input sequence as the last token and the generation process will take place once again for the model to predict the second token. And so on until the model predicts an “end-of-text” token, indicating that the generation is over.</p>
+<p>The second run interests us. Indeed, when we had the first sequence of tokens, we projected it by multiplying it by the queries, keys and values matrices and then we multiplied matrices together. It means that we already performed most of the needed computation for the second run.</p>
+<p>We actually can simply multiply the new token by the weights matrices to have it projected, and then compute its attention score against the whole sequence to get the second predicted token.</p>
+<p>Let’s show in red what we already computed from the previous run :</p>
+<p><img loading="lazy" src="/kv/cache.png" alt="Already computed"  />
+</p>
+<p>As we can see on the drawing, most of the projections and most of the attention score has already been computed from the previous run. Storing those values somewhere in cache is going to allow us to save a whole lot of processing time.</p>
+<p>This is exactly what KV-cache is for.</p>
+<p>Instead of recomputing the keys and values projections on the whole sequence, we are going to compute them on the latest token and concatenate it with the keys and values from the previous run that we stored in cache.</p>
+<h3 id="last-optimization">Last optimization<a hidden class="anchor" aria-hidden="true" href="#last-optimization">#</a></h3>
+<p>On top of this, note that we could only project only the last token in queries’ space. I have shown in blue the values required to compute the last vector in the attention layer’s output.</p>
+<p><img loading="lazy" src="/kv/last.png" alt="Last optimization"  />
+</p>
+<p>Since the prediction is going to be the last vector of the model, we need the full keys, the full values but only the last item of the queries projection.</p>
+<p>Of course, if we stack attention layers, we are going to need to whole sequence, forcing us to compute the attention output on the whole sequence, and thus project the whole input sequence in queries space.</p>
+<h3 id="implementation">Implementation<a hidden class="anchor" aria-hidden="true" href="#implementation">#</a></h3>
+<p>The implementation is pretty straightforward. One can just register two buffers :</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&#34;cache_k&#34;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">persistent</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&#34;cache_v&#34;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">persistent</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span></span></code></pre></div><p>And then use them to retrieve the previous keys and values if they are in the cache already or simply fill the cache if they are not :</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">if</span> <span class="n">use_cache</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache_k</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">cache_k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache_v</span> <span class="o">=</span> <span class="n">keys_new</span><span class="p">,</span> <span class="n">values_new</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">cache_k</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_k</span><span class="p">,</span> <span class="n">keys_new</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">cache_v</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_v</span><span class="p">,</span> <span class="n">values_new</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">keys</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache_k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache_v</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">keys</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">keys_new</span><span class="p">,</span> <span class="n">values_new</span>
+</span></span></code></pre></div>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://bornlex.github.io/posts/gpt-mha/">
+    <span class="title">Next »</span>
+    <br>
+    <span>GPT Series - Multi-head Self Attention</span>
+  </a>
+</nav>
+
+
+<ul class="share-buttons">
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share GPT Series - KV Cache on x"
+            href="https://x.com/intent/tweet/?text=GPT%20Series%20-%20KV%20Cache&amp;url=https%3a%2f%2fbornlex.github.io%2fposts%2fkv-cache%2f&amp;hashtags=">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share GPT Series - KV Cache on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fbornlex.github.io%2fposts%2fkv-cache%2f&amp;title=GPT%20Series%20-%20KV%20Cache&amp;summary=GPT%20Series%20-%20KV%20Cache&amp;source=https%3a%2f%2fbornlex.github.io%2fposts%2fkv-cache%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share GPT Series - KV Cache on reddit"
+            href="https://reddit.com/submit?url=https%3a%2f%2fbornlex.github.io%2fposts%2fkv-cache%2f&title=GPT%20Series%20-%20KV%20Cache">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share GPT Series - KV Cache on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fbornlex.github.io%2fposts%2fkv-cache%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share GPT Series - KV Cache on whatsapp"
+            href="https://api.whatsapp.com/send?text=GPT%20Series%20-%20KV%20Cache%20-%20https%3a%2f%2fbornlex.github.io%2fposts%2fkv-cache%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share GPT Series - KV Cache on telegram"
+            href="https://telegram.me/share/url?text=GPT%20Series%20-%20KV%20Cache&amp;url=https%3a%2f%2fbornlex.github.io%2fposts%2fkv-cache%2f">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share GPT Series - KV Cache on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t=GPT%20Series%20-%20KV%20Cache&u=https%3a%2f%2fbornlex.github.io%2fposts%2fkv-cache%2f">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+                <path
+                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+</ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2025 <a href="https://bornlex.github.io/">Julien&#39;s blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

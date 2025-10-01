@@ -11,8 +11,20 @@
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 25 Sep 2025 14:25:38 +0200</lastBuildDate>
+    <lastBuildDate>Wed, 01 Oct 2025 14:35:54 +0200</lastBuildDate>
     <atom:link href="https://bornlex.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>GPT Series - KV Cache</title>
+      <link>https://bornlex.github.io/posts/kv-cache/</link>
+      <pubDate>Wed, 01 Oct 2025 14:35:54 +0200</pubDate>
+      <guid>https://bornlex.github.io/posts/kv-cache/</guid>
+      <description>&lt;p&gt;The KV cache is an important feature in today’s LLM infrastructure. To understand exactly what it brings, let’s recall how LLMs are being used for inference.&lt;/p&gt;
+&lt;h3 id=&#34;introduction&#34;&gt;Introduction&lt;/h3&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;Feel free to read my article about &lt;a href=&#34;https://bornlex.github.io/posts/gpt-mha/&#34;&gt;Multi-head Self Attention&lt;/a&gt; for more explanation about the variations around the Attention layer !&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;When LLMs are being used in production to generate text, they generate one word at a time. For example, from the following prompt :&lt;/p&gt;</description>
+    </item>
     <item>
       <title>GPT Series - Multi-head Self Attention</title>
       <link>https://bornlex.github.io/posts/gpt-mha/</link>
