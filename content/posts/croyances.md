@@ -59,7 +59,7 @@ De la même manière, l'idée d'une justice compréhensive dont l'objectif est d
 
 ## Pyramide de Maslow
 
-On peut faire le rapprochement avec la pyrapide de Maslow, un concept développé par le psychologue Abraham Maslow dans les années 40.
+On peut faire le rapprochement avec la pyrapide de Maslow, un concept développé par le psychologue Abraham Maslow dans les années 40 (le psychologue évoque les besoins dans son ![article](https://psychclassics.yorku.ca/Maslow/motivation.htm) mais ne les présente pas sous forme de pyramide, la pyramide a été développée par la suite, par d'autres que lui).
 
 ![Pyramide de Maslow](/croyances/maslow.png)
 
