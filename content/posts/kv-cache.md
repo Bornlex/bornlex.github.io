@@ -147,3 +147,11 @@ if use_cache:
 else:
     keys, values = keys_new, values_new
 ```
+
+### Important considerations
+
+There can be some misconceptions about a few things regarding training, inference, masking, caching...
+
+1. **Is KV-cache used for inference only ?** Yes, KV-cache is used only for inference. During training, we need to build the computational graph so that we can backpropagate the gradient through the network to all the layers and update the weights.
+2. **Why don't we need to cache the queries ?** We don't need to cache the queries because during inference as opposed as during training, we only need to compute the queries on the very last token of the sequence. The context is stored already in the keys and values (which are cached). During training, we compute the queries on the whole sequence as a way of parallelizing the computation.
+3. **Do we use masking during inference since we are only looking one token at a time ?** Masking can be used during inference when input sequences inside a single batch do not have the same sizes. We could pad all sequences to the same length and then use a mask to zero out the corresponding padded tokens. A different approach would be to concatenate all the input sequences together, keep track of the boundaries and then keep the predicted tokens after after each sequence.
