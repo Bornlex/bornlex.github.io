@@ -129,6 +129,10 @@ menu:
       name: Whitespace Interpreter
       url: https://github.com/Bornlex/Whitespace-interpreter
       weight: 2
+    - identifier: gpt2
+      name: GPT-2
+      url: https://github.com/Bornlex/GPT2
+      weight: 2
     - identifier: about
       name: About me
       url: /posts/me/
