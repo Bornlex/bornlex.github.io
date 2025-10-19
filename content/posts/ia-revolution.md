@@ -1,7 +1,7 @@
 +++
 title = "Intelligence Artificielle, l'effet fusion nucléaire"
 date = 2024-02-20T20:48:59+01:00
-draft = false
+draft = true
 +++
 
 # Introduction

@@ -1,7 +1,7 @@
 +++
 title = 'AI Revolution, the Nuclear Fusion Effect'
 date = 2024-02-20T23:04:40+01:00
-draft = false
+draft = true
 +++
 
 # Introduction

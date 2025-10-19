@@ -1,7 +1,7 @@
 +++
 title = 'Croyances ostentatoires'
 date = 2024-06-16T12:10:27+02:00
-draft = false
+draft = true
 +++
 
 ![Carte des résultats aux élections européennes](/croyances/map.jpg)
