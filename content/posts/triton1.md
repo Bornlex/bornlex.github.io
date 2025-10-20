@@ -380,7 +380,32 @@ First let’s talk about the arguments :
 - n_rows : the number of rows of the matrix we compute softmax on
 - n_cols : the number of columns of the matrix we compute softmax on
 - BLOCK_SIZE : in this case, this is closest power of 2 higher than the number of columns
-- num_stages :
+
+To illustrate what stride means precisely, let’s have a look at a 3 by 4 tensor :
+
+![Tensor](/gpu/tensor.png)
+
+This is a tensor of shape (3, 4), 3 lines and 4 columns, so 4 elements per line. Because the memory is a giant sequence of locations, this tensor is actually “flattened” when stored in memory. So when we are using Pytorch, the framework handles this for us, but now that we are interested in working directly with the memory, we have to understand that the tensor actually looks like this :
+
+![Tensor in memory](/gpu/tensor-memory.png)
+
+The first line elements are stored first, then directly after the last element of the first line comes the first element of the second line and so on.
+
+So if we want to jump from the first line pointer to the second line pointer (from the location of the start of the first line to the location of the start to the second line), we have to know how many locations we are jumping. This is what stride is for.
+
+In Pytorch, we can get this number with the :
+
+```python
+x = torch.rand(3, 4)
+x.stride(0)  # returns 4
+```
+
+This tells us how many locations we have to jump to go from an element to the next along the first dimension (0). In a 2d matrix, this is simply the shape of the second dimension, but it could be different when working with bigger tensors such as (3, 4, 3) for instance :
+
+```python
+x = torch.rand(3, 4, 3)
+x.stride(0)  # returns 12 = 4 x 3 because we have to jump 2 dimensions
+```
 
 ---
 
