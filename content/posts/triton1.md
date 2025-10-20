@@ -79,7 +79,7 @@ Floating point representation is similar, and a floating-point number consists o
 Once we have the values of those 3 components, we compute the number as follow :
 
 $$
-\text{value} = (-1)^{\text{sign}} \times 2^{E - 127} \times (1 + \sum^{23}_{i = 1} b_{23 - i} 2^{-i})
+\text{value} = (-1)^{\text{sign}} \times 2^{E - 127} \times (1 + \sum^{23}\_{i = 1} b_{23 - i} 2^{-i})
 $$
 
 Which can be graphically represented by this schema from Wikipedia as well :
