@@ -338,7 +338,8 @@ I then focused on improving the model by implementing a few features such as :"/
 <p>Let me explain what those figures mean. The first column is the number of bits a number stored in that format is going to take. We can see it in the name of the data type itself. float32 takes 32 bits in memory. The 3 other columns represent the number of bits taken by each part of the floating-point representation.</p>
 <p>From <a href="https://en.wikipedia.org/wiki/Floating-point_arithmetic">Wikipedia</a> :</p>
 <blockquote>
-<p>In memory, numbers are stored using the scientific notation. In the scientific notation, the given number is scaled by a power of 10 so that it lies within a specific range (usually 1 and 10) with the radix point appearing immediately after the first digit. As a power of 10, the scaling factor is then indicated separately at the end of the number. For example, the orbital period of Jupiter’s moon Io is 152,853,5047 seconds, a value that would be represented in standard-form scientific notation as $1.528535047 \times 10^5$.</p></blockquote>
+<p>In memory, numbers are stored using the scientific notation. In the scientific notation, the given number is scaled by a power of 10 so that it lies within a specific range (usually 1 and 10) with the radix point appearing immediately after the first digit. As a power of 10, the scaling factor is then indicated separately at the end of the number. For example, the orbital period of Jupiter’s moon Io is 152,853,5047 seconds, a value that would be represented in standard-form scientific notation as $1.528535047 \times 10^5$.</p>
+</blockquote>
 <p>Floating point representation is similar, and a floating-point number consists of :</p>
 <ul>
 <li>A sign bit : whether the number of positive or negative</li>
@@ -463,7 +464,8 @@ $$</p>
 <p>Now that the requirements in terms of memory and tokens are clear in our head, we need to talk about the thing that made deep learning actually work : GPU.</p>
 <p>Before AlexNet, a convolutional image classification model written by Alex Krizhevsky, Ilya Sutskever under the supervision of Geoffrey Hinton, deep learning models were trained using CPU. In 2012, for the ImageNet image classification context, they presented their network and won the context by a very large margin. The secret ? The model used a bigger depth, and thus required lots of computation to be trained. They used GPU, and the graphical computation library CUDA, to use the Nvidia graphical processor.</p>
 <blockquote>
-<p>AlexNet is not the first GPU-trained model, a few models have been trained before using GPU.</p></blockquote>
+<p>AlexNet is not the first GPU-trained model, a few models have been trained before using GPU.</p>
+</blockquote>
 <p>In the following parts, I will be talking about the inner workings of current GPU, and how we can use their power to parallelize the computation and speed up training.</p>
 <h3 id="compute">Compute<a hidden class="anchor" aria-hidden="true" href="#compute">#</a></h3>
 <p>First, let’s discuss how GPUs operate on numbers.</p>

@@ -230,7 +230,8 @@ The idea behind attention is to map two sequences (or the same sequence to itsel
 <p>Attention is now a key component for most AI systems, wether they are working with images, sequences of tokens in language processing. It has been introduced by one of the most famous papers in deep learning : <a href="https://arxiv.org/pdf/1706.03762">Attention is All You Need</a>.</p>
 <p>The idea behind attention is to map two sequences (or the same sequence to itself, called cross attention) and learn how items in the sequences are related to each other. Whether it is to map two sequences of two different languages in the case of translation, or to map tokens from the same sequence to identify links between words such as :</p>
 <blockquote>
-<p>The cat has entered the house. It is eating now.</p></blockquote>
+<p>The cat has entered the house. It is eating now.</p>
+</blockquote>
 <p>The pronoun “it” in the sequence is related to “cat” in the first sentence. Making sure the model understands the link is key to consistent text generation.</p>
 <h3 id="attention">Attention<a hidden class="anchor" aria-hidden="true" href="#attention">#</a></h3>
 <p>The simplest attention layer is basically computing the following formula :</p>

@@ -12,6 +12,7 @@ Motivation
 As we saw earlier, multi-head self attention layer assigns the same output for every identical token, regardless of their position. This can cause obvious problems in sentences where the same word is used multiple times to represent different entities such as :
 
 The red car turned left where the yellow card turned left.
+
 The two occurrences of the “car” word represent different actual cars. They cannot be treated the same way.">
 <meta name="author" content="Julien Seveno">
 <link rel="canonical" href="https://bornlex.github.io/posts/positional-embedding/">
@@ -70,6 +71,7 @@ Motivation
 As we saw earlier, multi-head self attention layer assigns the same output for every identical token, regardless of their position. This can cause obvious problems in sentences where the same word is used multiple times to represent different entities such as :
 
 The red car turned left where the yellow card turned left.
+
 The two occurrences of the “car” word represent different actual cars. They cannot be treated the same way." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://bornlex.github.io/posts/positional-embedding/" /><meta property="og:image" content="https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/><meta property="article:section" content="posts" />
@@ -85,6 +87,7 @@ Motivation
 As we saw earlier, multi-head self attention layer assigns the same output for every identical token, regardless of their position. This can cause obvious problems in sentences where the same word is used multiple times to represent different entities such as :
 
 The red car turned left where the yellow card turned left.
+
 The two occurrences of the “car” word represent different actual cars. They cannot be treated the same way."/>
 
 
@@ -239,7 +242,8 @@ The two occurrences of the “car” word represent different actual cars. They 
 <h3 id="motivation">Motivation<a hidden class="anchor" aria-hidden="true" href="#motivation">#</a></h3>
 <p>As we saw earlier, multi-head self attention layer assigns the same output for every identical token, regardless of their position. This can cause obvious problems in sentences where the same word is used multiple times to represent different entities such as :</p>
 <blockquote>
-<p>The red car turned left where the yellow card turned left.</p></blockquote>
+<p>The red car turned left where the yellow card turned left.</p>
+</blockquote>
 <p>The two occurrences of the “car” word represent different actual cars. They cannot be treated the same way.</p>
 <p>To make sure that the model treats both words depending on their position, we need to somehow pass it a sense of locality. And this is where positional embedding comes into play.</p>
 <h3 id="properties">Properties<a hidden class="anchor" aria-hidden="true" href="#properties">#</a></h3>

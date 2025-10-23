@@ -8,6 +8,10 @@ I am Julien, french engineer in AI since 2017.
 
 I have worked in several organizations on different topics, all related to AI or where AI is applied to.
 
+
+🔥 I am currently looking for a new opportunity in big AI companies where I could apply my skills to pre-train, finetune models.
+
+
 I love playing golf (even though I am not very good at it…), going to the gym, reading, learning new things and working (not a joke, I do love it).
 
 I sometimes write articles about tech, most of them are AI related:
@@ -22,7 +26,7 @@ But not all of them:
 - [/posts/2018-10-14-code-injection/](https://bornlex.github.io/posts/2018-10-14-code-injection/)
 - [/posts/ternary-computing/](https://bornlex.github.io/posts/ternary-computing/)
 
-I used to teach at EPITA a course named Deep Learning for Time Series:
+Since I am 26 years old, I teach at EPITA a course named Deep Learning for Time Series:
 
 - First course about time series: [Time series](/posts/epita-1-timeseries/)
 - Second course about recurrent neural networks: [RNN](/posts/epita-2-rnn/)
@@ -31,6 +35,7 @@ I used to teach at EPITA a course named Deep Learning for Time Series:
 
 I also sometimes spend a few hours developing algorithms that I find interesting or POC on hot topics:
 
+- GPT2 : https://github.com/Bornlex/GPT2
 - A RAG application to search into the french government contract database (which is not very convenient): https://github.com/Bornlex/Quick-RAG-Example
 - A Deep Q Learning algorithm: https://github.com/Bornlex/MLX-DQN
 - A whitespace interpreter: https://github.com/Bornlex/Whitespace-interpreter

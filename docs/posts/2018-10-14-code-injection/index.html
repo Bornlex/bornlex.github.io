@@ -319,12 +319,14 @@ partagée puis qui marque une pause pendant 3 secondes, et qui recommence.</p>
 <p>Premièrement, nous avons besoin de connaitre le PID du programme qui s&rsquo;exécute. Dans mon cas, le PID est <strong>13858</strong>.</p>
 <p>Utilisons GDB afin de nous attacher au programme qui s&rsquo;exécute :</p>
 <blockquote>
-<p>gdb 13858 app</p></blockquote>
+<p>gdb 13858 app</p>
+</blockquote>
 <p>On a besoin de voir à quoi ressemble le mapping de la mémoire du processus. Les memory mappings se trouvent dans le dossier <strong>/proc/pid/</strong>.
 Le fichier de mapping s&rsquo;appelle <strong>maps</strong>.
 Dans mon cas, je peux obtenir le memory mapping du processus simplement par la commande :</p>
 <blockquote>
-<p>cat /proc/13858/maps</p></blockquote>
+<p>cat /proc/13858/maps</p>
+</blockquote>
 <p>Voilà à quoi cela ressemble :</p>
 <pre tabindex="0"><code>563d5aba1000-563d5aba2000 r-xp 00000000 08:01 6816141                    /root/Documents/security/lab/code_injection/app
 563d5ada1000-563d5ada2000 r--p 00000000 08:01 6816141                    /root/Documents/security/lab/code_injection/app
@@ -357,11 +359,13 @@ Dans mon cas, je peux obtenir le memory mapping du processus simplement par la c
 <p>La fonction print étant définie dans cette bibliothèque, on peut vérifier qu&rsquo;elle s&rsquo;y trouve bien grâce à GDB :</p>
 <blockquote>
 <p>p &amp;print
-(void (*)(void)) 0x7f6704f1f97a &lt;print()&gt;</p></blockquote>
+(void (*)(void)) 0x7f6704f1f97a &lt;print()&gt;</p>
+</blockquote>
 <p>C&rsquo;est bien le cas.</p>
 <p>Jetons un oeil à la table de relocations grâce à <strong>readelf</strong> :</p>
 <blockquote>
-<p>readelf -r app</p></blockquote>
+<p>readelf -r app</p>
+</blockquote>
 <pre tabindex="0"><code>Relocation section &#39;.rela.dyn&#39; at offset 0x6d8 contains 12 entries:
   Offset          Info           Type           Sym. Value    Sym. Name + Addend
 000000200d90  000000000008 R_X86_64_RELATIVE                    a20
@@ -389,14 +393,17 @@ Relocation section &#39;.rela.plt&#39; at offset 0x7f8 contains 6 entries:
 Encore une fois, vérifions avec GDB :</p>
 <blockquote>
 <p>p/x *(0x563d5aba1000+0x000000201038)
-0x4f1f97a</p></blockquote>
+0x4f1f97a</p>
+</blockquote>
 <p>On retrouve bien le suffixe de l&rsquo;adresse de print qui était : 0x7f670<strong>4f1f97a</strong>.</p>
 <p>Maintenant que nous avons établi le contexte, passons à l&rsquo;exploitation. Pour utiliser notre code et remplacer l&rsquo;appel à print, nous devons d&rsquo;abord mapper notre fichier injection.o en mémoire afin de pouvoir pointer dessus. Avec GDB :</p>
 <blockquote>
-<p>call open(&ldquo;injection.o&rdquo;, 2)</p></blockquote>
+<p>call open(&ldquo;injection.o&rdquo;, 2)</p>
+</blockquote>
 <p>Puis :</p>
 <blockquote>
-<p>call mmap(0, 1088, 1|2|4, 1, 3, 0)</p></blockquote>
+<p>call mmap(0, 1088, 1|2|4, 1, 3, 0)</p>
+</blockquote>
 <p>A présent, notre fichier injection.o est contenu dans la mémoire du processus :</p>
 <pre tabindex="0"><code>563d5aba1000-563d5aba2000 r-xp 00000000 08:01 6816141                    /root/Documents/security/lab/code_injection/app
 563d5ada1000-563d5ada2000 r--p 00000000 08:01 6816141                    /root/Documents/security/lab/code_injection/app
@@ -447,7 +454,8 @@ Et l&rsquo;offset : <strong>0x40</strong>.</p>
 <p>Remplaçons l&rsquo;adresse de print avec GDB :</p>
 <blockquote>
 <p>set *(0x563d5aba1000+0x000000201038) = 0x05340040
-set *(0x563d5aba1000+0x000000201038-0x4) = 0x7f67</p></blockquote>
+set *(0x563d5aba1000+0x000000201038-0x4) = 0x7f67</p>
+</blockquote>
 <p>Où :</p>
 <ul>
 <li>0x563d5aba1000+0x000000201038 est l&rsquo;adresse de la relocation de la fonction print</li>
@@ -457,7 +465,8 @@ set *(0x563d5aba1000+0x000000201038-0x4) = 0x7f67</p></blockquote>
 <p>Bien que l&rsquo;on ai fait le plus gros, le travail n&rsquo;est pas terminé, nous devons à présent résoudre les relocations de la fonction injection. Pour être invisible, il faut faire pointer l&rsquo;appel de print dans la fonction injection vers la fonction print initiale afin que le comportement ne soit pas altéré.
 Avec GDB :</p>
 <blockquote>
-<p>set *(0x7f6705340000+0x40+0x5)=0x7f6704f1f97a-(0x7f6705340000+0x40+0x5)-0x4</p></blockquote>
+<p>set *(0x7f6705340000+0x40+0x5)=0x7f6704f1f97a-(0x7f6705340000+0x40+0x5)-0x4</p>
+</blockquote>
 <p>Où :</p>
 <ul>
 <li>0x7f6705340000 : adresse d&rsquo;injection.o en mémoire</li>
@@ -469,10 +478,12 @@ Avec GDB :</p>
 <p>On soustrait 0x7f6704f1f97a car c&rsquo;est une adresse et la relocation requiert un offset.</p>
 <p>On effectue la même opération pour la fonction <strong>system</strong> :</p>
 <blockquote>
-<p>set *(0x7f6705340000+0x40+0x11)=0x7f6704277510-(0x7f6705340000+0x40+0x11)-0x4</p></blockquote>
+<p>set *(0x7f6705340000+0x40+0x11)=0x7f6704277510-(0x7f6705340000+0x40+0x11)-0x4</p>
+</blockquote>
 <p>Puis on le fait une dernière fois pour la section .rodata :</p>
 <blockquote>
-<p>set *(0x7f6705340000+0x40+0xc)=0x58-0x40-0xc-0x4</p></blockquote>
+<p>set *(0x7f6705340000+0x40+0xc)=0x58-0x40-0xc-0x4</p>
+</blockquote>
 <p>Où :</p>
 <ul>
 <li>0x7f6705340000 : adresse d&rsquo;injection.o en mémoire</li>

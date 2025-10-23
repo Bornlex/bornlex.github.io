@@ -61,7 +61,8 @@
 &lt;h3 id=&#34;motivation&#34;&gt;Motivation&lt;/h3&gt;
 &lt;p&gt;As we saw earlier, multi-head self attention layer assigns the same output for every identical token, regardless of their position. This can cause obvious problems in sentences where the same word is used multiple times to represent different entities such as :&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;The red car turned left where the yellow card turned left.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;The red car turned left where the yellow card turned left.&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;The two occurrences of the “car” word represent different actual cars. They cannot be treated the same way.&lt;/p&gt;</description>
     </item>
     <item>
@@ -210,8 +211,8 @@ $$&lt;/p&gt;
       <guid>https://bornlex.github.io/posts/me/</guid>
       <description>&lt;p&gt;I am Julien, french engineer in AI since 2017.&lt;/p&gt;
 &lt;p&gt;I have worked in several organizations on different topics, all related to AI or where AI is applied to.&lt;/p&gt;
-&lt;p&gt;I love playing golf (even though I am not very good at it…), going to the gym, reading, learning new things and working (not a joke, I do love it).&lt;/p&gt;
-&lt;p&gt;I sometimes write articles about tech, most of them are AI related:&lt;/p&gt;</description>
+&lt;p&gt;🔥 I am currently looking for a new opportunity in big AI companies where I could apply my skills to pre-train, finetune models.&lt;/p&gt;
+&lt;p&gt;I love playing golf (even though I am not very good at it…), going to the gym, reading, learning new things and working (not a joke, I do love it).&lt;/p&gt;</description>
     </item>
     <item>
       <title>MLX DQN</title>
