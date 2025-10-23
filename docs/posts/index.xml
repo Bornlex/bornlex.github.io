@@ -11,8 +11,18 @@
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 06 Oct 2025 20:58:59 +0200</lastBuildDate>
+    <lastBuildDate>Thu, 23 Oct 2025 23:41:36 +0200</lastBuildDate>
     <atom:link href="https://bornlex.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Scraping - Refreshing Frequency</title>
+      <link>https://bornlex.github.io/posts/scraping-1/</link>
+      <pubDate>Thu, 23 Oct 2025 23:41:36 +0200</pubDate>
+      <guid>https://bornlex.github.io/posts/scraping-1/</guid>
+      <description>&lt;p&gt;Scraping is a topic I like. Gathering data and making sure they are fresh is an interesting problem.&lt;/p&gt;
+&lt;p&gt;Among the many things that you have to do when scraping, making sure your data is fresh is an important one. Let’s give a few tips to our fellow scraper.&lt;/p&gt;
+&lt;h2 id=&#34;problem-definition&#34;&gt;Problem definition&lt;/h2&gt;
+&lt;p&gt;We are building a intelligent (hopefully) system that optimizes when we should visit an URL. We don’t want to spend too much resource on refreshing too often, and we want our data to be as fresh as possible.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>GPT Series - Triton 1 (make GPU go brrr)</title>
       <link>https://bornlex.github.io/posts/triton1/</link>
