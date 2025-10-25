@@ -1,5 +1,6 @@
 +++
 title = 'GPT Series - KV Cache'
+description = "An article about a key feature for faster inference in the AI stack today : the KV Cache."
 date = 2025-10-01T14:35:54+02:00
 draft = false
 +++

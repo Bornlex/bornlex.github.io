@@ -7,18 +7,7 @@
 <meta name="robots" content="index, follow">
 <title>GPT Series - Triton 1 (make GPU go brrr) | Julien&#39;s blog</title>
 <meta name="keywords" content="">
-<meta name="description" content="Motivations
-Basic GPT-2
-Recently, I rewrote GPT2 as an exercice to help me prepare for big AI companies interviews. After reading the paper and reused the Shakespeare dataset given by Karpathy in its nanoGPT project, I started to write the code for the whole model :
-
-LayerNorm
-Attention layer
-Training loop
-Feed forward network (FFN)
-Positional embedding
-
-Model improvements
-I then focused on improving the model by implementing a few features such as :">
+<meta name="description" content="Want to make your model training and inference much faster ? Learn how GPUs are working internally and what are Triton kernels.">
 <meta name="author" content="Julien Seveno">
 <link rel="canonical" href="https://bornlex.github.io/posts/triton1/">
 <meta name="google-site-verification" content="XYZabc">
@@ -71,18 +60,7 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 
 <meta property="og:title" content="GPT Series - Triton 1 (make GPU go brrr)" />
-<meta property="og:description" content="Motivations
-Basic GPT-2
-Recently, I rewrote GPT2 as an exercice to help me prepare for big AI companies interviews. After reading the paper and reused the Shakespeare dataset given by Karpathy in its nanoGPT project, I started to write the code for the whole model :
-
-LayerNorm
-Attention layer
-Training loop
-Feed forward network (FFN)
-Positional embedding
-
-Model improvements
-I then focused on improving the model by implementing a few features such as :" />
+<meta property="og:description" content="Want to make your model training and inference much faster ? Learn how GPUs are working internally and what are Triton kernels." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://bornlex.github.io/posts/triton1/" /><meta property="og:image" content="https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2025-10-06T20:58:59+02:00" />
@@ -92,18 +70,7 @@ I then focused on improving the model by implementing a few features such as :" 
 <meta name="twitter:image" content="https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/>
 
 <meta name="twitter:title" content="GPT Series - Triton 1 (make GPU go brrr)"/>
-<meta name="twitter:description" content="Motivations
-Basic GPT-2
-Recently, I rewrote GPT2 as an exercice to help me prepare for big AI companies interviews. After reading the paper and reused the Shakespeare dataset given by Karpathy in its nanoGPT project, I started to write the code for the whole model :
-
-LayerNorm
-Attention layer
-Training loop
-Feed forward network (FFN)
-Positional embedding
-
-Model improvements
-I then focused on improving the model by implementing a few features such as :"/>
+<meta name="twitter:description" content="Want to make your model training and inference much faster ? Learn how GPUs are working internally and what are Triton kernels."/>
 
 
 <script type="application/ld+json">
@@ -132,7 +99,7 @@ I then focused on improving the model by implementing a few features such as :"/
   "@type": "BlogPosting",
   "headline": "GPT Series - Triton 1 (make GPU go brrr)",
   "name": "GPT Series - Triton 1 (make GPU go brrr)",
-  "description": "Motivations Basic GPT-2 Recently, I rewrote GPT2 as an exercice to help me prepare for big AI companies interviews. After reading the paper and reused the Shakespeare dataset given by Karpathy in its nanoGPT project, I started to write the code for the whole model :\nLayerNorm Attention layer Training loop Feed forward network (FFN) Positional embedding Model improvements I then focused on improving the model by implementing a few features such as :\n",
+  "description": "Want to make your model training and inference much faster ? Learn how GPUs are working internally and what are Triton kernels.",
   "keywords": [
     
   ],
@@ -249,6 +216,9 @@ I then focused on improving the model by implementing a few features such as :"/
     <h1 class="post-title entry-hint-parent">
       GPT Series - Triton 1 (make GPU go brrr)
     </h1>
+    <div class="post-description">
+      Want to make your model training and inference much faster ? Learn how GPUs are working internally and what are Triton kernels.
+    </div>
     <div class="post-meta"><span title='2025-10-06 20:58:59 +0200 CEST'>October 6, 2025</span>&nbsp;·&nbsp;18 min&nbsp;·&nbsp;3631 words&nbsp;·&nbsp;Julien Seveno&nbsp;|&nbsp;<a href="https://github.com/%3cpath_to_repo%3e/content/posts/triton1.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
 
 </div>

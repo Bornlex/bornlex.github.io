@@ -10,7 +10,7 @@
       <link>https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
+    <language>en-us</language>
     <lastBuildDate>Thu, 23 Oct 2025 23:41:36 +0200</lastBuildDate>
     <atom:link href="https://bornlex.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
@@ -28,30 +28,14 @@
       <link>https://bornlex.github.io/posts/triton1/</link>
       <pubDate>Mon, 06 Oct 2025 20:58:59 +0200</pubDate>
       <guid>https://bornlex.github.io/posts/triton1/</guid>
-      <description>&lt;h2 id=&#34;motivations&#34;&gt;Motivations&lt;/h2&gt;
-&lt;h3 id=&#34;basic-gpt-2&#34;&gt;Basic GPT-2&lt;/h3&gt;
-&lt;p&gt;Recently, I rewrote GPT2 as an exercice to help me prepare for big AI companies interviews. After reading the paper and reused the Shakespeare dataset given by Karpathy in its nanoGPT project, I started to write the code for the whole model :&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;LayerNorm&lt;/li&gt;
-&lt;li&gt;Attention layer&lt;/li&gt;
-&lt;li&gt;Training loop&lt;/li&gt;
-&lt;li&gt;Feed forward network (FFN)&lt;/li&gt;
-&lt;li&gt;Positional embedding&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;model-improvements&#34;&gt;Model improvements&lt;/h3&gt;
-&lt;p&gt;I then focused on improving the model by implementing a few features such as :&lt;/p&gt;</description>
+      <description>Want to make your model training and inference much faster ? Learn how GPUs are working internally and what are Triton kernels.</description>
     </item>
     <item>
       <title>GPT Series - KV Cache</title>
       <link>https://bornlex.github.io/posts/kv-cache/</link>
       <pubDate>Wed, 01 Oct 2025 14:35:54 +0200</pubDate>
       <guid>https://bornlex.github.io/posts/kv-cache/</guid>
-      <description>&lt;p&gt;The KV cache is an important feature in today’s LLM infrastructure. To understand exactly what it brings, let’s recall how LLMs are being used for inference.&lt;/p&gt;
-&lt;h3 id=&#34;introduction&#34;&gt;Introduction&lt;/h3&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;p&gt;Feel free to read my article about &lt;a href=&#34;https://bornlex.github.io/posts/gpt-mha/&#34;&gt;Multi-head Self Attention&lt;/a&gt; for more explanation about the variations around the Attention layer !&lt;/p&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;p&gt;When LLMs are being used in production to generate text, they generate one word at a time. For example, from the following prompt :&lt;/p&gt;</description>
+      <description>An article about a key feature for faster inference in the AI stack today : the KV Cache.</description>
     </item>
     <item>
       <title>GPT Series - Multi-head Self Attention</title>

@@ -1,4 +1,5 @@
 baseURL: "https://bornlex.github.io/"
+languageCode: "en-us"
 title: Julien's blog
 theme: PaperMod
 publishDir: "docs"

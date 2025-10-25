@@ -1,5 +1,6 @@
 +++
 title = 'GPT Series - Triton 1 (make GPU go brrr)'
+description = "Want to make your model training and inference much faster ? Learn how GPUs are working internally and what are Triton kernels."
 date = 2025-10-06T20:58:59+02:00
 draft = false
 +++
