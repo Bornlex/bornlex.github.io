@@ -28,14 +28,11 @@
       <link>https://bornlex.github.io/posts/machine-learning-debugging/</link>
       <pubDate>Thu, 08 Jan 2026 15:33:18 +0100</pubDate>
       <guid>https://bornlex.github.io/posts/machine-learning-debugging/</guid>
-      <description>&lt;p&gt;Now that the inner workings of the model are clearer, let’s actually talk about debugging it.&lt;/p&gt;
-&lt;p&gt;Debugging a machine learning model is not easy, but there are a few things we can do. In this article, we are going to talk about two of them :&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Understanding if the data that we are training the model on is actually fitting, this is easy&lt;/li&gt;
-&lt;li&gt;Understanding the features of the input the model is relying on when classifying a specific example, this is slightly more complicated&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;truncation&#34;&gt;Truncation&lt;/h2&gt;
-&lt;p&gt;As I said, BERT and thus MarkupLM (whether it is the base or large versions) accept at most 512 tokens, which is not that much when we are dealing with real-world web pages.&lt;/p&gt;</description>
+      <description>&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;If you did not read the first part, it is available here &lt;a href=&#34;https://bornlex.github.io/posts/markuplm/&#34;&gt;https://bornlex.github.io/posts/markuplm/&lt;/a&gt; ! The main content can be understood on its own, but for the practical examples, reading the first part will make things easier.&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;Now that the inner workings of the model are clearer, let’s actually talk about debugging it.&lt;/p&gt;
+&lt;p&gt;Debugging a machine learning model is not easy, but there are a few things we can do. In this article, we are going to talk about two of them :&lt;/p&gt;</description>
     </item>
     <item>
       <title>Scraping - Refreshing Frequency</title>
