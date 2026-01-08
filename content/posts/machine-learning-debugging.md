@@ -4,12 +4,9 @@ date = 2026-01-08T15:33:18+01:00
 draft = false
 +++
 
-<aside>
-💡
-
 If you did not read the first part, it is available here https://bornlex.github.io/posts/markuplm/ ! The main content can be understood on its own, but for the practical examples, reading the first part will make things easier.
 
-</aside>
+---
 
 
 Now that the inner workings of the model are clearer, let’s actually talk about debugging it.

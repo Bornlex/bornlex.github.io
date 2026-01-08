@@ -28,9 +28,8 @@
       <link>https://bornlex.github.io/posts/machine-learning-debugging/</link>
       <pubDate>Thu, 08 Jan 2026 15:33:18 +0100</pubDate>
       <guid>https://bornlex.github.io/posts/machine-learning-debugging/</guid>
-      <description>&lt;!-- raw HTML omitted --&gt;
-&lt;p&gt;If you did not read the first part, it is available here &lt;a href=&#34;https://bornlex.github.io/posts/markuplm/&#34;&gt;https://bornlex.github.io/posts/markuplm/&lt;/a&gt; ! The main content can be understood on its own, but for the practical examples, reading the first part will make things easier.&lt;/p&gt;
-&lt;!-- raw HTML omitted --&gt;
+      <description>&lt;p&gt;If you did not read the first part, it is available here &lt;a href=&#34;https://bornlex.github.io/posts/markuplm/&#34;&gt;https://bornlex.github.io/posts/markuplm/&lt;/a&gt; ! The main content can be understood on its own, but for the practical examples, reading the first part will make things easier.&lt;/p&gt;
+&lt;hr&gt;
 &lt;p&gt;Now that the inner workings of the model are clearer, let’s actually talk about debugging it.&lt;/p&gt;
 &lt;p&gt;Debugging a machine learning model is not easy, but there are a few things we can do. In this article, we are going to talk about two of them :&lt;/p&gt;</description>
     </item>
