@@ -3,10 +3,16 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://bornlex.github.io/</loc>
-    <lastmod>2025-10-23T23:41:36+02:00</lastmod>
+    <lastmod>2026-01-08T15:33:28+01:00</lastmod>
+  </url><url>
+    <loc>https://bornlex.github.io/posts/markuplm/</loc>
+    <lastmod>2026-01-08T15:33:28+01:00</lastmod>
   </url><url>
     <loc>https://bornlex.github.io/posts/</loc>
-    <lastmod>2025-10-23T23:41:36+02:00</lastmod>
+    <lastmod>2026-01-08T15:33:28+01:00</lastmod>
+  </url><url>
+    <loc>https://bornlex.github.io/posts/machine-learning-debugging/</loc>
+    <lastmod>2026-01-08T15:33:18+01:00</lastmod>
   </url><url>
     <loc>https://bornlex.github.io/posts/scraping-1/</loc>
     <lastmod>2025-10-23T23:41:36+02:00</lastmod>

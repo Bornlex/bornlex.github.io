@@ -185,6 +185,37 @@ document.addEventListener("DOMContentLoaded", function() {
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">MarkupLM - Debugging ML Part 1
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>When training models, we sometimes encounter strange cases. For example, an obvious sample that is misclassified.
+This makes us wondering how come a model that is apparently doing ok on a whole benchmark, can fail at such an easy case. And it makes us realize that our model, or our benchmark, might not be as reliable as we thought.
+Which is very scary.
+In this article, we are going to talk about how to understand, what the model is actually learning, on what kind of features it might be relying to to achieve the task that we are training it for. The difficult thing is that a model is made up millions, and now very often billions of parameters, so looking at them each is not an option.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-01-08 15:33:28 +0100 CET'>January 8, 2026</span>&nbsp;·&nbsp;11 min&nbsp;·&nbsp;2280 words&nbsp;·&nbsp;Julien Seveno</footer>
+  <a class="entry-link" aria-label="post link to MarkupLM - Debugging ML Part 1" href="https://bornlex.github.io/posts/markuplm/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Integrated Gradients - Debugging ML Part 2
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Now that the inner workings of the model are clearer, let’s actually talk about debugging it.
+Debugging a machine learning model is not easy, but there are a few things we can do. In this article, we are going to talk about two of them :
+Understanding if the data that we are training the model on is actually fitting, this is easy Understanding the features of the input the model is relying on when classifying a specific example, this is slightly more complicated Truncation As I said, BERT and thus MarkupLM (whether it is the base or large versions) accept at most 512 tokens, which is not that much when we are dealing with real-world web pages.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-01-08 15:33:18 +0100 CET'>January 8, 2026</span>&nbsp;·&nbsp;14 min&nbsp;·&nbsp;2824 words&nbsp;·&nbsp;Julien Seveno</footer>
+  <a class="entry-link" aria-label="post link to Integrated Gradients - Debugging ML Part 2" href="https://bornlex.github.io/posts/machine-learning-debugging/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Scraping - Refreshing Frequency
     </h2>
   </header>
@@ -301,35 +332,6 @@ When fine tuning a model to think, the model is trained to answer a sequence a t
   </div>
   <footer class="entry-footer"><span title='2025-07-11 20:55:05 +0100 +0100'>July 11, 2025</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;261 words&nbsp;·&nbsp;Julien Seveno</footer>
   <a class="entry-link" aria-label="post link to Chain-of-Thought is LLMs prompting themselves" href="https://bornlex.github.io/posts/llm-prompting/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Nemotron
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Nemotron: Advancing Tool-Calling LLMs with Rule-Based Reinforcement Learning 🤖 Large Language Models (LLMs) are becoming increasingly powerful, and their ability to interact with external tools and APIs significantly expands their capabilities. Nvidia’s Nemotron paper introduces an innovative approach to training LLMs for more effective tool use, focusing on a rule-based reinforcement learning (RL) pipeline. This method aims to overcome the common hurdle of requiring large, meticulously curated datasets, allowing models to learn optimal tool-calling strategies more autonomously.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-06-05 00:00:00 +0000 UTC'>June 5, 2025</span>&nbsp;·&nbsp;7 min&nbsp;·&nbsp;1393 words&nbsp;·&nbsp;Julien Seveno</footer>
-  <a class="entry-link" aria-label="post link to Nemotron" href="https://bornlex.github.io/posts/nemotron/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Flash Attention
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Introduction Transformers have revolutionized the field of machine learning, emerging as the dominant architectural choice across various applications.
-However, their reliance on self-attention mechanisms introduces significant computational challenges, particularly due to quadratic time and memory complexity relative to sequence length.
-While approximate solutions exist, their limited adoption stems from an overemphasis on theoretical FLOP counts rather than practical performance metrics.
-In 2022, a paper introduced a way to compute the attention result by only working on sub vectors to reduce memory I/O.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-05-18 18:00:59 +0200 CEST'>May 18, 2025</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;1131 words&nbsp;·&nbsp;Julien Seveno</footer>
-  <a class="entry-link" aria-label="post link to Flash Attention" href="https://bornlex.github.io/posts/flash-attention/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

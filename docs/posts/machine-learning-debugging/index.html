@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Integrated Gradients - Debugging ML Part 2 | Julien&#39;s blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="Now that the inner workings of the model are clearer, let’s actually talk about debugging it.
+Debugging a machine learning model is not easy, but there are a few things we can do. In this article, we are going to talk about two of them :
+
+Understanding if the data that we are training the model on is actually fitting, this is easy
+Understanding the features of the input the model is relying on when classifying a specific example, this is slightly more complicated
+
+Truncation
+As I said, BERT and thus MarkupLM (whether it is the base or large versions) accept at most 512 tokens, which is not that much when we are dealing with real-world web pages.">
+<meta name="author" content="Julien Seveno">
+<link rel="canonical" href="https://bornlex.github.io/posts/machine-learning-debugging/">
+<meta name="google-site-verification" content="XYZabc">
+<meta name="yandex-verification" content="XYZabc">
+<meta name="msvalidate.01" content="XYZabc">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b609c58d5c11bb90b1a54e04005d74ad1ddf22165eb79f5533967e57df9c3b50.css" integrity="sha256-tgnFjVwRu5CxpU4EAF10rR3fIhZet59VM5Z&#43;V9&#43;cO1A=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="icon" type="image/png" sizes="16x16" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="icon" type="image/png" sizes="32x32" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="apple-touch-icon" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="mask-icon" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://bornlex.github.io/posts/machine-learning-debugging/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous" />
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false}
+        ]
+    });
+});
+</script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBJC7YD3QZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZBJC7YD3QZ');
+</script>
+
+<meta property="og:title" content="Integrated Gradients - Debugging ML Part 2" />
+<meta property="og:description" content="Now that the inner workings of the model are clearer, let’s actually talk about debugging it.
+Debugging a machine learning model is not easy, but there are a few things we can do. In this article, we are going to talk about two of them :
+
+Understanding if the data that we are training the model on is actually fitting, this is easy
+Understanding the features of the input the model is relying on when classifying a specific example, this is slightly more complicated
+
+Truncation
+As I said, BERT and thus MarkupLM (whether it is the base or large versions) accept at most 512 tokens, which is not that much when we are dealing with real-world web pages." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bornlex.github.io/posts/machine-learning-debugging/" /><meta property="og:image" content="https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2026-01-08T15:33:18+01:00" />
+<meta property="article:modified_time" content="2026-01-08T15:33:18+01:00" /><meta property="og:site_name" content="Julien&#39;s blog" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/>
+
+<meta name="twitter:title" content="Integrated Gradients - Debugging ML Part 2"/>
+<meta name="twitter:description" content="Now that the inner workings of the model are clearer, let’s actually talk about debugging it.
+Debugging a machine learning model is not easy, but there are a few things we can do. In this article, we are going to talk about two of them :
+
+Understanding if the data that we are training the model on is actually fitting, this is easy
+Understanding the features of the input the model is relying on when classifying a specific example, this is slightly more complicated
+
+Truncation
+As I said, BERT and thus MarkupLM (whether it is the base or large versions) accept at most 512 tokens, which is not that much when we are dealing with real-world web pages."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://bornlex.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Integrated Gradients - Debugging ML Part 2",
+      "item": "https://bornlex.github.io/posts/machine-learning-debugging/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Integrated Gradients - Debugging ML Part 2",
+  "name": "Integrated Gradients - Debugging ML Part 2",
+  "description": "Now that the inner workings of the model are clearer, let’s actually talk about debugging it.\nDebugging a machine learning model is not easy, but there are a few things we can do. In this article, we are going to talk about two of them :\nUnderstanding if the data that we are training the model on is actually fitting, this is easy Understanding the features of the input the model is relying on when classifying a specific example, this is slightly more complicated Truncation As I said, BERT and thus MarkupLM (whether it is the base or large versions) accept at most 512 tokens, which is not that much when we are dealing with real-world web pages.\n",
+  "keywords": [
+    
+  ],
+  "articleBody": "Now that the inner workings of the model are clearer, let’s actually talk about debugging it.\nDebugging a machine learning model is not easy, but there are a few things we can do. In this article, we are going to talk about two of them :\nUnderstanding if the data that we are training the model on is actually fitting, this is easy Understanding the features of the input the model is relying on when classifying a specific example, this is slightly more complicated Truncation As I said, BERT and thus MarkupLM (whether it is the base or large versions) accept at most 512 tokens, which is not that much when we are dealing with real-world web pages.\nOne easy way to know whether our page has been truncated or not is to look at the first dimension of the input_ids inside the return value of the processor call method. Indeed, if the page is larger than 512 tokens, the processor is going to batch with elements in the batch being chunks of the page :\nencoding = processor( html_string, return_tensors=\"pt\", max_length=max_length, truncation=True, # We enable this to see what gets kept padding=\"max_length\", return_overflowing_tokens=True, # Critical: tells us what was cut off stride=0 ) input_ids = encoding[\"input_ids\"] if input_ids.shape[0] \u003e 1: print(f\"⚠️ TRUNCATION DETECTED: This page is too long.\") else: print(f\"✅ Safe: The entire page fits within the context window.\") To get how many tokens are used per element in batch, the simplest method is to count the number of 1 in the attention masks. Indeed, when a page is shorter than the context window, it is filled with padding tokens, and those tokens are masked in the attention layer.\nSo the very simple :\nnum_tokens = torch.sum(encoding[\"attention_mask\"][0]).item() Will do the trick just fine !\nKeep in mind that a batch of size \u003e 1 means multiple predictions ! So each chunk of the page is going to be classified, which means that you might have to postprocess the result of the prediction to average it for example.\nIntegrated Gradients Integrated gradients is a method that has been developed by people from Google in 2017. The idea is to attribute a score for each feature of the input vector so that the score represents how important this feature is for the prediction.\nLet us define this formally.\nSuppose we have a function :\n$$ f : \\mathbb{R}^n \\to [0, 1] $$\nthat represents a neural network and an input $x \\in \\mathbb{R}^n = (x_1, …, x_n)$. Our target is to understand what are the most important features of the input $x$ when predicting its label.\nWe define an attribution of the prediction at input $x$ relative to a baseline input $x’$ being a vector :\n$$ A_f(x, x’) = (a_1, …, a_n) \\in \\mathbb{R}^n $$\nwhere $a_i$ is the contribution of the feature $x_i$ to the prediction $f(x)$.\nMethod An intuitive thought would be to compute the gradient of the prediction with respect to the input vector. Indeed, the derivative is basically how much the prediction would change if we change the input vector. But the integrated gradient methods does it slightly differently, and we will explain why later in the article.\nThe integrated gradient method computes the attribution as follows :\n$$ A(x_i) = (x_i - x’_i) \\int^1_{\\alpha = 0} \\frac{\\partial f(x’ + (x - x’) \\alpha)}{\\partial x_i} d \\alpha $$\nWe are basically computing the integral of the gradient from the baseline to the actual output. It is easy to see that :\n$$ \\left\\{\\begin{matrix} f(x’ + (x - x’)\\alpha) = f(x’) \u0026 \\text{if } \\alpha = 0 \\\\ \\\\ f(x’ + (x - x’)\\alpha) = f(x) \u0026 \\text{if } \\alpha = 1 \\end{matrix}\\right. $$\nApproximation In practice, we are not going to compute the integral over the whole path, we are going to approximate the integral by a summation. We simply sum the gradients at small intervals from the baseline to the output.\nSo instead of compute the continuous integral defined above, we approximate it using the following sum :\n$$ A_{\\text{approx}}(x_i) = (x_i - x’_i) \\sum_{k = 1}^m \\frac{\\partial f(x’ + \\frac{k}{m}(x - x’))}{\\partial x_i} \\frac{1}{m} $$\nThe higher the value of $m$, the closer the approximation to the actual integral.\nBaseline The first question that comes to mind (at least that came to mine) is what is the baseline ? The baseline is the reference vector (for example an image or a sequence of embeddings) that is used to compute the attribution against. Practically, it can be a vector full of 0s, a whole black image in the case of image processing, or a sequence of embeddings set to 0 for text.\nBut why choose a baseline ? Couldn’t we just compute the gradient of the prediction with respect to the input and see how changing a feature would change the prediction ?\nIndeed we could, but this would sometimes create problems. The authors of the article give this interesting example. Consider a simple network that has one variable and only calls the ReLU function :\n$$ f(x) = 1 - \\text{ReLU}(1 - x) $$\nNow suppose the baseline is $x = 0$ and the input is $x = 2$. The function changes from 0 to 1 and then becomes flat. So the gradient would be 0 at $x = 2$ :\n$$ \\frac{df}{dx}(2) = -\\frac{d\\text{ ReLU}}{dx}(-1) = 0 $$\nSo the simple gradient method would attribute an importance of 0 to the only variable we have in the function ! Which is not exactly what we are looking for obviously.\nProperties Understanding the limitation of the simple gradient method leads us to the main property that we want our attribution method to have : sensitivity.\nSensitivity is :\nIf an input and a baseline differ in one feature but have different predictions, then this differing feature should be given a non-zero attribution.\nThe gradient method defined just above violates this definition, justifying the need for a baseline.\nLater in the paper, the authors give an additional definition of sensitivity :\nIf the function implemented by the network does not depend on some variable, the attribution of that variable should be 0.\nWhich is a natural complement to the first definition.\nThe second property that the integrated gradient method has is implementation invariance.\nIf two models are functionally equivalent (their outputs are equal for all inputs despite having very different implementations), the attributions should be identical.\nOn top of those two main axioms, the authors give two more that matter a bit less :\ncompleteness : the attributions add up to the differences between $f(x)$ and $f(x’)$ linearity : if the prediction is the weighted sum of two networks, the attribution should respect the linear combination Paths A careful reader might note that the method used here follows a straight path from the baseline to the output, but we could be following any kind of path. So why the straight line ?\nIt is possible to extend the method to work with any path :\n$$ A(x_i) = \\int^1_{\\alpha = 0} \\frac{\\partial f(\\gamma(\\alpha))}{\\partial \\gamma_i(\\alpha)} \\times \\frac{\\partial\\gamma_i(\\alpha)}{\\partial \\alpha} d \\alpha $$\nLet’s break it down :\n$\\alpha$ is still the small move we make from the baseline towards the input $\\gamma(\\alpha)$ is the path we take to go from the baseline to the input, it is a function that gives a vector $\\gamma(\\alpha) = x_{\\alpha}$ for every value of $\\alpha$ $\\frac{\\partial \\gamma_i(\\alpha)}{\\partial \\alpha}$ is how changing $\\alpha$ changes the $i$-th coordinate of the path $\\frac{\\partial f(\\gamma(\\alpha))}{\\partial \\gamma_i(\\alpha)}$ is how a change of the $i$-th coordinate of the path changes the prediction The path function can be many functions that at least respect the following properties :\n$\\gamma(\\alpha = 0) = x'$ $\\gamma(\\alpha = 1) = x$ If we follow a straight line, meaning that :\n$$ \\gamma(\\alpha) = \\alpha (x - x’) + x' $$\nIt is obvious that it respects the two conditions.\nThe terms in the integral become :\n$$ \\frac{\\partial\\gamma_i(\\alpha)}{\\partial \\alpha} = \\frac{\\partial}{\\partial \\alpha}[\\alpha(x_i - x_i’) + x_i’] = x_i - x_i' $$\nWhich is the term that we see outside the integral, we can get it out because it does not depend on $\\alpha$ any more. The second term is only a replacement of the expression of $\\gamma_i(\\alpha)$ in the formula. The bottom term might seem different than the one we had in the straight line integral but it is not, it is merely a matter of notation.\n$\\gamma_i(\\alpha)$ is the value of the $i$-th coordinate of the input evaluated at $\\alpha$.\n$$ \\frac{\\partial f(\\gamma(\\alpha))}{\\partial \\gamma_i(\\alpha)} \\equiv \\left. \\frac{\\partial f(z)}{\\partial z_i} \\right|_{z=\\gamma(\\alpha)} \\equiv \\frac{\\partial f(x’ + (x - x’) \\alpha)}{\\partial x_i} $$\nThe point of following a straight path is that it preserves symmetry, meaning that if two features contributed the same, they should have the same attribution, which is the case only for the straight line. The authors prove that it is possible to find a function that does not preserve symmetry if it is not a straight line in the annex.\nCode Now that we understand the method, let’s talk code.\nThe code is not going to be very difficult to write since any framework can compute the gradient very easily.\n# Import the required functions and classes from transformers import MarkupLMProcessor, MarkupLMForSequenceClassification # Load the pretrained model and processor from Huggingface model = MarkupLMForSequenceClassification.from_pretrained('microsoft/markuplm-base') processor = MarkupLMProcessor.from_pretrained('microsoft/markuplm-base') # Compute the input sequences, ready to be used as input of the model inputs = processor( html_string, return_tensors=\"pt\", max_length=512, truncation=True, padding=\"max_length\", ) # Now because the model sums the token, positional, tag and subscript embeddings # we are not going to compute the derivative of the prediction wrt the input # but instead wrt the embedding, so we need to select the embedding layer embeddings_layer = model.markuplm.embeddings # Compute the embedding for our input with torch.no_grad(): input_embeddings = embeddings_layer( input_ids=inputs[\"input_ids\"], token_type_ids=inputs[\"token_type_ids\"], xpath_tags_seq=inputs[\"xpath_tags_seq\"], xpath_subs_seq=inputs[\"xpath_subs_seq\"] ) # Create a full zero embedding which is our baseline baseline_embeddings = torch.zeros_like(input_embeddings) # Create the placeholder for the accumulated gradient total_gradients = torch.zeros_like(input_embeddings) Now we are ready to compute the gradient alongside the path between the baseline and the embedding.\nWe are going to use the sum formula and transform it into a nice loop :\nfor i in range(steps + 1): alpha = i / steps # This is exactly the formula of the straight line path interpolated_embeddings = baseline_embeddings + alpha * (input_embeddings - baseline_embeddings) interpolated_embeddings.requires_grad = True # Forward pass using 'inputs_embeds' to bypass the standard embedding layer # This allows us to feed our interpolated vectors directly into the encoder outputs = model( inputs_embeds=interpolated_embeddings, attention_mask=inputs[\"attention_mask\"], token_type_ids=inputs[\"token_type_ids\"] ) # Retrieve the prediction of the class we want to inspect score = outputs.logits[0, target_class_index] model.zero_grad() # Backpropagate the gradient of the prediction through the network score.backward() # Extract the gradient of prediction wrt the interpolate embeddings # Accumulate it total_gradients += interpolated_embeddings.grad # Average it, this is the \"1/m\" term in the formula avg_gradients = total_gradients / (steps + 1) attributions = (input_embeddings - baseline_embeddings) * avg_gradients Then we are going to perform two small operations that are for convenience and ease :\n# Sum across the embedding dimension (768) to get one score per token attributions_sum = attributions.sum(dim=-1).squeeze(0) # Normalize for readability attributions_sum = attributions_sum / torch.norm(attributions_sum) And we are ready to inspect it !\nResults Let’s display the first 50 tokens that are the most important based on their attribution scores :\ndef visualize_top_tokens(attributions, input_ids, top_k=10): tokens = processor.tokenizer.convert_ids_to_tokens(input_ids.squeeze(0)) # Pair tokens with their scores token_scores = list(zip(tokens, attributions.tolist())) # Sort by absolute importance (magnitude) sorted_tokens = sorted(token_scores, key=lambda x: abs(x[1]), reverse=True) print(f\"--- Top {top_k} Most Important Tokens ---\") for token, score in sorted_tokens[:top_k]: impact = \"Positive (+)\" if score \u003e 0 else \"Negative (-)\" print(f\"Token: {token:\u003c15} | Score: {score:.4f} | Impact: {impact}\") Which gives :\nToken: is | Score: 0.7826 | Impact: Positive (+) Token: a | Score: 0.2153 | Impact: Positive (+) Token: article | Score: -0.2038 | Impact: Negative (-) Token: article | Score: -0.1970 | Impact: Negative (-) Token: This | Score: 0.1924 | Impact: Positive (+) Token: is | Score: -0.1733 | Impact: Negative (-) Token: real | Score: -0.1607 | Impact: Negative (-) Token: testing | Score: -0.1457 | Impact: Negative (-) Token: here | Score: -0.1391 | Impact: Negative (-) Token: This | Score: -0.1277 | Impact: Negative (-) Token: article | Score: -0.1172 | Impact: Negative (-) Token: multiple | Score: -0.1146 | Impact: Negative (-) Token: article | Score: -0.1080 | Impact: Negative (-) Token: is | Score: -0.1076 | Impact: Negative (-) Token: meant | Score: -0.0882 | Impact: Negative (-) Token: It | Score: -0.0785 | Impact: Negative (-) Token: paragraphs | Score: -0.0711 | Impact: Negative (-) Token: test | Score: 0.0687 | Impact: Positive (+) Token: \u003c/s\u003e | Score: -0.0669 | Impact: Negative (-) Token: This | Score: -0.0640 | Impact: Negative (-) Token: for | Score: -0.0635 | Impact: Negative (-) Token: content | Score: -0.0613 | Impact: Negative (-) Token: contains | Score: -0.0596 | Impact: Negative (-) Token: a | Score: -0.0578 | Impact: Negative (-) Token: test | Score: 0.0543 | Impact: Positive (+) Token: purposes | Score: -0.0536 | Impact: Negative (-) Token: . | Score: 0.0481 | Impact: Positive (+) Token: . | Score: 0.0369 | Impact: Positive (+) Token: and | Score: -0.0352 | Impact: Negative (-) Token: to | Score: -0.0252 | Impact: Negative (-) Token: demonstration | Score: 0.0231 | Impact: Positive (+) Token: purely | Score: -0.0203 | Impact: Negative (-) Token: The | Score: 0.0188 | Impact: Positive (+) Token: a | Score: 0.0184 | Impact: Positive (+) Token: for | Score: 0.0182 | Impact: Positive (+) Token: . | Score: -0.0174 | Impact: Negative (-) Token: is | Score: 0.0152 | Impact: Positive (+) Token: fictional | Score: -0.0057 | Impact: Negative (-) Token: \u003cs\u003e | Score: 0.0045 | Impact: Positive (+) Token: simulate | Score: -0.0009 | Impact: Negative (-) Token: \u003cpad\u003e | Score: 0.0000 | Impact: Negative (-) Token: \u003cpad\u003e | Score: 0.0000 | Impact: Negative (-) Token: \u003cpad\u003e | Score: 0.0000 | Impact: Negative (-) Token: \u003cpad\u003e | Score: 0.0000 | Impact: Negative (-) Token: \u003cpad\u003e | Score: 0.0000 | Impact: Negative (-) Token: \u003cpad\u003e | Score: 0.0000 | Impact: Negative (-) Token: \u003cpad\u003e | Score: 0.0000 | Impact: Negative (-) Token: \u003cpad\u003e | Score: 0.0000 | Impact: Negative (-) Token: \u003cpad\u003e | Score: 0.0000 | Impact: Negative (-) Token: \u003cpad\u003e | Score: 0.0000 | Impact: Negative (-) The text of our toy page is smaller than 50 tokens, so we see the padding tokens at the end.\nSo this is a bit strange because we have an attribution score for each individual text token, which is not exactly helpful in the case of HTML. Indeed, we might be more interested in understanding how a specific node affects the classification than how a words affect it.\nLet’s perform some aggregation over the nodes :\ndef aggregate_attributions_to_nodes(attributions_sum, inputs): input_ids = inputs[\"input_ids\"][0] xpath_tags = inputs[\"xpath_tags_seq\"][0] xpath_subs = inputs[\"xpath_subs_seq\"][0] # A dictionary to store the node data, both score and content node_data = collections.defaultdict(lambda: {'score': 0.0, 'tokens': []}) # We want to skip the special tokens special_ids = set(processor.tokenizer.all_special_ids) for i, token_id in enumerate(input_ids): if token_id.item() in special_ids: continue # This will act as a signature for the current node, so that all # text tokens that have the same xpath and subscript are going to be # aggregator together tags = xpath_tags[i].tolist() subs = xpath_subs[i].tolist() node_signature = tuple(zip(tags, subs)) # Aggregate score score = attributions_sum[i].item() node_data[node_signature]['score'] += score # Decode text tokens and append them to the current node word = processor.tokenizer.decode([token_id]) node_data[node_signature]['tokens'].append(word) return node_data Let’s pass the node_data return value to a function that is going to display it and have a look !\n#1 [POSITIVE (+)] Score: 0.7419 📝 Text: \"This is a test article\" 📍 XPath: /div/title/p ------------------------------------------------------------ #2 [NEGATIVE (-)] Score: -0.6394 📝 Text: \"It contains multiple paragraphs to simulate a real article.\" 📍 XPath: /div/body/div/p[2] ------------------------------------------------------------ #3 [NEGATIVE (-)] Score: -0.4964 📝 Text: \"The content here is purely fictional and meant for demonstration.\" 📍 XPath: /div/body/div/p[3] ------------------------------------------------------------ #4 [NEGATIVE (-)] Score: -0.4875 📝 Text: \"This article is for testing purposes.\" 📍 XPath: /div/body/div/p[1] ------------------------------------------------------------ #5 [POSITIVE (+)] Score: 0.0766 📝 Text: \"This is a test article\" 📍 XPath: /div/body/div/h1 ------------------------------------------------------------ Here, it seems that the 1st and 5th nodes are pushing towards the class I’ve chosen to run the attribution against. Both xpath are titles, maybe this tells us something valuable. The 3 other nodes, that are paragraphs, are pushing away from this class.\nObviously the class is internal to what I was doing, so it won’t make sense to you, but this could work exactly the same for a blog, article, e-commerce… kind of classification. And we would be able to understand what are the nodes that push towards a specific class or away from a specific class.\nResources https://medium.com/@Oxagile/building-an-llm-crawler-11260af207f3 https://huggingface.co/docs/transformers/model_doc/markuplm#transformers.MarkupLMProcessor https://arxiv.org/abs/1703.01365 https://neptune.ai/blog/ml-model-interpretation-tools https://github.com/microsoft/unilm/tree/master/markuplm ",
+  "wordCount" : "2824",
+  "inLanguage": "en",
+  "datePublished": "2026-01-08T15:33:18+01:00",
+  "dateModified": "2026-01-08T15:33:18+01:00",
+  "author":{
+    "@type": "Person",
+    "name": "Julien Seveno"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://bornlex.github.io/posts/machine-learning-debugging/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Julien's blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://bornlex.github.io/%3Clink%20/%20abs%20url%3E"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://bornlex.github.io/" accesskey="h" title="Home (Alt + H)">
+                <img src="https://bornlex.github.io/apple-touch-icon.png" alt="" aria-label="logo"
+                    height="35">Home</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://bornlex.github.io/" title="Posts">
+                    <span>Posts</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://bornlex.github.io/archives" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/Bornlex/GPT2" title="GPT-2">
+                    <span>GPT-2</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/Bornlex/Whitespace-interpreter" title="Whitespace Interpreter">
+                    <span>Whitespace Interpreter</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://bornlex.github.io/posts/me/" title="About me">
+                    <span>About me</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://bornlex.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://bornlex.github.io/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      Integrated Gradients - Debugging ML Part 2
+    </h1>
+    <div class="post-meta"><span title='2026-01-08 15:33:18 +0100 CET'>January 8, 2026</span>&nbsp;·&nbsp;14 min&nbsp;·&nbsp;2824 words&nbsp;·&nbsp;Julien Seveno&nbsp;|&nbsp;<a href="https://github.com/%3cpath_to_repo%3e/content/posts/machine-learning-debugging.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+  </header> 
+  <div class="post-content"><p>Now that the inner workings of the model are clearer, let’s actually talk about debugging it.</p>
+<p>Debugging a machine learning model is not easy, but there are a few things we can do. In this article, we are going to talk about two of them :</p>
+<ul>
+<li>Understanding if the data that we are training the model on is actually fitting, this is easy</li>
+<li>Understanding the features of the input the model is relying on when classifying a specific example, this is slightly more complicated</li>
+</ul>
+<h2 id="truncation">Truncation<a hidden class="anchor" aria-hidden="true" href="#truncation">#</a></h2>
+<p>As I said, BERT and thus MarkupLM (whether it is the base or large versions) accept at most 512 tokens, which is not that much when we are dealing with real-world web pages.</p>
+<p>One easy way to know whether our page has been truncated or not is to look at the first dimension of the <code>input_ids</code> inside the return value of the processor call method. Indeed, if the page is larger than 512 tokens, the processor is going to batch with elements in the batch being chunks of the page :</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">encoding</span> <span class="o">=</span> <span class="n">processor</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">html_string</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&#34;pt&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">max_length</span><span class="o">=</span><span class="n">max_length</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="c1"># We enable this to see what gets kept</span>
+</span></span><span class="line"><span class="cl">    <span class="n">padding</span><span class="o">=</span><span class="s2">&#34;max_length&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">return_overflowing_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="c1"># Critical: tells us what was cut off</span>
+</span></span><span class="line"><span class="cl">    <span class="n">stride</span><span class="o">=</span><span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">input_ids</span> <span class="o">=</span> <span class="n">encoding</span><span class="p">[</span><span class="s2">&#34;input_ids&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="n">input_ids</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;⚠️ TRUNCATION DETECTED: This page is too long.&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;✅ Safe: The entire page fits within the context window.&#34;</span><span class="p">)</span>
+</span></span></code></pre></div><p>To get how many tokens are used per element in batch, the simplest method is to count the number of 1 in the attention masks. Indeed, when a page is shorter than the context window, it is filled with padding tokens, and those tokens are masked in the attention layer.</p>
+<p>So the very simple :</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">num_tokens</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">encoding</span><span class="p">[</span><span class="s2">&#34;attention_mask&#34;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+</span></span></code></pre></div><p>Will do the trick just fine !</p>
+<!-- raw HTML omitted -->
+<p>Keep in mind that a batch of size &gt; 1 means multiple predictions ! So each chunk of the page is going to be classified, which means that you might have to postprocess the result of the prediction to average it for example.</p>
+<!-- raw HTML omitted -->
+<h2 id="integrated-gradients">Integrated Gradients<a hidden class="anchor" aria-hidden="true" href="#integrated-gradients">#</a></h2>
+<p>Integrated gradients is a method that has been developed by people from Google in 2017. The idea is to attribute a score for each feature of the input vector so that the score represents how important this feature is for the prediction.</p>
+<p>Let us define this formally.</p>
+<p>Suppose we have a function :</p>
+<p>$$
+f : \mathbb{R}^n \to [0, 1]
+$$</p>
+<p>that represents a neural network and an input $x \in \mathbb{R}^n = (x_1, &hellip;, x_n)$. Our target is to understand what are the most important features of the input $x$ when predicting its label.</p>
+<p>We define an attribution of the prediction at input $x$ relative to a baseline input $x&rsquo;$ being a vector :</p>
+<p>$$
+A_f(x, x&rsquo;) = (a_1, &hellip;, a_n) \in \mathbb{R}^n
+$$</p>
+<p>where $a_i$ is the contribution of the feature $x_i$ to the prediction $f(x)$.</p>
+<h3 id="method">Method<a hidden class="anchor" aria-hidden="true" href="#method">#</a></h3>
+<p>An intuitive thought would be to compute the gradient of the prediction with respect to the input vector. Indeed, the derivative is basically how much the prediction would change if we change the input vector. But the integrated gradient methods does it slightly differently, and we will explain why later in the article.</p>
+<p>The integrated gradient method computes the attribution as follows :</p>
+<p>$$
+A(x_i) = (x_i - x&rsquo;_i) \int^1_{\alpha = 0} \frac{\partial f(x&rsquo; + (x - x&rsquo;) \alpha)}{\partial x_i} d \alpha
+$$</p>
+<p>We are basically computing the integral of the gradient from the baseline to the actual output. It is easy to see that :</p>
+<p>$$
+\left\{\begin{matrix}
+f(x&rsquo; + (x - x&rsquo;)\alpha) = f(x&rsquo;) &amp; \text{if } \alpha = 0 \\
+\\
+f(x&rsquo; + (x - x&rsquo;)\alpha) = f(x) &amp; \text{if } \alpha = 1
+\end{matrix}\right.
+$$</p>
+<h3 id="approximation">Approximation<a hidden class="anchor" aria-hidden="true" href="#approximation">#</a></h3>
+<p>In practice, we are not going to compute the integral over the whole path, we are going to approximate the integral by a summation. We simply sum the gradients at small intervals from the baseline to the output.</p>
+<p>So instead of compute the continuous integral defined above, we approximate it using the following sum :</p>
+<p>$$
+A_{\text{approx}}(x_i) = (x_i - x&rsquo;_i) \sum_{k = 1}^m \frac{\partial f(x&rsquo; + \frac{k}{m}(x - x&rsquo;))}{\partial x_i} \frac{1}{m}
+$$</p>
+<p>The higher the value of $m$, the closer the approximation to the actual integral.</p>
+<h3 id="baseline">Baseline<a hidden class="anchor" aria-hidden="true" href="#baseline">#</a></h3>
+<p>The first question that comes to mind (at least that came to mine) is what is the baseline ? The baseline is the reference vector (for example an image or a sequence of embeddings) that is used to compute the attribution against. Practically, it can be a vector full of 0s, a whole black image in the case of image processing, or a sequence of embeddings set to 0 for text.</p>
+<p>But why choose a baseline ? Couldn’t we just compute the gradient of the prediction with respect to the input and see how changing a feature would change the prediction ?</p>
+<p>Indeed we could, but this would sometimes create problems. The authors of the article give this interesting example. Consider a simple network that has one variable and only calls the ReLU function :</p>
+<p>$$
+f(x) = 1 - \text{ReLU}(1 - x)
+$$</p>
+<p>Now suppose the baseline is $x = 0$ and the input is $x = 2$. The function changes from 0 to 1 and then becomes flat. So the gradient would be 0 at $x = 2$ :</p>
+<p>$$
+\frac{df}{dx}(2) = -\frac{d\text{ ReLU}}{dx}(-1) = 0
+$$</p>
+<p>So the simple gradient method would attribute an importance of 0 to the only variable we have in the function ! Which is not exactly what we are looking for obviously.</p>
+<h3 id="properties">Properties<a hidden class="anchor" aria-hidden="true" href="#properties">#</a></h3>
+<p>Understanding the limitation of the simple gradient method leads us to the main property that we want our attribution method to have : <strong>sensitivity</strong>.</p>
+<p>Sensitivity is :</p>
+<blockquote>
+<p>If an input and a baseline differ in one feature but have different predictions, then this differing feature should be given a non-zero attribution.</p>
+</blockquote>
+<p>The gradient method defined just above violates this definition, justifying the need for a baseline.</p>
+<p>Later in the paper, the authors give an additional definition of sensitivity :</p>
+<blockquote>
+<p>If the function implemented by the network does not depend on some variable, the attribution of that variable should be 0.</p>
+</blockquote>
+<p>Which is a natural complement to the first definition.</p>
+<hr>
+<p>The second property that the integrated gradient method has is <strong>implementation invariance</strong>.</p>
+<blockquote>
+<p>If two models are functionally equivalent (their outputs are equal for all inputs despite having very different implementations), the attributions should be identical.</p>
+</blockquote>
+<hr>
+<p>On top of those two main axioms, the authors give two more that matter a bit less :</p>
+<ul>
+<li>completeness : the attributions add up to the differences between $f(x)$ and $f(x&rsquo;)$</li>
+<li>linearity : if the prediction is the weighted sum of two networks, the attribution should respect the linear combination</li>
+</ul>
+<h3 id="paths">Paths<a hidden class="anchor" aria-hidden="true" href="#paths">#</a></h3>
+<p>A careful reader might note that the method used here follows a straight path from the baseline to the output, but we could be following any kind of path. So why the straight line ?</p>
+<p>It is possible to extend the method to work with any path :</p>
+<p>$$
+A(x_i) = \int^1_{\alpha = 0} \frac{\partial f(\gamma(\alpha))}{\partial \gamma_i(\alpha)} \times \frac{\partial\gamma_i(\alpha)}{\partial \alpha} d \alpha
+$$</p>
+<p>Let’s break it down :</p>
+<ul>
+<li>$\alpha$ is still the small move we make from the baseline towards the input</li>
+<li>$\gamma(\alpha)$ is the path we take to go from the baseline to the input, it is a function that gives a vector $\gamma(\alpha) = x_{\alpha}$ for every value of $\alpha$</li>
+<li>$\frac{\partial \gamma_i(\alpha)}{\partial \alpha}$ is how changing $\alpha$ changes the $i$-th coordinate of the path</li>
+<li>$\frac{\partial f(\gamma(\alpha))}{\partial \gamma_i(\alpha)}$ is how a change of the $i$-th coordinate of the path changes the prediction</li>
+</ul>
+<p>The path function can be many functions that at least respect the following properties :</p>
+<ul>
+<li>$\gamma(\alpha = 0) = x'$</li>
+<li>$\gamma(\alpha = 1) = x$</li>
+</ul>
+<p>If we follow a straight line, meaning that :</p>
+<p>$$
+\gamma(\alpha) = \alpha (x - x&rsquo;) + x'
+$$</p>
+<p>It is obvious that it respects the two conditions.</p>
+<p>The terms in the integral become :</p>
+<p>$$
+\frac{\partial\gamma_i(\alpha)}{\partial \alpha} = \frac{\partial}{\partial \alpha}[\alpha(x_i - x_i&rsquo;) + x_i&rsquo;] = x_i - x_i'
+$$</p>
+<p>Which is the term that we see outside the integral, we can get it out because it does not depend on $\alpha$ any more. The second term is only a replacement of the expression of $\gamma_i(\alpha)$ in the formula. The bottom term might seem different than the one we had in the straight line integral but it is not, it is merely a matter of notation.</p>
+<p>$\gamma_i(\alpha)$ is the value of the $i$-th coordinate of the input evaluated at $\alpha$.</p>
+<p>$$
+\frac{\partial f(\gamma(\alpha))}{\partial \gamma_i(\alpha)} \equiv \left. \frac{\partial f(z)}{\partial z_i} \right|_{z=\gamma(\alpha)} \equiv \frac{\partial f(x&rsquo; + (x - x&rsquo;) \alpha)}{\partial x_i}
+$$</p>
+<p>The point of following a straight path is that it preserves symmetry, meaning that if two features contributed the same, they should have the same attribution, which is the case only for the straight line. The authors prove that it is possible to find a function that does not preserve symmetry if it is not a straight line in the annex.</p>
+<h3 id="code">Code<a hidden class="anchor" aria-hidden="true" href="#code">#</a></h3>
+<p>Now that we understand the method, let’s talk code.</p>
+<p>The code is not going to be very difficult to write since any framework can compute the gradient very easily.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># Import the required functions and classes</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">MarkupLMProcessor</span><span class="p">,</span> <span class="n">MarkupLMForSequenceClassification</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Load the pretrained model and processor from Huggingface</span>
+</span></span><span class="line"><span class="cl"><span class="n">model</span> <span class="o">=</span> <span class="n">MarkupLMForSequenceClassification</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s1">&#39;microsoft/markuplm-base&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">processor</span> <span class="o">=</span> <span class="n">MarkupLMProcessor</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s1">&#39;microsoft/markuplm-base&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Compute the input sequences, ready to be used as input of the model</span>
+</span></span><span class="line"><span class="cl"><span class="n">inputs</span> <span class="o">=</span> <span class="n">processor</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">html_string</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&#34;pt&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">max_length</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">padding</span><span class="o">=</span><span class="s2">&#34;max_length&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Now because the model sums the token, positional, tag and subscript embeddings</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># we are not going to compute the derivative of the prediction wrt the input</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># but instead wrt the embedding, so we need to select the embedding layer</span>
+</span></span><span class="line"><span class="cl"><span class="n">embeddings_layer</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">markuplm</span><span class="o">.</span><span class="n">embeddings</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Compute the embedding for our input</span>
+</span></span><span class="line"><span class="cl"><span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="n">input_embeddings</span> <span class="o">=</span> <span class="n">embeddings_layer</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">input_ids</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&#34;input_ids&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">        <span class="n">token_type_ids</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&#34;token_type_ids&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">        <span class="n">xpath_tags_seq</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&#34;xpath_tags_seq&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">        <span class="n">xpath_subs_seq</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&#34;xpath_subs_seq&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Create a full zero embedding which is our baseline</span>
+</span></span><span class="line"><span class="cl"><span class="n">baseline_embeddings</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">input_embeddings</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Create the placeholder for the accumulated gradient</span>
+</span></span><span class="line"><span class="cl"><span class="n">total_gradients</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">input_embeddings</span><span class="p">)</span>
+</span></span></code></pre></div><p>Now we are ready to compute the gradient alongside the path between the baseline and the embedding.</p>
+<p>We are going to use the sum formula and transform it into a nice loop :</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">steps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">alpha</span> <span class="o">=</span> <span class="n">i</span> <span class="o">/</span> <span class="n">steps</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="c1"># This is exactly the formula of the straight line path</span>
+</span></span><span class="line"><span class="cl">    <span class="n">interpolated_embeddings</span> <span class="o">=</span> <span class="n">baseline_embeddings</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="n">input_embeddings</span> <span class="o">-</span> <span class="n">baseline_embeddings</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">interpolated_embeddings</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># Forward pass using &#39;inputs_embeds&#39; to bypass the standard embedding layer</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># This allows us to feed our interpolated vectors directly into the encoder</span>
+</span></span><span class="line"><span class="cl">    <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">inputs_embeds</span><span class="o">=</span><span class="n">interpolated_embeddings</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">attention_mask</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&#34;attention_mask&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">        <span class="n">token_type_ids</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&#34;token_type_ids&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="c1"># Retrieve the prediction of the class we want to inspect</span>
+</span></span><span class="line"><span class="cl">    <span class="n">score</span> <span class="o">=</span> <span class="n">outputs</span><span class="o">.</span><span class="n">logits</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">target_class_index</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">model</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># Backpropagate the gradient of the prediction through the network</span>
+</span></span><span class="line"><span class="cl">    <span class="n">score</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="c1"># Extract the gradient of prediction wrt the interpolate embeddings</span>
+</span></span><span class="line"><span class="cl">		<span class="c1"># Accumulate it</span>
+</span></span><span class="line"><span class="cl">    <span class="n">total_gradients</span> <span class="o">+=</span> <span class="n">interpolated_embeddings</span><span class="o">.</span><span class="n">grad</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Average it, this is the &#34;1/m&#34; term in the formula</span>
+</span></span><span class="line"><span class="cl"><span class="n">avg_gradients</span> <span class="o">=</span> <span class="n">total_gradients</span> <span class="o">/</span> <span class="p">(</span><span class="n">steps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">attributions</span> <span class="o">=</span> <span class="p">(</span><span class="n">input_embeddings</span> <span class="o">-</span> <span class="n">baseline_embeddings</span><span class="p">)</span> <span class="o">*</span> <span class="n">avg_gradients</span>
+</span></span></code></pre></div><p>Then we are going to perform two small operations that are for convenience and ease :</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># Sum across the embedding dimension (768) to get one score per token</span>
+</span></span><span class="line"><span class="cl"><span class="n">attributions_sum</span> <span class="o">=</span> <span class="n">attributions</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Normalize for readability</span>
+</span></span><span class="line"><span class="cl"><span class="n">attributions_sum</span> <span class="o">=</span> <span class="n">attributions_sum</span> <span class="o">/</span> <span class="n">torch</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">attributions_sum</span><span class="p">)</span>
+</span></span></code></pre></div><p>And we are ready to inspect it !</p>
+<h3 id="results">Results<a hidden class="anchor" aria-hidden="true" href="#results">#</a></h3>
+<p>Let’s display the first 50 tokens that are the most important based on their attribution scores :</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">visualize_top_tokens</span><span class="p">(</span><span class="n">attributions</span><span class="p">,</span> <span class="n">input_ids</span><span class="p">,</span> <span class="n">top_k</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tokens</span> <span class="o">=</span> <span class="n">processor</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">convert_ids_to_tokens</span><span class="p">(</span><span class="n">input_ids</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># Pair tokens with their scores</span>
+</span></span><span class="line"><span class="cl">    <span class="n">token_scores</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">attributions</span><span class="o">.</span><span class="n">tolist</span><span class="p">()))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># Sort by absolute importance (magnitude)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">sorted_tokens</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">token_scores</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;--- Top </span><span class="si">{</span><span class="n">top_k</span><span class="si">}</span><span class="s2"> Most Important Tokens ---&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">token</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">sorted_tokens</span><span class="p">[:</span><span class="n">top_k</span><span class="p">]:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">impact</span> <span class="o">=</span> <span class="s2">&#34;Positive (+)&#34;</span> <span class="k">if</span> <span class="n">score</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s2">&#34;Negative (-)&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;Token: </span><span class="si">{</span><span class="n">token</span><span class="si">:</span><span class="s2">&lt;15</span><span class="si">}</span><span class="s2"> | Score: </span><span class="si">{</span><span class="n">score</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> | Impact: </span><span class="si">{</span><span class="n">impact</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span></code></pre></div><p>Which gives :</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="ow">is</span>             <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="mf">0.7826</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Positive</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="n">a</span>              <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="mf">0.2153</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Positive</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="n">article</span>        <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.2038</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="n">article</span>        <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.1970</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span> <span class="n">This</span>            <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="mf">0.1924</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Positive</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="ow">is</span>             <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.1733</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="n">real</span>           <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.1607</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="n">testing</span>        <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.1457</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="n">here</span>           <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.1391</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span> <span class="n">This</span>            <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.1277</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="n">article</span>        <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.1172</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="n">multiple</span>       <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.1146</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="n">article</span>        <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.1080</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="ow">is</span>             <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.1076</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="n">meant</span>          <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0882</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span> <span class="n">It</span>              <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0785</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="n">paragraphs</span>     <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0711</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="n">test</span>           <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="mf">0.0687</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Positive</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span> <span class="o">&lt;/</span><span class="n">s</span><span class="o">&gt;</span>            <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0669</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span> <span class="n">This</span>            <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0640</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="k">for</span>            <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0635</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="n">content</span>        <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0613</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="n">contains</span>       <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0596</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="n">a</span>              <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0578</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="n">test</span>           <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="mf">0.0543</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Positive</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="n">purposes</span>       <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0536</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span> <span class="o">.</span>               <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="mf">0.0481</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Positive</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span> <span class="o">.</span>               <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="mf">0.0369</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Positive</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="ow">and</span>            <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0352</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="n">to</span>             <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0252</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="n">demonstration</span>  <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="mf">0.0231</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Positive</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="n">purely</span>         <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0203</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span> <span class="n">The</span>             <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="mf">0.0188</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Positive</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="n">a</span>              <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="mf">0.0184</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Positive</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="k">for</span>            <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="mf">0.0182</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Positive</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span> <span class="o">.</span>               <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0174</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="ow">is</span>             <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="mf">0.0152</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Positive</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="n">fictional</span>      <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0057</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">s</span><span class="o">&gt;</span>             <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="mf">0.0045</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Positive</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span>  <span class="n">simulate</span>       <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0009</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">pad</span><span class="o">&gt;</span>           <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="mf">0.0000</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">pad</span><span class="o">&gt;</span>           <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="mf">0.0000</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">pad</span><span class="o">&gt;</span>           <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="mf">0.0000</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">pad</span><span class="o">&gt;</span>           <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="mf">0.0000</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">pad</span><span class="o">&gt;</span>           <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="mf">0.0000</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">pad</span><span class="o">&gt;</span>           <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="mf">0.0000</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">pad</span><span class="o">&gt;</span>           <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="mf">0.0000</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">pad</span><span class="o">&gt;</span>           <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="mf">0.0000</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">pad</span><span class="o">&gt;</span>           <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="mf">0.0000</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Token</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">pad</span><span class="o">&gt;</span>           <span class="o">|</span> <span class="n">Score</span><span class="p">:</span> <span class="mf">0.0000</span> <span class="o">|</span> <span class="n">Impact</span><span class="p">:</span> <span class="n">Negative</span> <span class="p">(</span><span class="o">-</span><span class="p">)</span>
+</span></span></code></pre></div><p>The text of our toy page is smaller than 50 tokens, so we see the padding tokens at the end.</p>
+<p>So this is a bit strange because we have an attribution score for each individual text token, which is not exactly helpful in the case of HTML. Indeed, we might be more interested in understanding how a specific node affects the classification than how a words affect it.</p>
+<p>Let’s perform some aggregation over the nodes :</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">aggregate_attributions_to_nodes</span><span class="p">(</span><span class="n">attributions_sum</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">input_ids</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&#34;input_ids&#34;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">xpath_tags</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&#34;xpath_tags_seq&#34;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">xpath_subs</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&#34;xpath_subs_seq&#34;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="c1"># A dictionary to store the node data, both score and content</span>
+</span></span><span class="line"><span class="cl">    <span class="n">node_data</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">&#39;tokens&#39;</span><span class="p">:</span> <span class="p">[]})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="c1"># We want to skip the special tokens</span>
+</span></span><span class="line"><span class="cl">    <span class="n">special_ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">processor</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">all_special_ids</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">token_id</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">input_ids</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">token_id</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="ow">in</span> <span class="n">special_ids</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">				<span class="c1"># This will act as a signature for the current node, so that all</span>
+</span></span><span class="line"><span class="cl">				<span class="c1"># text tokens that have the same xpath and subscript are going to be</span>
+</span></span><span class="line"><span class="cl">				<span class="c1"># aggregator together</span>
+</span></span><span class="line"><span class="cl">        <span class="n">tags</span> <span class="o">=</span> <span class="n">xpath_tags</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">subs</span> <span class="o">=</span> <span class="n">xpath_subs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">node_signature</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">tags</span><span class="p">,</span> <span class="n">subs</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">				<span class="c1"># Aggregate score</span>
+</span></span><span class="line"><span class="cl">        <span class="n">score</span> <span class="o">=</span> <span class="n">attributions_sum</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">node_data</span><span class="p">[</span><span class="n">node_signature</span><span class="p">][</span><span class="s1">&#39;score&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">score</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># Decode text tokens and append them to the current node</span>
+</span></span><span class="line"><span class="cl">        <span class="n">word</span> <span class="o">=</span> <span class="n">processor</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">([</span><span class="n">token_id</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">node_data</span><span class="p">[</span><span class="n">node_signature</span><span class="p">][</span><span class="s1">&#39;tokens&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">node_data</span>
+</span></span></code></pre></div><p>Let’s pass the node_data return value to a function that is going to display it and have a look !</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1">#1 [POSITIVE (+)] Score: 0.7419</span>
+</span></span><span class="line"><span class="cl">   <span class="err">📝</span> <span class="n">Text</span><span class="p">:</span>  <span class="s2">&#34;This is a test article&#34;</span>
+</span></span><span class="line"><span class="cl">   <span class="err">📍</span> <span class="n">XPath</span><span class="p">:</span> <span class="o">/</span><span class="n">div</span><span class="o">/</span><span class="n">title</span><span class="o">/</span><span class="n">p</span>
+</span></span><span class="line"><span class="cl">   <span class="o">------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#2 [NEGATIVE (-)] Score: -0.6394</span>
+</span></span><span class="line"><span class="cl">   <span class="err">📝</span> <span class="n">Text</span><span class="p">:</span>  <span class="s2">&#34;It contains multiple paragraphs to simulate a real article.&#34;</span>
+</span></span><span class="line"><span class="cl">   <span class="err">📍</span> <span class="n">XPath</span><span class="p">:</span> <span class="o">/</span><span class="n">div</span><span class="o">/</span><span class="n">body</span><span class="o">/</span><span class="n">div</span><span class="o">/</span><span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">   <span class="o">------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#3 [NEGATIVE (-)] Score: -0.4964</span>
+</span></span><span class="line"><span class="cl">   <span class="err">📝</span> <span class="n">Text</span><span class="p">:</span>  <span class="s2">&#34;The content here is purely fictional and meant for demonstration.&#34;</span>
+</span></span><span class="line"><span class="cl">   <span class="err">📍</span> <span class="n">XPath</span><span class="p">:</span> <span class="o">/</span><span class="n">div</span><span class="o">/</span><span class="n">body</span><span class="o">/</span><span class="n">div</span><span class="o">/</span><span class="n">p</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">   <span class="o">------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#4 [NEGATIVE (-)] Score: -0.4875</span>
+</span></span><span class="line"><span class="cl">   <span class="err">📝</span> <span class="n">Text</span><span class="p">:</span>  <span class="s2">&#34;This article is for testing purposes.&#34;</span>
+</span></span><span class="line"><span class="cl">   <span class="err">📍</span> <span class="n">XPath</span><span class="p">:</span> <span class="o">/</span><span class="n">div</span><span class="o">/</span><span class="n">body</span><span class="o">/</span><span class="n">div</span><span class="o">/</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">   <span class="o">------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#5 [POSITIVE (+)] Score: 0.0766</span>
+</span></span><span class="line"><span class="cl">   <span class="err">📝</span> <span class="n">Text</span><span class="p">:</span>  <span class="s2">&#34;This is a test article&#34;</span>
+</span></span><span class="line"><span class="cl">   <span class="err">📍</span> <span class="n">XPath</span><span class="p">:</span> <span class="o">/</span><span class="n">div</span><span class="o">/</span><span class="n">body</span><span class="o">/</span><span class="n">div</span><span class="o">/</span><span class="n">h1</span>
+</span></span><span class="line"><span class="cl">   <span class="o">------------------------------------------------------------</span>
+</span></span></code></pre></div><p>Here, it seems that the 1st and 5th nodes are pushing towards the class I’ve chosen to run the attribution against. Both xpath are titles, maybe this tells us something valuable. The 3 other nodes, that are paragraphs, are pushing away from this class.</p>
+<p>Obviously the class is internal to what I was doing, so it won’t make sense to you, but this could work exactly the same for a blog, article, e-commerce… kind of classification. And we would be able to understand what are the nodes that push towards a specific class or away from a specific class.</p>
+<h1 id="resources">Resources<a hidden class="anchor" aria-hidden="true" href="#resources">#</a></h1>
+<ul>
+<li><a href="https://medium.com/@Oxagile/building-an-llm-crawler-11260af207f3">https://medium.com/@Oxagile/building-an-llm-crawler-11260af207f3</a></li>
+<li><a href="https://huggingface.co/docs/transformers/model_doc/markuplm#transformers.MarkupLMProcessor">https://huggingface.co/docs/transformers/model_doc/markuplm#transformers.MarkupLMProcessor</a></li>
+<li><a href="https://arxiv.org/abs/1703.01365">https://arxiv.org/abs/1703.01365</a></li>
+<li><a href="https://neptune.ai/blog/ml-model-interpretation-tools">https://neptune.ai/blog/ml-model-interpretation-tools</a></li>
+<li><a href="https://github.com/microsoft/unilm/tree/master/markuplm">https://github.com/microsoft/unilm/tree/master/markuplm</a></li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://bornlex.github.io/posts/markuplm/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>MarkupLM - Debugging ML Part 1</span>
+  </a>
+  <a class="next" href="https://bornlex.github.io/posts/scraping-1/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Scraping - Refreshing Frequency</span>
+  </a>
+</nav>
+
+
+<ul class="share-buttons">
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Integrated Gradients - Debugging ML Part 2 on x"
+            href="https://x.com/intent/tweet/?text=Integrated%20Gradients%20-%20Debugging%20ML%20Part%202&amp;url=https%3a%2f%2fbornlex.github.io%2fposts%2fmachine-learning-debugging%2f&amp;hashtags=">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Integrated Gradients - Debugging ML Part 2 on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fbornlex.github.io%2fposts%2fmachine-learning-debugging%2f&amp;title=Integrated%20Gradients%20-%20Debugging%20ML%20Part%202&amp;summary=Integrated%20Gradients%20-%20Debugging%20ML%20Part%202&amp;source=https%3a%2f%2fbornlex.github.io%2fposts%2fmachine-learning-debugging%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Integrated Gradients - Debugging ML Part 2 on reddit"
+            href="https://reddit.com/submit?url=https%3a%2f%2fbornlex.github.io%2fposts%2fmachine-learning-debugging%2f&title=Integrated%20Gradients%20-%20Debugging%20ML%20Part%202">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Integrated Gradients - Debugging ML Part 2 on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fbornlex.github.io%2fposts%2fmachine-learning-debugging%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Integrated Gradients - Debugging ML Part 2 on whatsapp"
+            href="https://api.whatsapp.com/send?text=Integrated%20Gradients%20-%20Debugging%20ML%20Part%202%20-%20https%3a%2f%2fbornlex.github.io%2fposts%2fmachine-learning-debugging%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Integrated Gradients - Debugging ML Part 2 on telegram"
+            href="https://telegram.me/share/url?text=Integrated%20Gradients%20-%20Debugging%20ML%20Part%202&amp;url=https%3a%2f%2fbornlex.github.io%2fposts%2fmachine-learning-debugging%2f">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Integrated Gradients - Debugging ML Part 2 on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t=Integrated%20Gradients%20-%20Debugging%20ML%20Part%202&u=https%3a%2f%2fbornlex.github.io%2fposts%2fmachine-learning-debugging%2f">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+                <path
+                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+</ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2026 <a href="https://bornlex.github.io/">Julien&#39;s blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
