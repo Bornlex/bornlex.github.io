@@ -206,58 +206,32 @@ We now understand why a regular linear LLM is not going to be the optimal soluti
 
 ## MarkupLM
 
-MarkupLM is based on BERT, a famous model released by Google in 2018. The difference with raw BERT lies in the way it encodes the content of the HTML document. It does not tokenize the raw content like a regular LLM would do. Instead, it computes two types of tokens :
+MarkupLM is based on BERT, a famous model released by Google in 2018. The difference with raw BERT lies in the way it encodes the content of the HTML document. It does not tokenize the raw content like a regular LLM would do. Instead, it uses 3 types of embeddings :
 
-- the **text** tokens
-- the **xpath** tokens
+- the **text** embeddings, just like a regular language model
+- the **xpath** embeddings, which are a combinations of two embeddings :
+    - the **xpath tag** embeddings
+    - the **xpath subscript** embeddings
 
-Actually it computes 3 types of tokens, because the xpath embeddings are a combinations of the xpath tag embeddings and the xpath subscript embeddings, it is something we will explain later.
-
-As an example, consider the following simple HTML document :
+To illustrate how MarkupLM handles the input, let’s reuse the toy example we introduced earlier :
 
 ```html
-<html>
-   <title>
-      <p>  Countries of the World: A Simple Example | Scrape This Site | A public sandbox for learning web scraping </p>
-   </title>
-   <body>
-      <div id="page">
-         <section id="countries">
-            <div>
-               <div>
-                  <div>
-                     <h1>       Countries of the World: A Simple Example 250 items      </h1>
-                  </div>
-               </div>
-               <div>
-                  <div>
-                     <h3>       Andorra      </h3>
-                     <div>       Capital: Andorra la Vella Population: 84000 Area (km^2): 468.0      </div>
-                  </div>
-                  <div>
-                     <h3>       United Arab Emirates      </h3>
-                     <div>       Capital: Abu Dhabi Population: 4975593 Area (km^2): 82880.0      </div>
-                  </div>
-                  <div>
-                     <h3>       Afghanistan      </h3>
-                     <div>       Capital: Kabul Population: 29121286 Area (km^2): 647500.0      </div>
-                  </div>
-               </div>
-            </div>
-         </section>
-      </div>
-      <section id="footer">
-         <div>
-            <div>
-               <div>     Lessons and Videos © Hartley Brody 2023    </div>
-            </div>
-         </div>
-      </section>
-   </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>This is a test article</title>
+</head>
+<body>
+    <div class="article">
+        <h1>This is a test article</h1>
+        <p>This article is for testing purposes.</p>
+        <p>It contains multiple paragraphs to simulate a real article.</p>
+        <p>The content here is purely fictional and meant for demonstration.</p>
+    </div>
+</body>
 </html>
 ```
-
-It is a simplified version of the sandbox provider : https://www.scrapethissite.com/.
 
 I will use this to illustrate parts of the code.
 
@@ -281,28 +255,20 @@ So for the HTML page above, the result of calling the `MarkupLMFeatureExtractor`
 {
     "nodes": [
         [
-            "Countries of the World: A Simple Example | Scrape This Site | A public sandbox for learning web scraping",
-            "Countries of the World: A Simple Example 250 items",
-            "Andorra",
-            "Capital: Andorra la Vella Population: 84000 Area (km^2): 468.0",
-            "United Arab Emirates",
-            "Capital: Abu Dhabi Population: 4975593 Area (km^2): 82880.0",
-            "Afghanistan",
-            "Capital: Kabul Population: 29121286 Area (km^2): 647500.0",
-            "Lessons and Videos \u00a9 Hartley Brody 2023"
+            "This is a test article",
+            "This is a test article",
+            "This article is for testing purposes.",
+            "It contains multiple paragraphs to simulate a real article.",
+            "The content here is purely fictional and meant for demonstration."
         ]
     ],
     "xpaths": [
         [
-            "/div/title/p",
-            "/div/body/div/section/div/div[1]/div/h1",
-            "/div/body/div/section/div/div[2]/div[1]/h3",
-            "/div/body/div/section/div/div[2]/div[1]/div",
-            "/div/body/div/section/div/div[2]/div[2]/h3",
-            "/div/body/div/section/div/div[2]/div[2]/div",
-            "/div/body/div/section/div/div[2]/div[3]/h3",
-            "/div/body/div/section/div/div[2]/div[3]/div",
-            "/div/body/section/div/div/div"
+            "/html/head/title",
+            "/html/body/div/h1",
+            "/html/body/div/p[1]",
+            "/html/body/div/p[2]",
+            "/html/body/div/p[3]"
         ]
     ]
 }
@@ -325,12 +291,12 @@ For the xpath embeddings, MarkupLM extracts both the sequence of tags of the xpa
 
 ```python
 # text is the HTML content, fe is an object of type MarkupLMFeatureExtractor
-# and the index in t[2] points to the node containing "Andorra"
+# and the index in t[2] points to the node containing "This article is for testing purposes."
 print([t[2] for t in fe.get_three_from_single(text)])
 [
-		'Andorra',
-		['html', 'body', 'div', 'section', 'div', 'div', 'div', 'h3'],
-		[0, 0, 0, 0, 0, 2, 1, 0]
+		'This article is for testing purposes.',  # The text of the node
+		['html', 'body', 'div', 'p'],  # The xpath decomposed
+		[0, 0, 0, 1]  # The subscripts, 0 because html is not followed by a number, 1 because p is followed by a number
 ]
 ```
 
@@ -375,7 +341,109 @@ print(tensors['input_ids'].shape, tensors['xpath_tags_seq'].shape)
 # torch.Size([1, 512]), torch.Size([1, 512, 50])
 ```
 
-Those are the ids, and not yet the embeddings, they will be translated to embeddings at the very beginning of the forward method :
+And now let’s display each text token along with its xpath tokens :
+
+```python
+[This]                [109, 104, 200]  # /html/head/title
+[ is]                 [109, 104, 200]
+[ a]                  [109, 104, 200]
+[ test]               [109, 104, 200]
+[ article]            [109, 104, 200]
+[This]                [109, 25, 50, 98]  # /html/body/div/h1
+[ is]                 [109, 25, 50, 98]
+[ a]                  [109, 25, 50, 98]
+[ test]               [109, 25, 50, 98]
+[ article]            [109, 25, 50, 98]
+[This]                [109, 25, 50, 148]  # /html/body/div/p[1]
+[ article]            [109, 25, 50, 148]
+[ is]                 [109, 25, 50, 148]
+[ for]                [109, 25, 50, 148]
+[ testing]            [109, 25, 50, 148]
+[ purposes]           [109, 25, 50, 148]
+[.]                   [109, 25, 50, 148]
+[It]                  [109, 25, 50, 148]  # /html/body/div/p[2]
+[ contains]           [109, 25, 50, 148]
+[ multiple]           [109, 25, 50, 148]
+[ paragraphs]         [109, 25, 50, 148]
+[ to]                 [109, 25, 50, 148]
+[ simulate]           [109, 25, 50, 148]
+[ a]                  [109, 25, 50, 148]
+[ real]               [109, 25, 50, 148]
+[ article]            [109, 25, 50, 148]
+[.]                   [109, 25, 50, 148]
+[The]                 [109, 25, 50, 148]  # /html/body/div/p[3]
+[ content]            [109, 25, 50, 148]
+[ here]               [109, 25, 50, 148]
+[ is]                 [109, 25, 50, 148]
+[ purely]             [109, 25, 50, 148]
+[ fictional]          [109, 25, 50, 148]
+[ and]                [109, 25, 50, 148]
+[ meant]              [109, 25, 50, 148]
+[ for]                [109, 25, 50, 148]
+[ demonstration]      [109, 25, 50, 148]
+[.]                   [109, 25, 50, 148]
+```
+
+Even though the xpath tokens are ids and we cannot just decode them using the tokenizer (because they are encoded differently, each tag name has its id), it is easy to guess which is which :
+
+| Xpath Tag Token ID | HTML Tag |
+| --- | --- |
+| 109 | html |
+| 25 | body |
+| 104 | head |
+| 200 | title |
+| 98 | h1 |
+| 50 | div |
+| 148 | p |
+
+And the same goes for the subscript tokens :
+
+```python
+[This]                [0, 0, 0]
+[ is]                 [0, 0, 0]
+[ a]                  [0, 0, 0]
+[ test]               [0, 0, 0]
+[ article]            [0, 0, 0]
+[This]                [0, 0, 0, 0]
+[ is]                 [0, 0, 0, 0]
+[ a]                  [0, 0, 0, 0]
+[ test]               [0, 0, 0, 0]
+[ article]            [0, 0, 0, 0]
+[This]                [0, 0, 0, 1]
+[ article]            [0, 0, 0, 1]
+[ is]                 [0, 0, 0, 1]
+[ for]                [0, 0, 0, 1]
+[ testing]            [0, 0, 0, 1]
+[ purposes]           [0, 0, 0, 1]
+[.]                   [0, 0, 0, 1]
+[It]                  [0, 0, 0, 2]
+[ contains]           [0, 0, 0, 2]
+[ multiple]           [0, 0, 0, 2]
+[ paragraphs]         [0, 0, 0, 2]
+[ to]                 [0, 0, 0, 2]
+[ simulate]           [0, 0, 0, 2]
+[ a]                  [0, 0, 0, 2]
+[ real]               [0, 0, 0, 2]
+[ article]            [0, 0, 0, 2]
+[.]                   [0, 0, 0, 2]
+[The]                 [0, 0, 0, 3]
+[ content]            [0, 0, 0, 3]
+[ here]               [0, 0, 0, 3]
+[ is]                 [0, 0, 0, 3]
+[ purely]             [0, 0, 0, 3]
+[ fictional]          [0, 0, 0, 3]
+[ and]                [0, 0, 0, 3]
+[ meant]              [0, 0, 0, 3]
+[ for]                [0, 0, 0, 3]
+[ demonstration]      [0, 0, 0, 3]
+[.]                   [0, 0, 0, 3]
+```
+
+Where again it is trivial to interpret the subscripts.
+
+As we understand, every text token embedding is going to be summed with the xpath tag embedding of the node it belongs to. This is how text tokens from a similar node are going to receive the same tag and subscript embeddings, so they will be closer in the final embedding space.
+
+But those are the ids, and not yet the embeddings, they will be translated to embeddings at the very beginning of the forward method :
 
 ```python
 def forward(
