@@ -2,7 +2,7 @@
 <html lang="en" dir="auto">
 
 <head>
-	<meta name="generator" content="Hugo 0.152.2"><meta charset="utf-8">
+	<meta name="generator" content="Hugo 0.159.2"><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
@@ -14,7 +14,7 @@
 <meta name="google-site-verification" content="XYZabc">
 <meta name="yandex-verification" content="XYZabc">
 <meta name="msvalidate.01" content="XYZabc">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.b609c58d5c11bb90b1a54e04005d74ad1ddf22165eb79f5533967e57df9c3b50.css" integrity="sha256-tgnFjVwRu5CxpU4EAF10rR3fIhZet59VM5Z&#43;V9&#43;cO1A=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.173431f5b5bade06ad08d07cd40d9dd3c53bdaab58a00084571ad35ed6e90eb4.css" integrity="sha256-FzQx9bW63gatCNB81A2d08U72qtYoACEVxrTXtbpDrQ=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
 <link rel="icon" type="image/png" sizes="16x16" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
 <link rel="icon" type="image/png" sizes="32x32" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
@@ -171,6 +171,21 @@ document.addEventListener("DOMContentLoaded", function() {
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Chain-of-Thought is LLMs prompting themselves
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Let’s take the following notations:
+$f_{\theta}: X \to Y$ the LLM parametrized by its weights $\theta$ $X$ the set of tasks (prompts, made of tokens) $Y$ the set of answers to those tasks (made of tokens as well) The best parameters for the model are given by:
+$$ \theta^* = \argmax_{\theta} f_{\theta}(y | x) \text{ with } x, y \in X, Y $$When fine tuning a model to think, the model is trained to answer a sequence a tokens in between the prompt and the answer that can be manually curated instead of outputing the final answer straight away. Let’s call this sequence of tokens $c \in C$. The optimal weights are now given by:
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-07-11 20:55:05 +0100 +0100'>July 11, 2025</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;257 words&nbsp;·&nbsp;Julien Seveno</footer>
+  <a class="entry-link" aria-label="post link to Chain-of-Thought is LLMs prompting themselves" href="https://bornlex.github.io/posts/llm-prompting/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Nemotron
     </h2>
   </header>
@@ -178,7 +193,7 @@ document.addEventListener("DOMContentLoaded", function() {
     <p>Nemotron: Advancing Tool-Calling LLMs with Rule-Based Reinforcement Learning 🤖 Large Language Models (LLMs) are becoming increasingly powerful, and their ability to interact with external tools and APIs significantly expands their capabilities. Nvidia’s Nemotron paper introduces an innovative approach to training LLMs for more effective tool use, focusing on a rule-based reinforcement learning (RL) pipeline. This method aims to overcome the common hurdle of requiring large, meticulously curated datasets, allowing models to learn optimal tool-calling strategies more autonomously.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2025-06-05 00:00:00 +0000 UTC'>June 5, 2025</span>&nbsp;·&nbsp;7 min&nbsp;·&nbsp;1393 words&nbsp;·&nbsp;Julien Seveno</footer>
+  <footer class="entry-footer"><span title='2025-06-05 00:00:00 +0000 UTC'>June 5, 2025</span>&nbsp;·&nbsp;7 min&nbsp;·&nbsp;1390 words&nbsp;·&nbsp;Julien Seveno</footer>
   <a class="entry-link" aria-label="post link to Nemotron" href="https://bornlex.github.io/posts/nemotron/"></a>
 </article>
 
@@ -194,7 +209,7 @@ While approximate solutions exist, their limited adoption stems from an overemph
 In 2022, a paper introduced a way to compute the attention result by only working on sub vectors to reduce memory I/O.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2025-05-18 18:00:59 +0200 CEST'>May 18, 2025</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;1131 words&nbsp;·&nbsp;Julien Seveno</footer>
+  <footer class="entry-footer"><span title='2025-05-18 18:00:59 +0200 CEST'>May 18, 2025</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;1121 words&nbsp;·&nbsp;Julien Seveno</footer>
   <a class="entry-link" aria-label="post link to Flash Attention" href="https://bornlex.github.io/posts/flash-attention/"></a>
 </article>
 
@@ -209,7 +224,7 @@ Regular transformers architecture are not designed to encode hierarchical inform
 In a webpage, information is highly structured. The HTML represents a tree, with each node having a parent and potential siblings and children. This makes that some nodes might be semantically connected while relatively far away from each other if we consider only the number of tokens between them.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2025-04-16 00:00:00 +0000 UTC'>April 16, 2025</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;1492 words&nbsp;·&nbsp;Julien Seveno</footer>
+  <footer class="entry-footer"><span title='2025-04-16 00:00:00 +0000 UTC'>April 16, 2025</span>&nbsp;·&nbsp;7 min&nbsp;·&nbsp;1491 words&nbsp;·&nbsp;Julien Seveno</footer>
   <a class="entry-link" aria-label="post link to Webformers" href="https://bornlex.github.io/posts/webformers/"></a>
 </article>
 
@@ -239,7 +254,7 @@ Data collection is a tedious process, especially when collecting data can be dif
 Using those data as regularization can help neural networks generalize better with less data.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2025-03-16 15:54:04 +0100 CET'>March 16, 2025</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;1673 words&nbsp;·&nbsp;Julien Seveno</footer>
+  <footer class="entry-footer"><span title='2025-03-16 15:54:04 +0100 CET'>March 16, 2025</span>&nbsp;·&nbsp;9 min&nbsp;·&nbsp;1721 words&nbsp;·&nbsp;Julien Seveno</footer>
   <a class="entry-link" aria-label="post link to EPITA Courses - Continuous Physics Informed Neural Networks" href="https://bornlex.github.io/posts/epita-4-pinn/"></a>
 </article>
 
@@ -254,7 +269,7 @@ Today, the most well-known ways to generate synthetic data are:
 VAE GAN Transformers Transformers A bit of history We talked about RNN last week and we saw how they can be used to predict sequences. Unfortunately, RNN suffer some problems, especially with long sequences where they seem to forget what happened.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2025-03-16 15:49:20 +0100 CET'>March 16, 2025</span>&nbsp;·&nbsp;10 min&nbsp;·&nbsp;1929 words&nbsp;·&nbsp;Julien Seveno</footer>
+  <footer class="entry-footer"><span title='2025-03-16 15:49:20 +0100 CET'>March 16, 2025</span>&nbsp;·&nbsp;10 min&nbsp;·&nbsp;1919 words&nbsp;·&nbsp;Julien Seveno</footer>
   <a class="entry-link" aria-label="post link to EPITA Courses - Transformers" href="https://bornlex.github.io/posts/epita-3-transformers/"></a>
 </article>
 
@@ -268,7 +283,7 @@ VAE GAN Transformers Transformers A bit of history We talked about RNN last week
 We know certain things in sequence. Let’s take the example of the alphabet. We can recite it without even thinking about it in the order from A to Z. However, if we were asked to recite it backwards, or even worse, to recite the alphabet based on the position of the letters (give the 17th letter, then the 5th…), we would be unable to do so.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2025-03-16 15:46:44 +0100 CET'>March 16, 2025</span>&nbsp;·&nbsp;9 min&nbsp;·&nbsp;1705 words&nbsp;·&nbsp;Julien Seveno</footer>
+  <footer class="entry-footer"><span title='2025-03-16 15:46:44 +0100 CET'>March 16, 2025</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;1691 words&nbsp;·&nbsp;Julien Seveno</footer>
   <a class="entry-link" aria-label="post link to EPITA Courses - Recurrent Neural Networks" href="https://bornlex.github.io/posts/epita-2-rnn/"></a>
 </article>
 
@@ -284,7 +299,7 @@ continuous time series discrete time series We can also differentiate time serie
 To forecast non-deterministic time series, we assume that there is a probability model that generates the observations of the time series.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2025-03-16 15:36:50 +0100 CET'>March 16, 2025</span>&nbsp;·&nbsp;20 min&nbsp;·&nbsp;4169 words&nbsp;·&nbsp;Julien Seveno</footer>
+  <footer class="entry-footer"><span title='2025-03-16 15:36:50 +0100 CET'>March 16, 2025</span>&nbsp;·&nbsp;20 min&nbsp;·&nbsp;4245 words&nbsp;·&nbsp;Julien Seveno</footer>
   <a class="entry-link" aria-label="post link to EPITA Courses - Timeseries" href="https://bornlex.github.io/posts/epita-1-timeseries/"></a>
 </article>
 
@@ -302,22 +317,6 @@ I love playing golf (even though I am not very good at it…), going to the gym,
   </div>
   <footer class="entry-footer"><span title='2025-03-16 15:35:02 +0100 CET'>March 16, 2025</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;218 words&nbsp;·&nbsp;Julien Seveno</footer>
   <a class="entry-link" aria-label="post link to About Me" href="https://bornlex.github.io/posts/me/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">MLX DQN
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Reinforcement Learning with Apple MLX Framework Today, a very short article about Apple MLX framework.
-I recently learned that Apple has its own machine learning framework, and as a heavy Mac user I thought I’d give it a try.
-It is very easy to use and intuitive, the syntax is nice and looks like Numpy and PyTorch, which is convenient as a PyTorch user.
-As an example, let me present a Deep Q Learning implementation that I wrote. It comes from a nice DeepMind paper.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-03-16 15:12:50 +0100 CET'>March 16, 2025</span>&nbsp;·&nbsp;5 min&nbsp;·&nbsp;1064 words&nbsp;·&nbsp;Julien Seveno</footer>
-  <a class="entry-link" aria-label="post link to MLX DQN" href="https://bornlex.github.io/posts/mlx-dqn/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

@@ -16,14 +16,13 @@ $Y$ the set of answers to those tasks (made of tokens as well)
 The best parameters for the model are given by:
 $$
 \theta^* = \argmax_{\theta} f_{\theta}(y | x) \text{ with } x, y \in X, Y
-$$
-When fine tuning a model to think, the model is trained to answer a sequence a tokens in between the prompt and the answer that can be manually curated instead of outputing the final answer straight away. Let’s call this sequence of tokens $c \in C$. The optimal weights are now given by:">
+$$When fine tuning a model to think, the model is trained to answer a sequence a tokens in between the prompt and the answer that can be manually curated instead of outputing the final answer straight away. Let’s call this sequence of tokens $c \in C$. The optimal weights are now given by:">
 <meta name="author" content="Julien Seveno">
 <link rel="canonical" href="https://bornlex.github.io/posts/llm-prompting/">
 <meta name="google-site-verification" content="XYZabc">
 <meta name="yandex-verification" content="XYZabc">
 <meta name="msvalidate.01" content="XYZabc">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.b609c58d5c11bb90b1a54e04005d74ad1ddf22165eb79f5533967e57df9c3b50.css" integrity="sha256-tgnFjVwRu5CxpU4EAF10rR3fIhZet59VM5Z&#43;V9&#43;cO1A=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.173431f5b5bade06ad08d07cd40d9dd3c53bdaab58a00084571ad35ed6e90eb4.css" integrity="sha256-FzQx9bW63gatCNB81A2d08U72qtYoACEVxrTXtbpDrQ=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
 <link rel="icon" type="image/png" sizes="16x16" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
 <link rel="icon" type="image/png" sizes="32x32" href="https://bornlex.github.io/%3Clink%20/%20abs%20url%3E">
@@ -79,8 +78,7 @@ $Y$ the set of answers to those tasks (made of tokens as well)
 The best parameters for the model are given by:
 $$
 \theta^* = \argmax_{\theta} f_{\theta}(y | x) \text{ with } x, y \in X, Y
-$$
-When fine tuning a model to think, the model is trained to answer a sequence a tokens in between the prompt and the answer that can be manually curated instead of outputing the final answer straight away. Let’s call this sequence of tokens $c \in C$. The optimal weights are now given by:" />
+$$When fine tuning a model to think, the model is trained to answer a sequence a tokens in between the prompt and the answer that can be manually curated instead of outputing the final answer straight away. Let’s call this sequence of tokens $c \in C$. The optimal weights are now given by:" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://bornlex.github.io/posts/llm-prompting/" /><meta property="og:image" content="https://bornlex.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2025-07-11T20:55:05+01:00" />
@@ -99,8 +97,7 @@ $Y$ the set of answers to those tasks (made of tokens as well)
 The best parameters for the model are given by:
 $$
 \theta^* = \argmax_{\theta} f_{\theta}(y | x) \text{ with } x, y \in X, Y
-$$
-When fine tuning a model to think, the model is trained to answer a sequence a tokens in between the prompt and the answer that can be manually curated instead of outputing the final answer straight away. Let’s call this sequence of tokens $c \in C$. The optimal weights are now given by:"/>
+$$When fine tuning a model to think, the model is trained to answer a sequence a tokens in between the prompt and the answer that can be manually curated instead of outputing the final answer straight away. Let’s call this sequence of tokens $c \in C$. The optimal weights are now given by:"/>
 
 
 <script type="application/ld+json">
@@ -129,12 +126,12 @@ When fine tuning a model to think, the model is trained to answer a sequence a t
   "@type": "BlogPosting",
   "headline": "Chain-of-Thought is LLMs prompting themselves",
   "name": "Chain-of-Thought is LLMs prompting themselves",
-  "description": "Let’s take the following notations:\n$f_{\\theta}: X \\to Y$ the LLM parametrized by its weights $\\theta$ $X$ the set of tasks (prompts, made of tokens) $Y$ the set of answers to those tasks (made of tokens as well) The best parameters for the model are given by:\n$$ \\theta^* = \\argmax_{\\theta} f_{\\theta}(y | x) \\text{ with } x, y \\in X, Y $$\nWhen fine tuning a model to think, the model is trained to answer a sequence a tokens in between the prompt and the answer that can be manually curated instead of outputing the final answer straight away. Let’s call this sequence of tokens $c \\in C$. The optimal weights are now given by:\n",
+  "description": "Let’s take the following notations:\n$f_{\\theta}: X \\to Y$ the LLM parametrized by its weights $\\theta$ $X$ the set of tasks (prompts, made of tokens) $Y$ the set of answers to those tasks (made of tokens as well) The best parameters for the model are given by:\n$$ \\theta^* = \\argmax_{\\theta} f_{\\theta}(y | x) \\text{ with } x, y \\in X, Y $$When fine tuning a model to think, the model is trained to answer a sequence a tokens in between the prompt and the answer that can be manually curated instead of outputing the final answer straight away. Let’s call this sequence of tokens $c \\in C$. The optimal weights are now given by:\n",
   "keywords": [
     
   ],
-  "articleBody": "Let’s take the following notations:\n$f_{\\theta}: X \\to Y$ the LLM parametrized by its weights $\\theta$ $X$ the set of tasks (prompts, made of tokens) $Y$ the set of answers to those tasks (made of tokens as well) The best parameters for the model are given by:\n$$ \\theta^* = \\argmax_{\\theta} f_{\\theta}(y | x) \\text{ with } x, y \\in X, Y $$\nWhen fine tuning a model to think, the model is trained to answer a sequence a tokens in between the prompt and the answer that can be manually curated instead of outputing the final answer straight away. Let’s call this sequence of tokens $c \\in C$. The optimal weights are now given by:\n$$ \\theta^* = \\argmax_{\\theta} f_{\\theta}(y, c | x) $$\nBut we know that:\n$$ p(y, c | x) = p(c | x) \\times p(y | x, c) $$\nHere, $f$ is actually trained to be the density probability of the next token to appear knowing the previous tokens so $f \\sim p$ if we allow these aggressive notations:\n$f(c | x)$ is the probability of the model generating the intermediary sequence based on the prompt $f(y | x, c)$ is the probability of the model generating the right answer based on the prompt and the intermediary sequence So if we rename $x’ \\leftarrow x \\circ c$ (the concatenation of both the input tokens and the intermediary tokens), then we indeed have:\n$$ f(y | x’) $$\nthat is the probability of the model to output the right answer based on a prompt it crafted itself.\n",
-  "wordCount" : "261",
+  "articleBody": "Let’s take the following notations:\n$f_{\\theta}: X \\to Y$ the LLM parametrized by its weights $\\theta$ $X$ the set of tasks (prompts, made of tokens) $Y$ the set of answers to those tasks (made of tokens as well) The best parameters for the model are given by:\n$$ \\theta^* = \\argmax_{\\theta} f_{\\theta}(y | x) \\text{ with } x, y \\in X, Y $$When fine tuning a model to think, the model is trained to answer a sequence a tokens in between the prompt and the answer that can be manually curated instead of outputing the final answer straight away. Let’s call this sequence of tokens $c \\in C$. The optimal weights are now given by:\n$$ \\theta^* = \\argmax_{\\theta} f_{\\theta}(y, c | x) $$But we know that:\n$$ p(y, c | x) = p(c | x) \\times p(y | x, c) $$Here, $f$ is actually trained to be the density probability of the next token to appear knowing the previous tokens so $f \\sim p$ if we allow these aggressive notations:\n$f(c | x)$ is the probability of the model generating the intermediary sequence based on the prompt $f(y | x, c)$ is the probability of the model generating the right answer based on the prompt and the intermediary sequence So if we rename $x' \\leftarrow x \\circ c$ (the concatenation of both the input tokens and the intermediary tokens), then we indeed have:\n$$ f(y | x') $$that is the probability of the model to output the right answer based on a prompt it crafted itself.\n",
+  "wordCount" : "257",
   "inLanguage": "en",
   "datePublished": "2025-07-11T20:55:05+01:00",
   "dateModified": "2025-07-11T20:55:05+01:00",
@@ -246,7 +243,7 @@ When fine tuning a model to think, the model is trained to answer a sequence a t
     <h1 class="post-title entry-hint-parent">
       Chain-of-Thought is LLMs prompting themselves
     </h1>
-    <div class="post-meta"><span title='2025-07-11 20:55:05 +0100 +0100'>July 11, 2025</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;261 words&nbsp;·&nbsp;Julien Seveno&nbsp;|&nbsp;<a href="https://github.com/%3cpath_to_repo%3e/content/posts/llm-prompting.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+    <div class="post-meta"><span title='2025-07-11 20:55:05 +0100 +0100'>July 11, 2025</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;257 words&nbsp;·&nbsp;Julien Seveno&nbsp;|&nbsp;<a href="https://github.com/%3cpath_to_repo%3e/content/posts/llm-prompting.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
 
 </div>
   </header> 
@@ -257,27 +254,23 @@ When fine tuning a model to think, the model is trained to answer a sequence a t
 <li>$Y$ the set of answers to those tasks (made of tokens as well)</li>
 </ul>
 <p>The best parameters for the model are given by:</p>
-<p>$$
+$$
 \theta^* = \argmax_{\theta} f_{\theta}(y | x) \text{ with } x, y \in X, Y
-$$</p>
-<p>When fine tuning a model to think, the model is trained to answer a sequence a tokens in between the prompt and the answer that can be manually curated instead of outputing the final answer straight away. Let’s call this sequence of tokens $c \in C$. The optimal weights are now given by:</p>
-<p>$$
+$$<p>When fine tuning a model to think, the model is trained to answer a sequence a tokens in between the prompt and the answer that can be manually curated instead of outputing the final answer straight away. Let’s call this sequence of tokens $c \in C$. The optimal weights are now given by:</p>
+$$
 \theta^* = \argmax_{\theta} f_{\theta}(y, c | x)
-$$</p>
-<p>But we know that:</p>
-<p>$$
+$$<p>But we know that:</p>
+$$
 p(y, c | x) = p(c | x) \times p(y | x, c)
-$$</p>
-<p>Here, $f$ is actually trained to be the density probability of the next token to appear knowing the previous tokens so $f \sim p$ if we allow these aggressive notations:</p>
+$$<p>Here, $f$ is actually trained to be the density probability of the next token to appear knowing the previous tokens so $f \sim p$ if we allow these aggressive notations:</p>
 <ul>
 <li>$f(c | x)$ is the probability of the model generating the intermediary sequence based on the prompt</li>
 <li>$f(y | x, c)$  is the probability of the model generating the right answer based on the prompt and the intermediary sequence</li>
 </ul>
-<p>So if we rename $x&rsquo; \leftarrow  x \circ c$ (the concatenation of both the input tokens and the intermediary tokens), then we indeed have:</p>
-<p>$$
-f(y | x&rsquo;)
-$$</p>
-<p>that is the probability of the model to output the right answer based on a prompt it crafted itself.</p>
+<p>So if we rename $x' \leftarrow  x \circ c$ (the concatenation of both the input tokens and the intermediary tokens), then we indeed have:</p>
+$$
+f(y | x')
+$$<p>that is the probability of the model to output the right answer based on a prompt it crafted itself.</p>
 
 
   </div>

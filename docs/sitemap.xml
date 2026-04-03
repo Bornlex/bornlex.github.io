@@ -2,13 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://bornlex.github.io/</loc>
-    <lastmod>2026-01-08T15:33:28+01:00</lastmod>
+    <loc>https://bornlex.github.io/posts/differentiable-clustering/</loc>
+    <lastmod>2026-04-02T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://bornlex.github.io/posts/markuplm/</loc>
-    <lastmod>2026-01-08T15:33:28+01:00</lastmod>
+    <loc>https://bornlex.github.io/</loc>
+    <lastmod>2026-04-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://bornlex.github.io/posts/</loc>
+    <lastmod>2026-04-02T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://bornlex.github.io/posts/markuplm/</loc>
     <lastmod>2026-01-08T15:33:28+01:00</lastmod>
   </url><url>
     <loc>https://bornlex.github.io/posts/machine-learning-debugging/</loc>

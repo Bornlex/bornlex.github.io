@@ -11,8 +11,21 @@
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 08 Jan 2026 15:33:28 +0100</lastBuildDate>
+    <lastBuildDate>Thu, 02 Apr 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://bornlex.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Differentiable Clustering and Search</title>
+      <link>https://bornlex.github.io/posts/differentiable-clustering/</link>
+      <pubDate>Thu, 02 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://bornlex.github.io/posts/differentiable-clustering/</guid>
+      <description>&lt;h1 id=&#34;differentiable-clustering&#34;&gt;Differentiable Clustering&lt;/h1&gt;
+&lt;h2 id=&#34;problem-formulation&#34;&gt;Problem Formulation&lt;/h2&gt;
+&lt;p&gt;Let $\mathcal{X} = \{x_1, x_2, \dots, x_N\}$ denote a dataset of $N$ items, where each $x_i \in \mathbb{R}^d$ is a dense embedding vector representing a text tag. Our objective is to partition $\mathcal{X}$ into $k$ distinct clusters.&lt;/p&gt;
+&lt;p&gt;We define a differentiable, parametric mapping&lt;/p&gt;
+$$
+f_\theta : \mathbb{R}^d \rightarrow \Delta^{k-1}
+$$&lt;p&gt;where $\Delta^{k-1}$ is the standard $(k - 1)$-dimensional probability simplex. The function $f_\theta$ is defined as a linear projection followed by a softmax activation:&lt;/p&gt;</description>
+    </item>
     <item>
       <title>MarkupLM - Debugging ML Part 1</title>
       <link>https://bornlex.github.io/posts/markuplm/</link>
@@ -87,10 +100,9 @@
       <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;Today, let’s talk about reinforcement learning, and more specifically policy-based reinforcement learning.&lt;/p&gt;
 &lt;p&gt;Policy-based reinforcement learning is when we directly parametrize the policy, meaning we are looking for a policy such as :&lt;/p&gt;
-&lt;p&gt;$$
+$$
 \pi_{\theta}(s, a) = p(a | s, \theta)
-$$&lt;/p&gt;
-&lt;p&gt;In other words, we are looking for a function that represents the probability of our agent taking a specific action $a$ in a state $s$. Think about a state as the position on the chess board for instance and the action as the move to be played next.&lt;/p&gt;</description>
+$$&lt;p&gt;In other words, we are looking for a function that represents the probability of our agent taking a specific action $a$ in a state $s$. Think about a state as the position on the chess board for instance and the action as the move to be played next.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Ai Finetuning Learnings</title>
@@ -118,10 +130,9 @@ $$&lt;/p&gt;
 &lt;li&gt;$Y$ the set of answers to those tasks (made of tokens as well)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;The best parameters for the model are given by:&lt;/p&gt;
-&lt;p&gt;$$
+$$
 \theta^* = \argmax_{\theta} f_{\theta}(y | x) \text{ with } x, y \in X, Y
-$$&lt;/p&gt;
-&lt;p&gt;When fine tuning a model to think, the model is trained to answer a sequence a tokens in between the prompt and the answer that can be manually curated instead of outputing the final answer straight away. Let’s call this sequence of tokens $c \in C$. The optimal weights are now given by:&lt;/p&gt;</description>
+$$&lt;p&gt;When fine tuning a model to think, the model is trained to answer a sequence a tokens in between the prompt and the answer that can be manually curated instead of outputing the final answer straight away. Let’s call this sequence of tokens $c \in C$. The optimal weights are now given by:&lt;/p&gt;</description>
     </item>
     <item>
       <title>Nemotron</title>
@@ -250,10 +261,9 @@ $$&lt;/p&gt;
 &lt;h2 id=&#34;concept&#34;&gt;Concept&lt;/h2&gt;
 &lt;p&gt;In 1948, engineer and mathematician Claude Shannon published a foundational paper for computer science, and later artificial intelligence: A Mathematical Theory of Communication.
 This article defines a central idea in the training of current algorithms: information entropy.&lt;/p&gt;
-&lt;p&gt;$$
+$$
 H = -\sum_{i = 1}^{n} p_i \log_2(p_i)
-$$&lt;/p&gt;
-&lt;p&gt;This formula allows us to quantify how random or organized a data source, such as a text-generating program, is. The higher the entropy, the more random the source; the lower the entropy, the more the data consists of recognizable patterns that allow us to predict the next words.&lt;/p&gt;</description>
+$$&lt;p&gt;This formula allows us to quantify how random or organized a data source, such as a text-generating program, is. The higher the entropy, the more random the source; the lower the entropy, the more the data consists of recognizable patterns that allow us to predict the next words.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Physics Informed Neural Networks</title>
@@ -311,7 +321,9 @@ of data. On the other hand, using a pre-trained model is easier but might requir
       <link>https://bornlex.github.io/posts/2018-10-14-code-injection/</link>
       <pubDate>Wed, 24 Jan 2024 14:03:13 +0100</pubDate>
       <guid>https://bornlex.github.io/posts/2018-10-14-code-injection/</guid>
-      <description>&lt;!-- raw HTML omitted --&gt;
+      <description>&lt;div class=&#34;message&#34;&gt;
+     Le premier article à propos de sécurité informatique à proprement parler. C&#39;est un sujet passionnant et je vais partager quelques techniques entre deux articles sur l&#39;OSINT.
+&lt;/div&gt;
 &lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;J&amp;rsquo;ai découvert l&amp;rsquo;OpenSource Intelligence en m&amp;rsquo;intéressant de près à la sécurité informatique.&lt;/p&gt;
 &lt;p&gt;Lorsque des pirates préparent une attaque sur un système d&amp;rsquo;information (SI), ils ont besoin d&amp;rsquo;avoir autant d&amp;rsquo;informations que possible afin de mener à bien les opérations. En effet, les systèmes d&amp;rsquo;exploitation (OS), les serveurs utilisés, les versions de ces serveurs et de ces OS conditionnent énormément la manière dont va se dérouler l&amp;rsquo;attaque.&lt;/p&gt;</description>
