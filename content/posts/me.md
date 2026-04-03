@@ -9,7 +9,7 @@ I am Julien, french engineer in AI since 2017.
 I have worked in several organizations on different topics, all related to AI or where AI is applied to.
 
 
-🔥 I am currently looking for a new opportunity in big AI companies where I could apply my skills to pre-train, finetune models.
+I am currently working for [Outgoing](https://www.outgoing.world/), a startup that bring the real world to you !
 
 
 I love playing golf (even though I am not very good at it…), going to the gym, reading, learning new things and working (not a joke, I do love it).
