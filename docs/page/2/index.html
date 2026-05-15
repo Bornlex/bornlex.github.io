@@ -171,6 +171,21 @@ document.addEventListener("DOMContentLoaded", function() {
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Ai Finetuning Learnings
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>When fine tuning or even training a model, hardware resources are often the bottleneck, and with today’s model sizes, the limiting factor is often GPU memory.
+As an example, let’s take a Qwen 2.5 3B models. As the name says, it contains approximately 3 billion parameters. The model available on HuggingFace is saved with bf16, meaning it contains:
+Sign bit : 1 bit Exponent : 8 bits Significant precision : 7 bits So the total size in memory for 1 parameter among the 3 billion is 16 bits, which is 2 bytes. To store the whole model, the memory will need to be at least 6 billion bytes (6Gb).
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-08-29 22:40:21 +0200 CEST'>August 29, 2025</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;1577 words&nbsp;·&nbsp;Julien Seveno</footer>
+  <a class="entry-link" aria-label="post link to Ai Finetuning Learnings" href="https://bornlex.github.io/posts/ai-finetuning-learnings/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Chain-of-Thought is LLMs prompting themselves
     </h2>
   </header>
@@ -301,22 +316,6 @@ To forecast non-deterministic time series, we assume that there is a probability
   </div>
   <footer class="entry-footer"><span title='2025-03-16 15:36:50 +0100 CET'>March 16, 2025</span>&nbsp;·&nbsp;20 min&nbsp;·&nbsp;4245 words&nbsp;·&nbsp;Julien Seveno</footer>
   <a class="entry-link" aria-label="post link to EPITA Courses - Timeseries" href="https://bornlex.github.io/posts/epita-1-timeseries/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">About Me
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>I am Julien, french engineer in AI since 2017.
-I have worked in several organizations on different topics, all related to AI or where AI is applied to.
-🔥 I am currently looking for a new opportunity in big AI companies where I could apply my skills to pre-train, finetune models.
-I love playing golf (even though I am not very good at it…), going to the gym, reading, learning new things and working (not a joke, I do love it).
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-03-16 15:35:02 +0100 CET'>March 16, 2025</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;218 words&nbsp;·&nbsp;Julien Seveno</footer>
-  <a class="entry-link" aria-label="post link to About Me" href="https://bornlex.github.io/posts/me/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
