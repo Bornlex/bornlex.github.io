@@ -4,7 +4,9 @@ date = 2026-05-15
 draft = false
 +++
 
-Coding with AI is like building a plane. You make the specs and you give them to Claude Code. Then you watch it build the whole plane in half a day where it would have taken you weeks, boy it is beautiful.
+Let’s imagine we make planes the way we make software with AI.
+
+You make the specs and you give them to Claude Code. Then you watch it build the whole plane in half a day where it would have taken you weeks, boy it is beautiful.
 
 You fly your plane and it’s amazing.
 
